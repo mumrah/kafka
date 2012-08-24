@@ -22,8 +22,6 @@ import kafka.utils.Logging
 
 class RESTServer(port: Int, zkConnect: String) extends Server(port) with Logging {
 
-  val lock : AnyRef = new Object()
-
   val props: Properties = new Properties()
   props.put("zk.connect", zkConnect)
   
@@ -72,7 +70,7 @@ class RESTServer(port: Int, zkConnect: String) extends Server(port) with Logging
       val it = streamTuple._2.iterator
       try {
         val message: Message = {
-          lock.synchronized {
+          streamTuple.synchronized {
             streamTuple._2.head.message
           }
         }
