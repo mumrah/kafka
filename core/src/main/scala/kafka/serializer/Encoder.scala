@@ -28,5 +28,5 @@ class DefaultEncoder extends Encoder[Message] {
 }
 
 class StringEncoder extends Encoder[String] {
-  override def toMessage(event: String):Message = new Message(event.getBytes)
+  override def toMessage(event: String):Message = new Message(event.getBytes("UTF-8"))
 }

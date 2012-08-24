@@ -32,6 +32,6 @@ class StringDecoder extends Decoder[String] {
     val buf = message.payload
     val arr = new Array[Byte](buf.remaining)
     buf.get(arr)
-    new String(arr)
+    new String(arr, "UTF-8")
   }
 }
