@@ -439,24 +439,3 @@ class KafkaClient(object):
 
     def close(self):
         self._sock.close()
-
-if __name__ == "__main__":
-    kafka = KafkaClient("localhost", 9092)
-
-    for msg in kafka.iter_messages(FetchRequest("document-updates", 1, 0, 1024), False):
-        print(msg.payload)
-
-    kafka.close()
-    exit()
-    kafka.send_multi_message_set([
-        ProduceRequest("document-updates", 0, [create_message_from_string("ZERO")]),
-        ProduceRequest("document-updates", 1, [create_message_from_string("ONE")]),
-        ProduceRequest("document-updates", 2, [create_message_from_string("TWO")])
-    ])
-    #kafka.send_simple("document-updates", 0, "ok!", "here", "are", "some", "messages")
-    print kafka.get_multi_message_set([
-        FetchRequest("document-updates", 0, 0, 1024),
-        FetchRequest("document-updates", 1, 0, 1024),
-        FetchRequest("document-updates", 2, 0, 1024),
-        FetchRequest("document-updates", 3, 0, 1024)
-    ])
