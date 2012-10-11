@@ -252,8 +252,8 @@ class KafkaClient(object):
 
         The request-key (4) is encoded as a short (int16).
         """
-        (topic, partition, offset, maxOffsets) = offsetRequest
-        req = struct.pack('>HH%dsiqi' % len(topic), KafkaClient.OFFSET_KEY, len(topic), topic, partition, offset, maxOffsets)
+        (topic, partition, time, maxOffsets) = offsetRequest
+        req = struct.pack('>HH%dsiqi' % len(topic), KafkaClient.OFFSET_KEY, len(topic), topic, partition, time, maxOffsets)
         return req
 
     def read_message_set(self, data):
@@ -416,7 +416,7 @@ class KafkaClient(object):
         <offset>         ::= <int64>
 
         """
-        req = length_prefix_message(create_offset_request(offsetRequest))
+        req = length_prefix_message(self.create_offset_request(offsetRequest))
         log.debug("Sending %d bytes to Kafka", len(req))
         self._sock.send(req) 
 
