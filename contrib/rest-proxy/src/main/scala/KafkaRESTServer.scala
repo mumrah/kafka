@@ -67,8 +67,6 @@ class KafkaRESTServer(val config: KafkaRESTServerConfig, val consumerProps: Prop
   }
 
   /*
-   * Open a new, or return an existing KafkaStream.
-   *
    * Atomically get or create a KafkaStream. This method is thread-safe
    */
   def openKafkaStream(group: String, topic: String): Tuple2[ConsumerConnector, KafkaStream[Message]] = {
