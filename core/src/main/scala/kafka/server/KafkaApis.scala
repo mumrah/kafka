@@ -22,7 +22,7 @@ import kafka.api._
 import kafka.message._
 import kafka.network._
 import kafka.log._
-import kafka.utils.{Pool, SystemTime, Logging}
+import kafka.utils.{Pool, SystemTime, Logging, ZkUtils, ZKGroupTopicDirs}
 import org.apache.log4j.Logger
 import scala.collection._
 import kafka.network.RequestChannel.Response
@@ -62,6 +62,8 @@ class KafkaApis(val requestChannel: RequestChannel,
         case RequestKeys.MetadataKey => handleTopicMetadataRequest(request)
         case RequestKeys.LeaderAndIsrKey => handleLeaderAndIsrRequest(request)
         case RequestKeys.StopReplicaKey => handleStopReplicaRequest(request)
+        case RequestKeys.OffsetCommitKey => handleOffsetCommitRequest(request)
+        case RequestKeys.OffsetFetchKey => handleOffsetFetchRequest(request)
         case requestId => throw new KafkaException("Unknown api code " + requestId)
       }
     } catch {
@@ -522,6 +524,56 @@ class KafkaApis(val requestChannel: RequestChannel,
       })
     topicsMetadata.foreach(metadata => trace("Sending topic metadata " + metadata.toString))
     val response = new TopicMetadataResponse(topicsMetadata.toSeq, metadataRequest.correlationId)
+    requestChannel.sendResponse(new RequestChannel.Response(request, new BoundedByteBufferSend(response)))
+  }
+
+  /* 
+   * Service the Offset commit API
+   */
+  def handleOffsetCommitRequest(request: RequestChannel.Request) {
+    val offsetCommitRequest = request.requestObj.asInstanceOf[OffsetCommitRequest]
+    info("Committing offsets: " + offsetCommitRequest)
+    val responseInfo = offsetCommitRequest.requestInfo.map( t => {
+      // Check if topic and partition exist
+      if(ZkUtils.pathExists(zkClient, ZkUtils.getTopicPath(t._1.topic)) &&
+         ZkUtils.pathExists(zkClient, ZkUtils.getTopicPartitionPath(t._1.topic, t._1.partition))) {
+        val topicDirs = new ZKGroupTopicDirs(offsetCommitRequest.groupId, t._1.topic)
+        ZkUtils.updatePersistentPath(zkClient, topicDirs.consumerOffsetDir + "/" +
+          t._1.partition, t._2.toString)
+        (t._1, ErrorMapping.NoError)
+      } else {
+        // TODO what do we do with unknown topics/partitions?
+        (t._1, ErrorMapping.UnknownTopicOrPartitionCode)
+      }
+    })
+    val response = new OffsetCommitResponse(responseInfo, 
+                                        offsetCommitRequest.versionId, 
+                                        offsetCommitRequest.correlationId,
+                                        offsetCommitRequest.clientId)
+    requestChannel.sendResponse(new RequestChannel.Response(request, new BoundedByteBufferSend(response)))
+  }
+
+  /*
+   * Service the Offset fetch API
+   */
+  def handleOffsetFetchRequest(request: RequestChannel.Request) {
+    val offsetFetchRequest = request.requestObj.asInstanceOf[OffsetFetchRequest]
+    info("Fetching offsets: " + offsetFetchRequest)
+    val responseInfo = offsetFetchRequest.requestInfo.map( t => {
+      // Check if topic and partition exist
+      if(ZkUtils.pathExists(zkClient, ZkUtils.getTopicPath(t.topic)) &&
+         ZkUtils.pathExists(zkClient, ZkUtils.getTopicPartitionPath(t.topic, t.partition))) {
+        val topicDirs = new ZKGroupTopicDirs(offsetFetchRequest.groupId, t.topic)
+        val offsetStr = ZkUtils.readData(zkClient, topicDirs.consumerOffsetDir + "/" + t.partition)
+        (t, (offsetStr._1.toLong, ErrorMapping.NoError))
+      } else {
+        (t, (-1L, ErrorMapping.UnknownTopicOrPartitionCode))
+      }
+    })
+    val response = new OffsetFetchResponse(collection.immutable.Map(responseInfo: _*), 
+                                        offsetFetchRequest.versionId, 
+                                        offsetFetchRequest.correlationId,
+                                        offsetFetchRequest.clientId)
     requestChannel.sendResponse(new RequestChannel.Response(request, new BoundedByteBufferSend(response)))
   }
 
