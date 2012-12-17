@@ -532,18 +532,16 @@ class KafkaApis(val requestChannel: RequestChannel,
    */
   def handleOffsetCommitRequest(request: RequestChannel.Request) {
     val offsetCommitRequest = request.requestObj.asInstanceOf[OffsetCommitRequest]
-    info("Committing offsets: " + offsetCommitRequest)
+    debug("Committing offsets: " + offsetCommitRequest)
     val responseInfo = offsetCommitRequest.requestInfo.map( t => {
-      // Check if topic and partition exist
-      if(ZkUtils.pathExists(zkClient, ZkUtils.getTopicPath(t._1.topic)) &&
-         ZkUtils.pathExists(zkClient, ZkUtils.getTopicPartitionPath(t._1.topic, t._1.partition))) {
-        val topicDirs = new ZKGroupTopicDirs(offsetCommitRequest.groupId, t._1.topic)
+      val topicDirs = new ZKGroupTopicDirs(offsetCommitRequest.groupId, t._1.topic)
+      try {
         ZkUtils.updatePersistentPath(zkClient, topicDirs.consumerOffsetDir + "/" +
           t._1.partition, t._2.toString)
         (t._1, ErrorMapping.NoError)
-      } else {
-        // TODO what do we do with unknown topics/partitions?
-        (t._1, ErrorMapping.UnknownTopicOrPartitionCode)
+      } catch {
+        case e => 
+          (t._1, ErrorMapping.UnknownCode)
       }
     })
     val response = new OffsetCommitResponse(responseInfo, 
@@ -558,16 +556,19 @@ class KafkaApis(val requestChannel: RequestChannel,
    */
   def handleOffsetFetchRequest(request: RequestChannel.Request) {
     val offsetFetchRequest = request.requestObj.asInstanceOf[OffsetFetchRequest]
-    info("Fetching offsets: " + offsetFetchRequest)
+    debug("Fetching offsets: " + offsetFetchRequest)
     val responseInfo = offsetFetchRequest.requestInfo.map( t => {
-      // Check if topic and partition exist
-      if(ZkUtils.pathExists(zkClient, ZkUtils.getTopicPath(t.topic)) &&
-         ZkUtils.pathExists(zkClient, ZkUtils.getTopicPartitionPath(t.topic, t.partition))) {
-        val topicDirs = new ZKGroupTopicDirs(offsetFetchRequest.groupId, t.topic)
+      val topicDirs = new ZKGroupTopicDirs(offsetFetchRequest.groupId, t.topic)
+      try {
         val offsetStr = ZkUtils.readData(zkClient, topicDirs.consumerOffsetDir + "/" + t.partition)
-        (t, (offsetStr._1.toLong, ErrorMapping.NoError))
-      } else {
-        (t, (-1L, ErrorMapping.UnknownTopicOrPartitionCode))
+        if(offsetStr == null) // No data - can this happen?
+          (t, (-1L, ErrorMapping.UnknownTopicOrPartitionCode))
+        else
+          (t, (offsetStr._1.toLong, ErrorMapping.NoError))
+      } catch {
+        case e => 
+          info(e)
+          (t, (-1L, ErrorMapping.UnknownCode))
       }
     })
     val response = new OffsetFetchResponse(collection.immutable.Map(responseInfo: _*), 

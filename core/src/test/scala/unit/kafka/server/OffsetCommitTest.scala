@@ -54,7 +54,7 @@ class OffsetCommitTest extends JUnit3Suite with ZooKeeperTestHarness {
     val topicAndPartition = TopicAndPartition("offsets-unknown-topic", 0)
     val request = OffsetCommitRequest("test-group", Map(topicAndPartition -> 42L))
     val response = simpleConsumer.commitOffsets(request)
-    assertEquals(ErrorMapping.UnknownTopicOrPartitionCode,
+    assertEquals(ErrorMapping.NoError,
                  response.requestInfo.get(topicAndPartition).get)
   }
 
@@ -85,9 +85,9 @@ class OffsetCommitTest extends JUnit3Suite with ZooKeeperTestHarness {
     val response = simpleConsumer.commitOffsets(request)
     assertEquals(ErrorMapping.NoError,
                  response.requestInfo.get(TopicAndPartition(topic, 0)).get)
-    assertEquals(ErrorMapping.UnknownTopicOrPartitionCode,
+    assertEquals(ErrorMapping.NoError,
                  response.requestInfo.get(TopicAndPartition(topic, 1)).get)
-    assertEquals(ErrorMapping.UnknownTopicOrPartitionCode,
+    assertEquals(ErrorMapping.NoError,
                  response.requestInfo.get(TopicAndPartition("foo", 0)).get)
   }
 
@@ -104,7 +104,7 @@ class OffsetCommitTest extends JUnit3Suite with ZooKeeperTestHarness {
     val response = simpleConsumer.commitOffsets(request)
     assertEquals(ErrorMapping.NoError,
                  response.requestInfo.get(TopicAndPartition(topic, 0)).get)
-    assertEquals(ErrorMapping.UnknownTopicOrPartitionCode,
+    assertEquals(ErrorMapping.NoError,
                  response.requestInfo.get(TopicAndPartition(topic, 1)).get)
   }
 
@@ -131,8 +131,7 @@ class OffsetCommitTest extends JUnit3Suite with ZooKeeperTestHarness {
     val topicAndPartition = TopicAndPartition("foo", 0)
     val request = OffsetFetchRequest("test-group", Seq(topicAndPartition))
     val response = simpleConsumer.fetchOffsets(request)
-    assertEquals(ErrorMapping.UnknownTopicOrPartitionCode,
-      response.requestInfo.get(topicAndPartition).get._2)
+    assertEquals(ErrorMapping.UnknownCode, response.requestInfo.get(topicAndPartition).get._2)
   }
 
   @Test
@@ -144,8 +143,7 @@ class OffsetCommitTest extends JUnit3Suite with ZooKeeperTestHarness {
     val topicAndPartition = TopicAndPartition(topic, 0)
     val request = OffsetCommitRequest("test-group", Map(topicAndPartition -> 42L))
     val response = simpleConsumer.commitOffsets(request)
-    assertEquals(ErrorMapping.NoError,
-                 response.requestInfo.get(topicAndPartition).get)
+    assertEquals(ErrorMapping.NoError, response.requestInfo.get(topicAndPartition).get)
 
     val request1 = OffsetFetchRequest("test-group", Seq(
       TopicAndPartition(topic, 0),
@@ -153,7 +151,7 @@ class OffsetCommitTest extends JUnit3Suite with ZooKeeperTestHarness {
     ))
     val response1 = simpleConsumer.fetchOffsets(request1)
     assertEquals(ErrorMapping.NoError, response1.requestInfo.get(TopicAndPartition(topic, 0)).get._2)
-    assertEquals(ErrorMapping.UnknownTopicOrPartitionCode, response1.requestInfo.get(TopicAndPartition(topic, 1)).get._2)
+    assertEquals(ErrorMapping.UnknownCode, response1.requestInfo.get(TopicAndPartition(topic, 1)).get._2)
     assertEquals(42L, response1.requestInfo.get(TopicAndPartition(topic, 0)).get._1)
     assertEquals(-1L, response1.requestInfo.get(TopicAndPartition(topic, 1)).get._1)
   }
@@ -178,10 +176,8 @@ class OffsetCommitTest extends JUnit3Suite with ZooKeeperTestHarness {
     val commitResponse = simpleConsumer.commitOffsets(commitRequest)
     assertEquals(ErrorMapping.NoError, commitResponse.requestInfo.get(TopicAndPartition(topic1, 0)).get)
     assertEquals(ErrorMapping.NoError, commitResponse.requestInfo.get(TopicAndPartition(topic2, 0)).get)
-    assertEquals(ErrorMapping.UnknownTopicOrPartitionCode,
-      commitResponse.requestInfo.get(TopicAndPartition(topic3, 0)).get)
-    assertEquals(ErrorMapping.UnknownTopicOrPartitionCode,
-      commitResponse.requestInfo.get(TopicAndPartition(topic2, 1)).get)
+    assertEquals(ErrorMapping.NoError, commitResponse.requestInfo.get(TopicAndPartition(topic3, 0)).get)
+    assertEquals(ErrorMapping.NoError, commitResponse.requestInfo.get(TopicAndPartition(topic2, 1)).get)
 
     val fetchRequest = OffsetFetchRequest("test-group", Seq(
       TopicAndPartition(topic1, 0),
@@ -192,15 +188,13 @@ class OffsetCommitTest extends JUnit3Suite with ZooKeeperTestHarness {
     val fetchResponse = simpleConsumer.fetchOffsets(fetchRequest)
     assertEquals(ErrorMapping.NoError, fetchResponse.requestInfo.get(TopicAndPartition(topic1, 0)).get._2)
     assertEquals(ErrorMapping.NoError, fetchResponse.requestInfo.get(TopicAndPartition(topic2, 0)).get._2)
-    assertEquals(ErrorMapping.UnknownTopicOrPartitionCode,
-      fetchResponse.requestInfo.get(TopicAndPartition(topic3, 0)).get._2)
-    assertEquals(ErrorMapping.UnknownTopicOrPartitionCode,
-      fetchResponse.requestInfo.get(TopicAndPartition(topic2, 1)).get._2)
+    assertEquals(ErrorMapping.NoError, fetchResponse.requestInfo.get(TopicAndPartition(topic3, 0)).get._2)
+    assertEquals(ErrorMapping.NoError, fetchResponse.requestInfo.get(TopicAndPartition(topic2, 1)).get._2)
 
     assertEquals(42L, fetchResponse.requestInfo.get(TopicAndPartition(topic1, 0)).get._1)
     assertEquals(43L, fetchResponse.requestInfo.get(TopicAndPartition(topic2, 0)).get._1)
-    assertEquals(-1L, fetchResponse.requestInfo.get(TopicAndPartition(topic3, 0)).get._1)
-    assertEquals(-1L, fetchResponse.requestInfo.get(TopicAndPartition(topic2, 1)).get._1)
+    assertEquals(44L, fetchResponse.requestInfo.get(TopicAndPartition(topic3, 0)).get._1)
+    assertEquals(45L, fetchResponse.requestInfo.get(TopicAndPartition(topic2, 1)).get._1)
   }
 
 }
