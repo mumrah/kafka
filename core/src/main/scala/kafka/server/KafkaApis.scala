@@ -532,7 +532,9 @@ class KafkaApis(val requestChannel: RequestChannel,
    */
   def handleOffsetCommitRequest(request: RequestChannel.Request) {
     val offsetCommitRequest = request.requestObj.asInstanceOf[OffsetCommitRequest]
-    debug("Committing offsets: " + offsetCommitRequest)
+    if(requestLogger.isTraceEnabled)
+      requestLogger.trace("Handling offset commit request " + offsetCommitRequest.toString)
+    trace("Handling offset commit request " + offsetCommitRequest.toString)
     val responseInfo = offsetCommitRequest.requestInfo.map( t => {
       val topicDirs = new ZKGroupTopicDirs(offsetCommitRequest.groupId, t._1.topic)
       try {
@@ -556,7 +558,9 @@ class KafkaApis(val requestChannel: RequestChannel,
    */
   def handleOffsetFetchRequest(request: RequestChannel.Request) {
     val offsetFetchRequest = request.requestObj.asInstanceOf[OffsetFetchRequest]
-    debug("Fetching offsets: " + offsetFetchRequest)
+    if(requestLogger.isTraceEnabled)
+      requestLogger.trace("Handling offset fetch request " + offsetFetchRequest.toString)
+    trace("Handling offset fetch request " + offsetFetchRequest.toString)
     val responseInfo = offsetFetchRequest.requestInfo.map( t => {
       val topicDirs = new ZKGroupTopicDirs(offsetFetchRequest.groupId, t.topic)
       try {
@@ -567,7 +571,6 @@ class KafkaApis(val requestChannel: RequestChannel,
           (t, (offsetStr._1.toLong, ErrorMapping.NoError))
       } catch {
         case e => 
-          info(e)
           (t, (-1L, ErrorMapping.UnknownCode))
       }
     })
