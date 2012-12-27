@@ -120,6 +120,22 @@ class KafkaApis(val requestChannel: RequestChannel,
             error("error when handling request %s".format(apiRequest), e)
             val errorResponse = StopReplicaResponse(apiRequest.correlationId, responseMap)
             requestChannel.sendResponse(new Response(request, new BoundedByteBufferSend(errorResponse)))
+          case RequestKeys.OffsetCommitKey =>
+            val apiRequest = request.requestObj.asInstanceOf[OffsetCommitRequest]
+            val responseMap = apiRequest.requestInfo.map {
+              case (topicAndPartition, offset) => (topicAndPartition,  ErrorMapping.codeFor(e.getClass.asInstanceOf[Class[Throwable]]))
+            }.toMap
+            error("error when handling request %s".format(apiRequest), e)
+            val errorResponse = OffsetCommitResponse(requestInfo=responseMap, correlationId=apiRequest.correlationId)
+            requestChannel.sendResponse(new Response(request, new BoundedByteBufferSend(errorResponse)))
+          case RequestKeys.OffsetFetchKey =>
+            val apiRequest = request.requestObj.asInstanceOf[OffsetFetchRequest]
+            val responseMap = apiRequest.requestInfo.map {
+              case (topicAndPartition) => (topicAndPartition, Tuple2(-1L, ErrorMapping.codeFor(e.getClass.asInstanceOf[Class[Throwable]])))
+            }.toMap
+            error("error when handling request %s".format(apiRequest), e)
+            val errorResponse = OffsetFetchResponse(requestInfo=responseMap, correlationId=apiRequest.correlationId)
+            requestChannel.sendResponse(new Response(request, new BoundedByteBufferSend(errorResponse)))
         }
     } finally
       request.apiLocalCompleteTimeMs = SystemTime.milliseconds
