@@ -24,8 +24,8 @@ import kafka.common.TopicAndPartition
 import kafka.utils.Logging
 
 object OffsetCommitRequest extends Logging {
-  val CurrentVersion = 1.shortValue()
-  val DefaultClientId = "default"
+  val CurrentVersion: Short = 1
+  val DefaultClientId = ""
 
   def readFrom(buffer: ByteBuffer): OffsetCommitRequest = {
     // Read values from the envelope

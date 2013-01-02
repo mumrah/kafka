@@ -24,7 +24,7 @@ import kafka.common.TopicAndPartition
 import kafka.utils.Logging
 
 object OffsetFetchResponse extends Logging {
-  val CurrentVersion = 1.shortValue()
+  val CurrentVersion: Short = 1
   val DefaultClientId = ""
 
   def readFrom(buffer: ByteBuffer): OffsetFetchResponse = {

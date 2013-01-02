@@ -581,10 +581,7 @@ class KafkaApis(val requestChannel: RequestChannel,
       val topicDirs = new ZKGroupTopicDirs(offsetFetchRequest.groupId, t.topic)
       try {
         val offsetStr = ZkUtils.readData(zkClient, topicDirs.consumerOffsetDir + "/" + t.partition)
-        if(offsetStr == null) // No data - can this happen?
-          (t, (-1L, ErrorMapping.UnknownTopicOrPartitionCode))
-        else
-          (t, (offsetStr._1.toLong, ErrorMapping.NoError))
+        (t, (offsetStr._1.toLong, ErrorMapping.NoError))
       } catch {
         case e => 
           (t, (-1L, ErrorMapping.UnknownCode))

@@ -24,8 +24,8 @@ import kafka.common.TopicAndPartition
 import kafka.utils.Logging
 
 object OffsetFetchRequest extends Logging {
-  val CurrentVersion = 1.shortValue()
-  val DefaultClientId = "default"
+  val CurrentVersion: Short = 1
+  val DefaultClientId = ""
 
   def readFrom(buffer: ByteBuffer): OffsetFetchRequest = {
     // Read values from the envelope
