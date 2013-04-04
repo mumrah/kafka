@@ -1,0 +1,130 @@
+<project name="kafka" 
+         xmlns:artifact="antlib:org.apache.maven.artifact.ant" 
+         xmlns:ivy="antlib:org.apache.ivy.ant">
+  <description>Apache Kafka</description> 
+
+  <!-- Directories -->
+  <dirname property="base.dir" file="${ant.file.kafka}"/>
+
+  <!-- Properties -->
+  <property name="version" value="0.8.0"/>
+  <property name="debug" value="true"/>
+
+  <property name="ivy.dir" location="${base.dir}/ivy"/>
+  <property name="ivy.install.version" value="2.3.0-rc2"/>
+
+  <property name="build.dir" value="build-ant"/>
+  <property name="lib.dir" value="lib-ant"/>
+
+  <property name="src.dir" value="core/src/main/scala"/>
+  <property name="classes.dir" value="${build.dir}/classes"/>
+
+  <property name="assembly.dir" value="${build.dir}/assembly"/>
+
+  <!-- Ivy -->
+
+  <condition property="ivy.jar.exists">
+    <available file="${ivy.dir}/ivy.jar"/>
+  </condition>
+
+  <target name="ivy-download" unless="ivy.jar.exists">
+    <mkdir dir="${ivy.dir}"/>
+    <get src="http://repo2.maven.org/maven2/org/apache/ivy/ivy/${ivy.install.version}/ivy-${ivy.install.version}.jar"
+         dest="${ivy.dir}/ivy.jar" 
+         usetimestamp="true"/>
+  </target>
+
+  <target name="ivy-init" depends="ivy-download" unless="skip.ivy" description="initialize ivy">
+    <path id="ivy.lib.path">
+      <fileset dir="${ivy.dir}" includes="*.jar"/>
+    </path>
+    <taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpathref="ivy.lib.path"/>
+    <ivy:settings file="${ivy.dir}/ivysettings.xml"/>
+  </target>
+
+  <target name="ivy-clean-libs" depends="ivy-init" description="clean up ivy libs">
+    <delete includeemptydirs="true" quiet="true">
+      <fileset dir=".">
+        <include name="**/lib/ivy/**/*"/>
+      </fileset>
+    </delete>
+  </target>
+
+  <target name="ivy-clean" depends="ivy-init" description="clean ivy cache and libs">
+    <ivy:cleancache/>
+    <delete dir="${lib.dir}/ivy"/>
+  </target>
+
+  <target name="ivy-resolve" depends="ivy-init" description="fetch dependencies with ivy">
+    <ivy:resolve/>
+    <ivy:retrieve pattern="${lib.dir}/ivy/[conf]/[artifact]-[revision](-[classifier]).[ext]"/>
+    <ivy:report todir="${build.dir}/ivy-report"/>
+  </target>
+
+  <!-- Scala -->
+  <target name="scala-init" depends="ivy-init">
+    <ivy:resolve conf="scalac"/>
+    <ivy:retrieve conf="scalac" pattern="${lib.dir}/ivy/[conf]/[artifact]-[revision](-[classifier]).[ext]"/>
+    <path id="scala.lib.path">
+      <fileset dir="${lib.dir}/ivy/scalac" includes="*.jar"/>
+    </path>
+    <taskdef resource="scala/tools/ant/antlib.xml" classpathref="scala.lib.path"/>
+  </target>
+
+  <!-- Build -->
+
+  <target name="clean" description="clean up">
+    <delete dir="${build.dir}"/>
+    <delete dir="${lib.dir}/ivy"/>
+  </target>
+
+  <target name="compile" depends="ivy-resolve,scala-init" description="compile the source">
+    <mkdir dir="${classes.dir}"/>
+    <scalac srcdir="${src.dir}" destdir="${classes.dir}" encoding="UTF-8">
+      <classpath>
+        <fileset dir="${lib.dir}" includes="ivy/compile/*.jar"/>
+        <fileset dir="${lib.dir}" includes="managed/*.jar"/>
+        <fileset dir="${classes.dir}"/>
+      </classpath>
+      <include name="**/*.scala"/>
+      <include name="**/*.java"/>
+    </scalac>
+    <javac srcdir="${src.dir}" destdir="${classes.dir}" encoding="UTF-8">
+      <classpath>
+        <fileset dir="${lib.dir}" includes="ivy/compile/*.jar"/>
+        <fileset dir="${lib.dir}" includes="managed/*.jar"/>
+        <fileset dir="${classes.dir}"/>
+      </classpath>
+      <include name="**/*.java"/>
+    </javac>
+  </target>
+
+  <target name="jar" depends="compile" description="bundle up the jars">
+    <mkdir dir="${build.dir}"/>
+    <jar jarfile="${build.dir}/${ant.project.name}-${version}.jar" basedir="${classes.dir}"/>
+  </target>
+
+  <target name="dist" depends="jar">
+    <delete dir="${assembly.dir}"/>
+    <mkdir dir="${assembly.dir}"/>
+    <copy todir="${assembly.dir}/config">
+      <fileset dir="${base.dir}/config"/>
+    </copy>
+    <copy todir="${assembly.dir}/bin">
+      <fileset dir="${base.dir}/bin"/>
+    </copy>
+    <copy todir="${assembly.dir}/lib" flatten="true">
+      <fileset dir="${lib.dir}" includes="ivy/runtime/*.jar"/>
+      <fileset dir="${lib.dir}" includes="managed/*.jar"/>
+    </copy>
+    <copy todir="${assembly.dir}" file="${build.dir}/${ant.project.name}-${version}.jar"/>
+
+    <tar tarfile="${build.dir}/${ant.project.name}-${version}.tar.gz" longfile="gnu" compression="gzip">
+      <tarfileset dir="${assembly.dir}" prefix="${ant.project.name}-${version}">
+        <exclude name="bin/*.sh"/>
+      </tarfileset>
+      <tarfileset dir="${assembly.dir}/bin" prefix="${ant.project.name}-${version}/bin" includes="*.sh" filemode="755"/>
+    </tar>
+  </target>
+
+</project>

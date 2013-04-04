@@ -796,19 +796,6 @@ class LeaderExistsOrChangedListener(topic: String,
   }
 }
 
-object ZKStringSerializer extends ZkSerializer {
-
-  @throws(classOf[ZkMarshallingError])
-  def serialize(data : Object) : Array[Byte] = data.asInstanceOf[String].getBytes("UTF-8")
-
-  @throws(classOf[ZkMarshallingError])
-  def deserialize(bytes : Array[Byte]) : Object = {
-    if (bytes == null)
-      null
-    else
-      new String(bytes, "UTF-8")
-  }
-}
 
 class ZKGroupDirs(val group: String) {
   def consumerDir = ZkUtils.ConsumersPath
@@ -820,7 +807,6 @@ class ZKGroupTopicDirs(group: String, topic: String) extends ZKGroupDirs(group) 
   def consumerOffsetDir = consumerGroupDir + "/offsets/" + topic
   def consumerOwnerDir = consumerGroupDir + "/owners/" + topic
 }
-
 
 class ZKConfig(props: VerifiableProperties) {
   /** ZK host string */

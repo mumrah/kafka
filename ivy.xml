@@ -1,0 +1,38 @@
+<ivy-module version="2.0"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">
+  <info organisation="org.apache.kafka" module="kafka" revision="0.1"/>
+
+  <configurations>
+    <conf name="default"/>
+    <conf name="scala"/>
+    <conf name="scalac" extends="scala"/>
+    <conf name="compile" extends="default,scalac"/>
+    <conf name="runtime" extends="default,scala"/>
+  </configurations>
+
+  <publications>
+    <artifact name="lucene-hdfs-directory" type="jar" conf="default" ext="jar"/>
+  </publications>
+
+  <dependencies>
+    <dependency org="org.scala-lang" name="scala-library" rev="2.8.2" conf="scala->default"/>
+    <dependency org="org.scala-lang" name="scala-compiler" rev="2.8.2" conf="scalac->default"/>
+
+    <dependency org="net.sf.jopt-simple" name="jopt-simple" rev="3.2" conf="default->default"/>
+    <dependency org="org.apache.zookeeper" name="zookeeper" rev="3.3.4" conf="default->default"/>
+    <dependency org="org.xerial.snappy" name="snappy-java" rev="1.0.4.1" conf="default->default"/>
+    <dependency org="com.101tec" name="zkclient" rev="0.2" conf="default->default">
+      <exclude org="org.apache.zookeeper"/>
+    </dependency>
+
+    <dependency org="log4j" name="log4j" rev="1.2.15" conf="default->default"/>
+    <dependency org="org.slf4j" name="slf4j-simple" rev="1.6.4" conf="runtime->default"/>
+
+    <exclude org="jline"/>
+    <exclude org="javax.jms"/>
+    <exclude org="javax.mail"/>
+    <exclude org="com.sun.jdmk"/>
+    <exclude org="com.sun.jmx"/>
+  </dependencies>
+</ivy-module>
