@@ -3,71 +3,91 @@
          xmlns:ivy="antlib:org.apache.ivy.ant">
   <description>Apache Kafka</description> 
 
-  <!-- Directories -->
+  <!-- Properties -->
+
   <dirname property="base.dir" file="${ant.file.kafka}"/>
 
-  <!-- Properties -->
   <property name="version" value="0.8.0"/>
-  <property name="debug" value="true"/>
 
   <property name="ivy.dir" location="${base.dir}/ivy"/>
-  <property name="ivy.install.version" value="2.3.0-rc2"/>
+  <property name="ivy.version" value="2.3.0-rc2"/>
+  <property name="scala.version" value="2.9.1"/>
 
   <property name="build.dir" value="build-ant"/>
   <property name="lib.dir" value="lib-ant"/>
 
   <property name="src.dir" value="core/src/main/scala"/>
   <property name="test.src.dir" value="core/src/test/scala/unit"/>
+
   <property name="classes.dir" value="${build.dir}/classes"/>
   <property name="test.classes.dir" value="${build.dir}/test-classes"/>
 
   <property name="assembly.dir" value="${build.dir}/assembly"/>
 
+  <echo message="Using Scala ${scala.version}"/>
+
   <!-- Ivy -->
 
   <condition property="ivy.jar.exists">
-    <available file="${ivy.dir}/ivy.jar"/>
+    <or>
+      <available file="${ivy.dir}/ivy-${ivy.version}.jar"/>
+      <isset property="offline"/>
+    </or>
   </condition>
 
   <target name="ivy-download" unless="ivy.jar.exists">
     <mkdir dir="${ivy.dir}"/>
-    <get src="http://repo2.maven.org/maven2/org/apache/ivy/ivy/${ivy.install.version}/ivy-${ivy.install.version}.jar"
-         dest="${ivy.dir}/ivy.jar" 
+    <get src="http://repo2.maven.org/maven2/org/apache/ivy/ivy/${ivy.version}/ivy-${ivy.version}.jar"
+         dest="${ivy.dir}/ivy-${ivy.version}.jar" 
          usetimestamp="true"/>
   </target>
 
-  <target name="ivy-init" depends="ivy-download" unless="skip.ivy" description="initialize ivy">
+  <target name="ivy-init" depends="ivy-download" description="initialize ivy">
     <path id="ivy.lib.path">
-      <fileset dir="${ivy.dir}" includes="*.jar"/>
+      <fileset dir="${ivy.dir}" includes="ivy-${ivy.version}.jar"/>
     </path>
     <taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpathref="ivy.lib.path"/>
     <ivy:settings file="${ivy.dir}/ivysettings.xml"/>
   </target>
 
-  <target name="ivy-clean-libs" depends="ivy-init" description="clean up ivy libs">
-    <delete includeemptydirs="true" quiet="true">
-      <fileset dir=".">
-        <include name="**/lib/ivy/**/*"/>
-      </fileset>
-    </delete>
+  <macrodef name="ivy-resolve-conf">
+    <attribute name="conf"/>
+    <attribute name="lib.dir"/>
+    <attribute name="report.dir"/>
+    <sequential>
+      <echo message="Resolving ivy conf: @{conf} for lib.dir: @{lib.dir}"/>
+      <ivy:resolve conf="@{conf}" refresh="true" log="download-only"/>
+      <ivy:report conf="@{conf}" todir="@{report.dir}"/>
+      <ivy:retrieve pattern="@{lib.dir}/ivy/[conf]/[artifact]-[revision](-[classifier]).[ext]" conf="@{conf}"/>
+    </sequential>
+  </macrodef>
+
+  <target name="ivy-resolve-compile" depends="ivy-init" description="fetch compile dependencies with ivy" unless="offline">
+    <ivy-resolve-conf conf="compile" lib.dir="${lib.dir}" report.dir="${build.dir}/ivy-report"/>
   </target>
 
-  <target name="ivy-clean" depends="ivy-init" description="clean ivy cache and libs">
-    <ivy:cleancache/>
-    <delete dir="${lib.dir}/ivy"/>
+  <target name="ivy-resolve-test" depends="ivy-init" description="fetch test dependencies with ivy" unless="offline">
+    <ivy-resolve-conf conf="test" lib.dir="${lib.dir}" report.dir="${build.dir}/ivy-report"/>
   </target>
 
-  <target name="ivy-resolve" depends="ivy-init" description="fetch dependencies with ivy">
-    <ivy:resolve/>
-    <ivy:retrieve pattern="${lib.dir}/ivy/[conf]/[artifact]-[revision](-[classifier]).[ext]"/>
-    <ivy:report todir="${build.dir}/ivy-report"/>
+  <target name="ivy-resolve-runtime" depends="ivy-init" description="fetch runtime dependencies with ivy" unless="offline">
+    <ivy-resolve-conf conf="runtime" lib.dir="${lib.dir}" report.dir="${build.dir}/ivy-report"/>
   </target>
 
   <!-- Scala -->
 
-  <target name="scala-init" depends="ivy-init">
-    <ivy:resolve conf="scalac"/>
-    <ivy:retrieve conf="scalac" pattern="${lib.dir}/ivy/[conf]/[artifact]-[revision](-[classifier]).[ext]"/>
+  <condition property="scala.jar.exists">
+    <or>
+      <available file="${lib.dir}/ivy/scalac/scala-compiler-${scala.version}.jar"/>
+      <isset property="offline"/>
+    </or>
+  </condition>
+
+  <target name="scala-download" depends="ivy-init" unless="scala.jar.exists">
+    <ivy-resolve-conf conf="scalac" lib.dir="${lib.dir}" report.dir="${build.dir}/ivy-report"/>
+  </target>
+
+  <target name="scala-init" depends="scala-download">
     <path id="scala.lib.path">
       <fileset dir="${lib.dir}/ivy/scalac" includes="*.jar"/>
     </path>
@@ -78,10 +98,13 @@
 
   <target name="clean" description="clean up">
     <delete dir="${build.dir}"/>
+  </target>
+
+  <target name="clean-libs" description="clean up">
     <delete dir="${lib.dir}/ivy"/>
   </target>
 
-  <target name="compile" depends="ivy-resolve,scala-init" description="compile the source">
+  <target name="compile" depends="scala-init,ivy-resolve-compile" description="compile the source">
     <mkdir dir="${classes.dir}"/>
     <scalac srcdir="${src.dir}" destdir="${classes.dir}" encoding="UTF-8">
       <classpath>
@@ -102,7 +125,7 @@
     </javac>
   </target>
 
-  <target name="compile-test" depends="ivy-resolve,scala-init,compile" description="compile the source">
+  <target name="compile-test" depends="scala-init,compile,ivy-resolve-test" description="compile the source">
     <mkdir dir="${test.classes.dir}"/>
     <scalac srcdir="${test.src.dir}" destdir="${test.classes.dir}" encoding="UTF-8">
       <classpath>
@@ -125,7 +148,7 @@
     </javac>
   </target>
 
-  <target name="test" depends="compile-test">
+  <target name="test" depends="compile-test,compile">
     <delete dir="${build.dir}/test-reports"/>
     <mkdir dir="${build.dir}/test-reports"/>
     <junit printsummary="true" showoutput="true" forkmode="perBatch" fork="true">
@@ -148,7 +171,7 @@
     </junit>
   </target>
 
-  <target name="test-only" depends="compile-test" if="test.class">
+  <target name="test-only" depends="compile-test,compile" if="test.class">
     <delete dir="${build.dir}/test-reports"/>
     <mkdir dir="${build.dir}/test-reports"/>
     <junit printsummary="true" showoutput="true">
@@ -168,7 +191,7 @@
     <jar jarfile="${build.dir}/${ant.project.name}-${version}.jar" basedir="${classes.dir}"/>
   </target>
 
-  <target name="dist" depends="jar">
+  <target name="dist" depends="ivy-resolve-runtime,jar">
     <delete dir="${assembly.dir}"/>
     <mkdir dir="${assembly.dir}"/>
     <copy todir="${assembly.dir}/config">
