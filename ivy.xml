@@ -7,8 +7,9 @@
     <conf name="default"/>
     <conf name="scala"/>
     <conf name="scalac" extends="scala"/>
-    <conf name="compile" extends="default,scalac"/>
+    <conf name="compile" extends="default,scala"/>
     <conf name="runtime" extends="default,scala"/>
+    <conf name="test" extends="runtime"/>
   </configurations>
 
   <publications>
@@ -16,8 +17,8 @@
   </publications>
 
   <dependencies>
-    <dependency org="org.scala-lang" name="scala-library" rev="2.8.2" conf="scala->default"/>
-    <dependency org="org.scala-lang" name="scala-compiler" rev="2.8.2" conf="scalac->default"/>
+    <dependency org="org.scala-lang" name="scala-library" rev="2.9.1" conf="scala->default"/>
+    <dependency org="org.scala-lang" name="scala-compiler" rev="2.9.1" conf="scalac->default"/>
 
     <dependency org="net.sf.jopt-simple" name="jopt-simple" rev="3.2" conf="default->default"/>
     <dependency org="org.apache.zookeeper" name="zookeeper" rev="3.3.4" conf="default->default"/>
@@ -28,6 +29,12 @@
 
     <dependency org="log4j" name="log4j" rev="1.2.15" conf="default->default"/>
     <dependency org="org.slf4j" name="slf4j-simple" rev="1.6.4" conf="runtime->default"/>
+
+    <dependency org="junit" name="junit" rev="4.1" conf="test->default"/>
+    <dependency org="org.scalatest" name="scalatest" rev="1.2" conf="test->default"/>
+    <dependency org="org.objenesis" name="objenesis" rev="1.2" conf="test->default"/>
+    <dependency org="cglib" name="cglib-nodep" rev="2.2" conf="test->default"/>
+    <dependency org="org.easymock" name="easymock" rev="3.0" conf="test->default"/>
 
     <exclude org="jline"/>
     <exclude org="javax.jms"/>

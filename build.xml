@@ -17,7 +17,9 @@
   <property name="lib.dir" value="lib-ant"/>
 
   <property name="src.dir" value="core/src/main/scala"/>
+  <property name="test.src.dir" value="core/src/test/scala/unit"/>
   <property name="classes.dir" value="${build.dir}/classes"/>
+  <property name="test.classes.dir" value="${build.dir}/test-classes"/>
 
   <property name="assembly.dir" value="${build.dir}/assembly"/>
 
@@ -62,6 +64,7 @@
   </target>
 
   <!-- Scala -->
+
   <target name="scala-init" depends="ivy-init">
     <ivy:resolve conf="scalac"/>
     <ivy:retrieve conf="scalac" pattern="${lib.dir}/ivy/[conf]/[artifact]-[revision](-[classifier]).[ext]"/>
@@ -84,7 +87,7 @@
       <classpath>
         <fileset dir="${lib.dir}" includes="ivy/compile/*.jar"/>
         <fileset dir="${lib.dir}" includes="managed/*.jar"/>
-        <fileset dir="${classes.dir}"/>
+        <dirset dir="${classes.dir}"/>
       </classpath>
       <include name="**/*.scala"/>
       <include name="**/*.java"/>
@@ -93,10 +96,71 @@
       <classpath>
         <fileset dir="${lib.dir}" includes="ivy/compile/*.jar"/>
         <fileset dir="${lib.dir}" includes="managed/*.jar"/>
-        <fileset dir="${classes.dir}"/>
+        <dirset dir="${classes.dir}"/>
       </classpath>
       <include name="**/*.java"/>
     </javac>
+  </target>
+
+  <target name="compile-test" depends="ivy-resolve,scala-init,compile" description="compile the source">
+    <mkdir dir="${test.classes.dir}"/>
+    <scalac srcdir="${test.src.dir}" destdir="${test.classes.dir}" encoding="UTF-8">
+      <classpath>
+        <fileset dir="${lib.dir}" includes="ivy/test/*.jar"/>
+        <fileset dir="${lib.dir}" includes="managed/*.jar"/>
+        <dirset dir="${classes.dir}"/>
+        <dirset dir="${test.classes.dir}"/>
+      </classpath>
+      <include name="**/*.scala"/>
+      <include name="**/*.java"/>
+    </scalac>
+    <javac srcdir="${test.src.dir}" destdir="${test.classes.dir}" encoding="UTF-8">
+      <classpath>
+        <fileset dir="${lib.dir}" includes="ivy/test/*.jar"/>
+        <fileset dir="${lib.dir}" includes="managed/*.jar"/>
+        <dirset dir="${classes.dir}"/>
+        <dirset dir="${test.classes.dir}"/>
+      </classpath>
+      <include name="**/*.java"/>
+    </javac>
+  </target>
+
+  <target name="test" depends="compile-test">
+    <delete dir="${build.dir}/test-reports"/>
+    <mkdir dir="${build.dir}/test-reports"/>
+    <junit printsummary="true" showoutput="true" forkmode="perBatch" fork="true">
+      <formatter type="xml"/>
+      <classpath>
+        <fileset dir="${lib.dir}" includes="ivy/test/*.jar"/>
+        <fileset dir="${lib.dir}" includes="managed/*.jar"/>
+        <dirset dir="${classes.dir}"/>
+        <dirset dir="${test.classes.dir}"/>
+      </classpath>
+      <batchtest todir="${build.dir}/test-reports">
+        <fileset dir="${test.classes.dir}">
+          <include name="**/Test*.class"/>
+          <include name="**/*Test.class"/>
+          <exclude name="**/*$*.class"/>
+          <exclude name="**/TestUtils.class"/>
+          <exclude name="**/TestZKUtils.class"/>
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
+
+  <target name="test-only" depends="compile-test" if="test.class">
+    <delete dir="${build.dir}/test-reports"/>
+    <mkdir dir="${build.dir}/test-reports"/>
+    <junit printsummary="true" showoutput="true">
+      <formatter type="xml"/>
+      <classpath>
+        <fileset dir="${lib.dir}" includes="ivy/test/*.jar"/>
+        <fileset dir="${lib.dir}" includes="managed/*.jar"/>
+        <dirset dir="${classes.dir}"/>
+        <dirset dir="${test.classes.dir}"/>
+      </classpath>
+      <test name="${test.class}" todir="${build.dir}/test-reports"/>
+    </junit>
   </target>
 
   <target name="jar" depends="compile" description="bundle up the jars">
