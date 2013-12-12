@@ -807,17 +807,3 @@ class ZKGroupTopicDirs(group: String, topic: String) extends ZKGroupDirs(group) 
   def consumerOffsetDir = consumerGroupDir + "/offsets/" + topic
   def consumerOwnerDir = consumerGroupDir + "/owners/" + topic
 }
-
-class ZKConfig(props: VerifiableProperties) {
-  /** ZK host string */
-  val zkConnect = props.getString("zookeeper.connect")
-
-  /** zookeeper session timeout */
-  val zkSessionTimeoutMs = props.getInt("zookeeper.session.timeout.ms", 6000)
-
-  /** the max time that the client waits to establish a connection to zookeeper */
-  val zkConnectionTimeoutMs = props.getInt("zookeeper.connection.timeout.ms",zkSessionTimeoutMs)
-
-  /** how far a ZK follower can be behind a ZK leader */
-  val zkSyncTimeMs = props.getInt("zookeeper.sync.time.ms", 2000)
-}

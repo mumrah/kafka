@@ -9,9 +9,8 @@
 
   <property name="version" value="0.8.0"/>
 
-  <property name="ivy.dir" location="${base.dir}/ivy"/>
-  <property name="ivy.version" value="2.3.0-rc2"/>
-  <property name="scala.version" value="2.9.1"/>
+  <property name="build.lib.dir" location="${base.dir}/build-lib"/>
+  <property name="ivy.version" value="2.3.0"/>
 
   <property name="build.dir" value="build-ant"/>
   <property name="lib.dir" value="lib-ant"/>
@@ -28,26 +27,28 @@
 
   <!-- Ivy -->
 
-  <condition property="ivy.jar.exists">
-    <or>
-      <available file="${ivy.dir}/ivy-${ivy.version}.jar"/>
-      <isset property="offline"/>
-    </or>
-  </condition>
+  <target name="check-ivy">
+    <condition property="ivy.jar.exists">
+      <or>
+        <available file="${build.lib.dir}/ivy-${ivy.version}.jar"/>
+        <isset property="offline"/>
+      </or>
+    </condition>
+  </target>
 
-  <target name="ivy-download" unless="ivy.jar.exists">
-    <mkdir dir="${ivy.dir}"/>
+  <target name="ivy-download" depends="check-ivy" unless="ivy.jar.exists">
+    <mkdir dir="${build.lib.dir}"/>
     <get src="http://repo2.maven.org/maven2/org/apache/ivy/ivy/${ivy.version}/ivy-${ivy.version}.jar"
-         dest="${ivy.dir}/ivy-${ivy.version}.jar" 
+         dest="${build.lib.dir}/ivy-${ivy.version}.jar" 
          usetimestamp="true"/>
   </target>
 
   <target name="ivy-init" depends="ivy-download" description="initialize ivy">
     <path id="ivy.lib.path">
-      <fileset dir="${ivy.dir}" includes="ivy-${ivy.version}.jar"/>
+      <fileset dir="${build.lib.dir}" includes="ivy-${ivy.version}.jar"/>
     </path>
     <taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpathref="ivy.lib.path"/>
-    <ivy:settings file="${ivy.dir}/ivysettings.xml"/>
+    <ivy:settings file="${build.lib.dir}/ivysettings.xml"/>
   </target>
 
   <macrodef name="ivy-resolve-conf">
@@ -56,6 +57,7 @@
     <attribute name="report.dir"/>
     <sequential>
       <echo message="Resolving ivy conf: @{conf} for lib.dir: @{lib.dir}"/>
+      <delete dir="@{lib.dir}/ivy/@{conf}"/>
       <ivy:resolve conf="@{conf}" refresh="true" log="download-only"/>
       <ivy:report conf="@{conf}" todir="@{report.dir}"/>
       <ivy:retrieve pattern="@{lib.dir}/ivy/[conf]/[artifact]-[revision](-[classifier]).[ext]" conf="@{conf}"/>
@@ -76,14 +78,16 @@
 
   <!-- Scala -->
 
-  <condition property="scala.jar.exists">
-    <or>
-      <available file="${lib.dir}/ivy/scalac/scala-compiler-${scala.version}.jar"/>
-      <isset property="offline"/>
-    </or>
-  </condition>
+  <target name="check-scala">
+    <condition property="scala.jar.exists">
+      <or>
+        <available file="${lib.dir}/ivy/scalac/scala-compiler-${scala.version}.jar"/>
+        <isset property="offline"/>
+      </or>
+    </condition>
+  </target>
 
-  <target name="scala-download" depends="ivy-init" unless="scala.jar.exists">
+  <target name="scala-download" depends="ivy-init,check-scala" unless="scala.jar.exists">
     <ivy-resolve-conf conf="scalac" lib.dir="${lib.dir}" report.dir="${build.dir}/ivy-report"/>
   </target>
 
@@ -96,6 +100,36 @@
 
   <!-- Build -->
 
+  <target name="compile-all" depends="compile-2.9.1, compile-2.9.2"/>
+
+  <target name="compile-2.9.1">
+    <antcall target="compile">
+      <param name="scala.version" value="2.9.1"/>
+      <param name="compile.excludes" value="**/Annotations_2.8.scala"/>
+    </antcall>
+  </target>
+
+  <target name="jar-2.9.1">
+    <antcall target="jar">
+      <param name="scala.version" value="2.9.1"/>
+      <param name="compile.excludes" value="**/Annotations_2.8.scala"/>
+    </antcall>
+  </target>
+
+  <target name="compile-2.9.2">
+    <antcall target="compile">
+      <param name="scala.version" value="2.9.2"/>
+      <param name="compile.excludes" value="**/Annotations_2.8.scala"/>
+    </antcall>
+  </target>
+
+  <target name="jar-2.9.2">
+    <antcall target="jar">
+      <param name="scala.version" value="2.9.2"/>
+      <param name="compile.excludes" value="**/Annotations_2.8.scala"/>
+    </antcall>
+  </target>
+
   <target name="clean" description="clean up">
     <delete dir="${build.dir}"/>
   </target>
@@ -105,24 +139,18 @@
   </target>
 
   <target name="compile" depends="scala-init,ivy-resolve-compile" description="compile the source">
+    <property name="scala.version" value="${scala.version}"/>
+    <delete dir="${classes.dir}"/>
     <mkdir dir="${classes.dir}"/>
     <scalac srcdir="${src.dir}" destdir="${classes.dir}" encoding="UTF-8">
       <classpath>
         <fileset dir="${lib.dir}" includes="ivy/compile/*.jar"/>
-        <fileset dir="${lib.dir}" includes="managed/*.jar"/>
         <dirset dir="${classes.dir}"/>
       </classpath>
       <include name="**/*.scala"/>
       <include name="**/*.java"/>
+      <exclude name="${compile.excludes}"/>
     </scalac>
-    <javac srcdir="${src.dir}" destdir="${classes.dir}" encoding="UTF-8">
-      <classpath>
-        <fileset dir="${lib.dir}" includes="ivy/compile/*.jar"/>
-        <fileset dir="${lib.dir}" includes="managed/*.jar"/>
-        <dirset dir="${classes.dir}"/>
-      </classpath>
-      <include name="**/*.java"/>
-    </javac>
   </target>
 
   <target name="compile-test" depends="scala-init,compile,ivy-resolve-test" description="compile the source">
@@ -130,22 +158,12 @@
     <scalac srcdir="${test.src.dir}" destdir="${test.classes.dir}" encoding="UTF-8">
       <classpath>
         <fileset dir="${lib.dir}" includes="ivy/test/*.jar"/>
-        <fileset dir="${lib.dir}" includes="managed/*.jar"/>
         <dirset dir="${classes.dir}"/>
         <dirset dir="${test.classes.dir}"/>
       </classpath>
       <include name="**/*.scala"/>
       <include name="**/*.java"/>
     </scalac>
-    <javac srcdir="${test.src.dir}" destdir="${test.classes.dir}" encoding="UTF-8">
-      <classpath>
-        <fileset dir="${lib.dir}" includes="ivy/test/*.jar"/>
-        <fileset dir="${lib.dir}" includes="managed/*.jar"/>
-        <dirset dir="${classes.dir}"/>
-        <dirset dir="${test.classes.dir}"/>
-      </classpath>
-      <include name="**/*.java"/>
-    </javac>
   </target>
 
   <target name="test" depends="compile-test,compile">
@@ -155,7 +173,6 @@
       <formatter type="xml"/>
       <classpath>
         <fileset dir="${lib.dir}" includes="ivy/test/*.jar"/>
-        <fileset dir="${lib.dir}" includes="managed/*.jar"/>
         <dirset dir="${classes.dir}"/>
         <dirset dir="${test.classes.dir}"/>
       </classpath>
@@ -178,7 +195,6 @@
       <formatter type="xml"/>
       <classpath>
         <fileset dir="${lib.dir}" includes="ivy/test/*.jar"/>
-        <fileset dir="${lib.dir}" includes="managed/*.jar"/>
         <dirset dir="${classes.dir}"/>
         <dirset dir="${test.classes.dir}"/>
       </classpath>
@@ -188,7 +204,7 @@
 
   <target name="jar" depends="compile" description="bundle up the jars">
     <mkdir dir="${build.dir}"/>
-    <jar jarfile="${build.dir}/${ant.project.name}-${version}.jar" basedir="${classes.dir}"/>
+    <jar jarfile="${build.dir}/${ant.project.name}_${scala.version}-${version}.jar" basedir="${classes.dir}"/>
   </target>
 
   <target name="dist" depends="ivy-resolve-runtime,jar">
@@ -202,7 +218,6 @@
     </copy>
     <copy todir="${assembly.dir}/lib" flatten="true">
       <fileset dir="${lib.dir}" includes="ivy/runtime/*.jar"/>
-      <fileset dir="${lib.dir}" includes="managed/*.jar"/>
     </copy>
     <copy todir="${assembly.dir}" file="${build.dir}/${ant.project.name}-${version}.jar"/>
 

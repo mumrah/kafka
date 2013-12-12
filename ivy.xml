@@ -13,7 +13,7 @@
   </configurations>
 
   <publications>
-    <artifact name="lucene-hdfs-directory" type="jar" conf="default" ext="jar"/>
+    <artifact name="kafka-core" type="jar" conf="default" ext="jar"/>
   </publications>
 
   <dependencies>
@@ -23,9 +23,11 @@
     <dependency org="net.sf.jopt-simple" name="jopt-simple" rev="3.2" conf="default->default"/>
     <dependency org="org.apache.zookeeper" name="zookeeper" rev="3.3.4" conf="default->default"/>
     <dependency org="org.xerial.snappy" name="snappy-java" rev="1.0.4.1" conf="default->default"/>
-    <dependency org="com.101tec" name="zkclient" rev="0.2" conf="default->default">
+    <dependency org="com.101tec" name="zkclient" rev="0.3" conf="default->default">
       <exclude org="org.apache.zookeeper"/>
     </dependency>
+    <dependency org="com.yammer.metrics" name="metrics-core" rev="2.2.0" conf="default->default"/>
+    <dependency org="com.yammer.metrics" name="metrics-annotation" rev="2.2.0" conf="default->default"/>
 
     <dependency org="log4j" name="log4j" rev="1.2.15" conf="default->default"/>
     <dependency org="org.slf4j" name="slf4j-simple" rev="1.6.4" conf="runtime->default"/>
