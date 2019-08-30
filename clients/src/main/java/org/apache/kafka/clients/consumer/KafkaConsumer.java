@@ -1547,6 +1547,7 @@ public class KafkaConsumer<K, V> implements Consumer<K, V> {
                     offset,
                     Optional.empty(), // This will ensure we skip validation
                     this.metadata.leaderAndEpoch(partition));
+            System.err.println("seek(" + partition + ", " + offset + ") => " + newPosition);
             this.subscriptions.seekUnvalidated(partition, newPosition);
         } finally {
             release();

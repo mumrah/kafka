@@ -1093,7 +1093,9 @@ public class Fetcher<K, V> implements Closeable {
      */
     private void maybeValidateAssignments() {
         int newMetadataUpdateVersion = metadata.updateVersion();
+        System.err.println("Metadata updateVersion: " + metadata.updateVersion());
         if (metadataUpdateVersion.getAndSet(newMetadataUpdateVersion) != newMetadataUpdateVersion) {
+            System.err.println("maybeValidatePositionForCurrentLeader");
             subscriptions.forEachAssignedPartition(
                 tp -> subscriptions.maybeValidatePositionForCurrentLeader(tp, metadata.leaderAndEpoch(tp)));
         }
@@ -1113,10 +1115,11 @@ public class Fetcher<K, V> implements Closeable {
         for (TopicPartition partition : fetchablePartitions()) {
             // Use the preferred read replica if set, or the position's leader
             SubscriptionState.FetchPosition position = this.subscriptions.position(partition);
+            System.err.println("Position: " + position);
             Node node = selectReadReplica(partition, position.currentLeader.leader, currentTimeMs);
 
             if (node == null || node.isEmpty()) {
-                log.info("Requesting metadata update for partition {} since the position {} is missing the current leader node", partition, position);
+                System.err.println("Requesting metadata update for partition " + partition + " since the position " + position + " is missing the current leader node");
                 metadata.requestUpdate();
             } else if (client.isUnavailable(node)) {
                 client.maybeThrowAuthFailure(node);
