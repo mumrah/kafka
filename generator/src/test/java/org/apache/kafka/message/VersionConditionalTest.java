@@ -18,17 +18,13 @@
 package org.apache.kafka.message;
 
 import org.junit.Assert;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.Timeout;
 
 import java.io.StringWriter;
 
 import static org.junit.Assert.assertTrue;
 
 public class VersionConditionalTest {
-    @Rule
-    final public Timeout globalTimeout = Timeout.millis(120000);
 
     static void assertEquals(CodeBuffer buffer, String... lines) throws Exception {
         StringWriter stringWriter = new StringWriter();

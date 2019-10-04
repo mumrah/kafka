@@ -23,8 +23,6 @@ import org.apache.kafka.trogdor.rest.TaskPending;
 import org.apache.kafka.trogdor.rest.TaskRunning;
 import org.apache.kafka.trogdor.rest.TaskStopping;
 import org.apache.kafka.trogdor.task.NoOpTaskSpec;
-import org.junit.Rule;
-import org.junit.rules.Timeout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.junit.Test;
@@ -35,9 +33,6 @@ import static org.junit.Assert.assertEquals;
 
 public class CoordinatorClientTest {
     private static final Logger log = LoggerFactory.getLogger(CoordinatorTest.class);
-
-    @Rule
-    final public Timeout globalTimeout = Timeout.millis(120000);
 
     @Test
     public void testPrettyPrintTaskInfo() {

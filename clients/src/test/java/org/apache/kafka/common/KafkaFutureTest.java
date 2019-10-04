@@ -18,9 +18,7 @@ package org.apache.kafka.common;
 
 import org.apache.kafka.common.internals.KafkaFutureImpl;
 import org.junit.Assert;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.Timeout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,9 +34,6 @@ import static org.junit.Assert.assertEquals;
  * A unit test for KafkaFuture.
  */
 public class KafkaFutureTest {
-
-    @Rule
-    final public Timeout globalTimeout = Timeout.millis(120000);
 
     @Test
     public void testCompleteFutures() throws Exception {

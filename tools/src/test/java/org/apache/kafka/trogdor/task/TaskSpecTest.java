@@ -19,16 +19,12 @@ package org.apache.kafka.trogdor.task;
 
 import com.fasterxml.jackson.databind.exc.InvalidTypeIdException;
 import org.apache.kafka.trogdor.common.JsonUtil;
-import org.junit.Rule;
-import org.junit.rules.Timeout;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 public class TaskSpecTest {
-    @Rule
-    final public Timeout globalTimeout = Timeout.millis(120000);
 
     @Test
     public void testTaskSpecSerialization() throws Exception {

@@ -49,8 +49,7 @@ import org.apache.kafka.common.requests.{DeleteRecordsRequest, MetadataResponse}
 import org.apache.kafka.common.resource.{PatternType, Resource, ResourcePattern, ResourceType}
 import org.apache.kafka.common.utils.{Time, Utils}
 import org.junit.Assert._
-import org.junit.rules.Timeout
-import org.junit.{After, Before, Ignore, Rule, Test}
+import org.junit.{After, Before, Ignore, Test}
 import org.scalatest.Assertions.intercept
 
 import scala.collection.JavaConverters._
@@ -67,9 +66,6 @@ import scala.util.Random
 class AdminClientIntegrationTest extends IntegrationTestHarness with Logging {
 
   import AdminClientIntegrationTest._
-
-  @Rule
-  def globalTimeout = Timeout.millis(120000)
 
   var client: Admin = null
   var brokerLoggerConfigResource: ConfigResource = null

@@ -22,8 +22,6 @@ import org.apache.kafka.trogdor.basic.BasicNode;
 import org.apache.kafka.trogdor.basic.BasicTopology;
 
 import org.apache.kafka.trogdor.coordinator.Coordinator;
-import org.junit.Rule;
-import org.junit.rules.Timeout;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -35,8 +33,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class TopologyTest {
-    @Rule
-    final public Timeout globalTimeout = Timeout.millis(120000);
 
     @Test
     public void testAgentNodeNames() throws Exception {

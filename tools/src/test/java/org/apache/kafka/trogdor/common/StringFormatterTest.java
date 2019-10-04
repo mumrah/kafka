@@ -17,8 +17,6 @@
 
 package org.apache.kafka.trogdor.common;
 
-import org.junit.Rule;
-import org.junit.rules.Timeout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.junit.Test;
@@ -33,9 +31,6 @@ import static org.apache.kafka.trogdor.common.StringFormatter.dateString;
 
 public class StringFormatterTest {
     private static final Logger log = LoggerFactory.getLogger(StringFormatterTest.class);
-
-    @Rule
-    final public Timeout globalTimeout = Timeout.millis(120000);
 
     @Test
     public void testDateString() {

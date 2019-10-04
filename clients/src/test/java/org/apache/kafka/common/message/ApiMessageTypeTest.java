@@ -18,9 +18,7 @@
 package org.apache.kafka.common.message;
 
 import org.apache.kafka.common.errors.UnsupportedVersionException;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.Timeout;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -30,8 +28,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
 public class ApiMessageTypeTest {
-    @Rule
-    final public Timeout globalTimeout = Timeout.millis(120000);
 
     @Test
     public void testFromApiKey() {

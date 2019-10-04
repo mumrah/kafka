@@ -26,9 +26,7 @@ import org.apache.kafka.common.utils.OperatingSystem;
 import org.apache.kafka.test.TestUtils;
 import org.apache.kafka.trogdor.task.AgentWorkerStatusTracker;
 import org.apache.kafka.trogdor.task.WorkerStatusTracker;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.Timeout;
 
 import java.io.File;
 import java.io.OutputStream;
@@ -42,8 +40,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class ExternalCommandWorkerTest {
-    @Rule
-    final public Timeout globalTimeout = Timeout.millis(120000);
 
     static class ExternalCommandWorkerBuilder {
         private final String id;

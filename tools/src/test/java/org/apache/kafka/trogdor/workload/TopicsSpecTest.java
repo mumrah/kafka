@@ -17,9 +17,7 @@
 
 package org.apache.kafka.trogdor.workload;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.Timeout;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -32,8 +30,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class TopicsSpecTest {
-    @Rule
-    final public Timeout globalTimeout = Timeout.millis(120000);
 
     private final static TopicsSpec FOO;
     private final static PartitionsSpec PARTSA;

@@ -17,9 +17,7 @@
 
 package org.apache.kafka.message;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.Timeout;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -30,8 +28,6 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class StructRegistryTest {
-    @Rule
-    final public Timeout globalTimeout = Timeout.millis(120000);
 
     @Test
     public void testCommonStructs() throws Exception {

@@ -17,9 +17,7 @@
 
 package org.apache.kafka.trogdor.workload;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.Timeout;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -33,8 +31,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
 
 public class PayloadGeneratorTest {
-    @Rule
-    final public Timeout globalTimeout = Timeout.millis(120000);
 
     @Test
     public void testConstantPayloadGenerator() {

@@ -27,8 +27,7 @@ import org.apache.kafka.common.errors.{InvalidRequestException, PolicyViolationE
 import org.apache.kafka.common.utils.Utils
 import org.apache.kafka.server.policy.AlterConfigPolicy
 import org.junit.Assert.{assertEquals, assertNull, assertTrue}
-import org.junit.{After, Before, Rule, Test}
-import org.junit.rules.Timeout
+import org.junit.{After, Before, Test}
 import org.scalatest.Assertions.intercept
 
 import scala.collection.JavaConverters._
@@ -42,9 +41,6 @@ class AdminClientWithPoliciesIntegrationTest extends KafkaServerTestHarness with
 
   var client: Admin = null
   val brokerCount = 3
-
-  @Rule
-  def globalTimeout = Timeout.millis(120000)
 
   @Before
   override def setUp(): Unit = {

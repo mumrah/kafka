@@ -277,6 +277,9 @@ subprojects {
     minHeapSize = "256m"
     maxHeapSize = "2048m"
 
+    // Read by JUnit Foundation to set a default timeout in milliseconds
+    systemProperty "junit.timeout.test", "120000"
+
     testLogging {
       events = userTestLoggingEvents ?: testLoggingEvents
       showStandardStreams = userShowStandardStreams ?: testShowStandardStreams
@@ -284,12 +287,22 @@ subprojects {
     }
     logTestStdout.rehydrate(delegate, owner, this)()
   }
+  test.doFirst{
+    // This attaches the junit-foundation agent which does some manipulation of junit annotations
+    // before the test runner starts. This is done as a "doFirst" since we must wait until the "test" classpath
+    // has been determined.
+    //jvmArgs "-javaagent:${sourceSets.test.runtimeClasspath.find { it.name.contains("junit-foundation") }.absolutePath}"
+  }
+
 
   task integrationTest(type: Test, dependsOn: compileJava) {
     maxParallelForks = userMaxForks ?: Runtime.runtime.availableProcessors()
 
     minHeapSize = "256m"
     maxHeapSize = "2048m"
+
+    // Read by JUnit Foundation to set a default timeout in milliseconds
+    systemProperty "junit.timeout.test", "120000"
 
     testLogging {
       events = userTestLoggingEvents ?: testLoggingEvents
@@ -303,6 +316,13 @@ subprojects {
     }
 
   }
+  integrationTest.doFirst{
+    // This attaches the junit-foundation agent which does some manipulation of junit annotations
+    // before the test runner starts. This is done as a "doFirst" since we must wait until the "test" classpath
+    // has been determined.
+    jvmArgs "-javaagent:${sourceSets.test.runtimeClasspath.find { it.name.contains("junit-foundation") }.absolutePath}"
+  }
+
 
   task unitTest(type: Test, dependsOn: compileJava) {
     maxParallelForks = userMaxForks ?: Runtime.runtime.availableProcessors()
@@ -310,8 +330,8 @@ subprojects {
     minHeapSize = "256m"
     maxHeapSize = "2048m"
 
-    // Read by JUnit Foundation to set a default timeout
-    systemProperty "junit.timeout.test", "60000"
+    // Read by JUnit Foundation to set a default timeout in milliseconds
+    systemProperty "junit.timeout.test", "30000"
 
     testLogging {
       events = userTestLoggingEvents ?: testLoggingEvents
@@ -331,7 +351,7 @@ subprojects {
     // This attaches the junit-foundation agent which does some manipulation of junit annotations
     // before the test runner starts. This is done as a "doFirst" since we must wait until the "test" classpath
     // has been determined.
-    jvmArgs "-javaagent:${sourceSets.test.runtimeClasspath.find { it.name.contains("junit-foundation") }.absolutePath}"
+    //jvmArgs "-javaagent:${sourceSets.test.runtimeClasspath.find { it.name.contains("junit-foundation") }.absolutePath}"
   }
 
   jar {

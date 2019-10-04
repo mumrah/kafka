@@ -17,9 +17,7 @@
 package org.apache.kafka.common.utils;
 
 import org.junit.Assert;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.Timeout;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -41,8 +39,6 @@ import static org.junit.Assert.fail;
  * A unit test for ImplicitLinkedHashCollection.
  */
 public class ImplicitLinkedHashCollectionTest {
-    @Rule
-    final public Timeout globalTimeout = Timeout.millis(120000);
 
     final static class TestElement implements ImplicitLinkedHashCollection.Element {
         private int prev = ImplicitLinkedHashCollection.INVALID_INDEX;

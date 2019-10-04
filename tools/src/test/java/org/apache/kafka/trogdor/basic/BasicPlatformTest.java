@@ -21,8 +21,6 @@ import org.apache.kafka.common.utils.Utils;
 import org.apache.kafka.test.TestUtils;
 import org.apache.kafka.trogdor.common.Platform;
 
-import org.junit.Rule;
-import org.junit.rules.Timeout;
 import org.junit.Test;
 
 import java.io.File;
@@ -33,8 +31,6 @@ import java.nio.file.Files;
 import static org.junit.Assert.assertEquals;
 
 public class BasicPlatformTest {
-    @Rule
-    final public Timeout globalTimeout = Timeout.millis(120000);
 
     @Test
     public void testCreateBasicPlatform() throws Exception {

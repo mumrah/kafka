@@ -16,9 +16,7 @@
  */
 package org.apache.kafka.common.utils;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.Timeout;
 
 import java.io.IOException;
 
@@ -28,17 +26,15 @@ import static org.junit.Assert.fail;
 import static org.junit.Assume.assumeTrue;
 
 public class ShellTest {
-    @Rule
-    public final Timeout globalTimeout = Timeout.seconds(180);
 
-    @Test
+    @Test(timeout = 180000)
     public void testEchoHello() throws Exception {
         assumeTrue(!OperatingSystem.IS_WINDOWS);
         String output = Shell.execCommand("echo", "hello");
         assertEquals("hello\n", output);
     }
 
-    @Test
+    @Test(timeout = 180000)
     public void testHeadDevZero() throws Exception {
         assumeTrue(!OperatingSystem.IS_WINDOWS);
         final int length = 100000;
@@ -48,7 +44,7 @@ public class ShellTest {
 
     private final static String NONEXISTENT_PATH = "/dev/a/path/that/does/not/exist/in/the/filesystem";
 
-    @Test
+    @Test(timeout = 180000)
     public void testAttemptToRunNonExistentProgram() {
         assumeTrue(!OperatingSystem.IS_WINDOWS);
         try {
@@ -59,7 +55,7 @@ public class ShellTest {
         }
     }
 
-    @Test
+    @Test(timeout = 180000)
     public void testRunProgramWithErrorReturn() throws Exception {
         assumeTrue(!OperatingSystem.IS_WINDOWS);
         try {

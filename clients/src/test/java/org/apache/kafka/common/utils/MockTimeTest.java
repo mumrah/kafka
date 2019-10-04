@@ -16,16 +16,11 @@
  */
 package org.apache.kafka.common.utils;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.Timeout;
 
 import static org.junit.Assert.assertEquals;
 
 public class MockTimeTest extends TimeTest {
-
-    @Rule
-    final public Timeout globalTimeout = Timeout.millis(120000);
 
     @Test
     public void testAdvanceClock() {

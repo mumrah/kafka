@@ -22,9 +22,7 @@ import org.apache.kafka.common.record.MemoryRecords;
 import org.apache.kafka.common.requests.FetchRequest;
 import org.apache.kafka.common.requests.FetchResponse;
 import org.apache.kafka.common.utils.LogContext;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.Timeout;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,8 +46,6 @@ import static org.junit.Assert.fail;
  * A unit test for FetchSessionHandler.
  */
 public class FetchSessionHandlerTest {
-    @Rule
-    final public Timeout globalTimeout = Timeout.millis(120000);
 
     private static final LogContext LOG_CONTEXT = new LogContext("[FetchSessionHandler]=");
 

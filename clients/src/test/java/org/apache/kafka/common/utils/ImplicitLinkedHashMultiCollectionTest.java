@@ -18,9 +18,7 @@ package org.apache.kafka.common.utils;
 
 import org.apache.kafka.common.utils.ImplicitLinkedHashCollectionTest.TestElement;
 import org.junit.Assert;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.Timeout;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -36,8 +34,6 @@ import static org.junit.Assert.fail;
  * A unit test for ImplicitLinkedHashMultiCollection.
  */
 public class ImplicitLinkedHashMultiCollectionTest {
-    @Rule
-    final public Timeout globalTimeout = Timeout.millis(120000);
 
     @Test
     public void testNullForbidden() {

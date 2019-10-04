@@ -21,12 +21,12 @@ import org.junit.Test;
 public class InMemoryTimeOrderedKeyValueBufferTest {
 
     @Test
-    public void bufferShouldAllowCacheEnablement() {
+    public void testBufferShouldAllowCacheEnablement() {
         new InMemoryTimeOrderedKeyValueBuffer.Builder<>(null, null, null).withCachingEnabled();
     }
 
     @Test
-    public void bufferShouldAllowCacheDisablement() {
+    public void testBufferShouldAllowCacheDisablement() {
         new InMemoryTimeOrderedKeyValueBuffer.Builder<>(null, null, null).withCachingDisabled();
     }
 }

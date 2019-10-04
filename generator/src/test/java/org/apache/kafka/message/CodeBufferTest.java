@@ -18,15 +18,11 @@
 package org.apache.kafka.message;
 
 import org.junit.Assert;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.Timeout;
 
 import java.io.StringWriter;
 
 public class CodeBufferTest {
-    @Rule
-    final public Timeout globalTimeout = Timeout.millis(120000);
 
     @Test
     public void testWrite() throws Exception {

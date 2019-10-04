@@ -26,12 +26,9 @@ import org.apache.kafka.common.record.Records
 import org.apache.kafka.common.requests.FetchMetadata.{FINAL_EPOCH, INVALID_SESSION_ID}
 import org.apache.kafka.common.requests.{FetchRequest, FetchResponse, FetchMetadata => JFetchMetadata}
 import org.junit.Assert._
-import org.junit.rules.Timeout
-import org.junit.{Rule, Test}
+import org.junit.Test
 
 class FetchSessionTest {
-  @Rule
-  def globalTimeout = Timeout.millis(120000)
 
   @Test
   def testNewSessionId(): Unit = {

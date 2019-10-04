@@ -20,9 +20,7 @@ package org.apache.kafka.trogdor.common;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.kafka.test.TestUtils;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.Timeout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,9 +34,6 @@ import static org.junit.Assert.assertTrue;
 
 public class JsonUtilTest {
     private static final Logger log = LoggerFactory.getLogger(JsonUtilTest.class);
-
-    @Rule
-    final public Timeout globalTimeout = Timeout.millis(120000);
 
     @Test
     public void testOpenBraceComesFirst() {

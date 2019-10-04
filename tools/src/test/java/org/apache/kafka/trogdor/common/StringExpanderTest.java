@@ -17,8 +17,6 @@
 
 package org.apache.kafka.trogdor.common;
 
-import org.junit.Rule;
-import org.junit.rules.Timeout;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -28,8 +26,6 @@ import java.util.HashSet;
 import static org.junit.Assert.assertEquals;
 
 public class StringExpanderTest {
-    @Rule
-    final public Timeout globalTimeout = Timeout.millis(120000);
 
     @Test
     public void testNoExpansionNeeded() throws Exception {
