@@ -56,8 +56,10 @@ class ReplicaScaleTest(Test):
 
         t0 = time.time()
         for i in range(2000):
+            topic = "topic-%04d" % i
+            self.logger.info("Creating topic %s" % topic)
             topic_cfg = {
-                "topic": "topic-%04d" % i,
+                "topic": topic,
                 "partitions": 34,
                 "replication-factor": 3,
                 "configs": {"min.insync.replicas": 1}
