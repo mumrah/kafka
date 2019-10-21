@@ -45,12 +45,12 @@ class ReplicaScaleTest(Test):
         kafka.start()
 
         t0 = time.time()
-        for i in range(34):
+        for i in range(2000):
             topic = "topic-%04d" % i
             self.logger.info("Creating topic %s" % topic)
             topic_cfg = {
                 "topic": topic,
-                "partitions": 2000,
+                "partitions": 34,
                 "replication-factor": 3,
                 "configs": {"min.insync.replicas": 1}
             }
