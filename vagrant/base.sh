@@ -156,5 +156,5 @@ mkdir -p /etc/security/limits.d
 echo "* soft nofile 128000" >> /etc/security/limits.d/nofile.conf
 echo "* hard nofile 128000" >> /etc/security/limits.d/nofile.conf
 
-ulimit -S -n 128000
-ulimit -n 128000
+ulimit -Hn 128000
+ulimit -Sn 128000
