@@ -41,26 +41,16 @@ class ReplicaScaleTest(Test):
 
     @cluster(num_nodes=12)
     def test_200k_replicas(self):
-        topics = {}
-
-
         kafka = KafkaService(self.test_context, num_nodes=8, zk=self.zk)
-
-        #self.create_producer()
-        #self.producer.start()
-
-        #self.create_consumer(log_level="DEBUG")
-        #self.consumer.start()
-
         kafka.start()
 
         t0 = time.time()
-        for i in range(2000):
+        for i in range(34):
             topic = "topic-%04d" % i
             self.logger.info("Creating topic %s" % topic)
             topic_cfg = {
                 "topic": topic,
-                "partitions": 34,
+                "partitions": 2000,
                 "replication-factor": 3,
                 "configs": {"min.insync.replicas": 1}
             }
