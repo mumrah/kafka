@@ -32,7 +32,7 @@ class ReplicaScaleTest(Test):
         super(ReplicaScaleTest, self).__init__(test_context=test_context)
         self.test_context = test_context
         self.zk = ZookeeperService(test_context, num_nodes=3)
-        self.kafka = KafkaService(self.test_context, num_nodes=8, zk=self.zk)
+        self.kafka = KafkaService(self.test_context, num_nodes=7, zk=self.zk)
         self.workload_service = ProduceBenchWorkloadService(test_context, self.kafka)
         self.trogdor = TrogdorService(context=self.test_context,
                                       client_services=[self.kafka, self.workload_service])
