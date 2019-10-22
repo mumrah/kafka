@@ -451,6 +451,25 @@ class KafkaService(KafkaPathResolverMixin, JmxMixin, Service):
         for line in self.describe_topic(topic_cfg["topic"]).split("\n"):
             self.logger.info(line)
 
+    def delete_topic(self, topic, node=None):
+        """
+        Delete a topic with the topics command
+        :param topic:
+        :param node:
+        :return:
+        """
+        if node is None:
+            node = self.nodes[0]
+        self.logger.info("Creating topic %s with settings %s",
+                         topic_cfg["topic"], topic_cfg)
+        kafka_topic_script = self.path.script("kafka-topics.sh", node)
+
+        cmd = kafka_topic_script + " "
+        cmd += "--zookeeper %(zk_connect)s --create --topic %(topic)s " % {
+            'zk_connect': self.zk_connect_setting(),
+            'topic': topic_cfg.get("topic"),
+        }
+
     def describe_topic(self, topic, node=None):
         if node is None:
             node = self.nodes[0]
