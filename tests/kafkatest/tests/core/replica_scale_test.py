@@ -45,7 +45,7 @@ class ReplicaScaleTest(Test):
         kafka.start()
 
         t0 = time.time()
-        for i in range(2000):
+        for i in range(1000):
             topic = "topic-%04d" % i
             self.logger.info("Creating topic %s" % topic)
             topic_cfg = {
