@@ -34,10 +34,10 @@ class ReplicaScaleTest(Test):
         self.test_context = test_context
         self.zk = ZookeeperService(test_context, num_nodes=3)
         self.kafka = KafkaService(self.test_context, num_nodes=7, zk=self.zk)
-        self.producer_workload_service = ProduceBenchWorkloadService(test_context, self.kafka)
-        self.consumer_workload_service = ConsumeBenchWorkloadService(test_context, self.kafka)
+        self.producer_workload_service = ProduceBenchWorkloadService(self.test_context, self.kafka)
+        self.consumer_workload_service = ConsumeBenchWorkloadService(self.test_context, self.kafka)
         self.trogdor = TrogdorService(context=self.test_context,
-                                      client_services=[self.kafka, self.workload_service])
+                                      client_services=[self.kafka, self.producer_workload_service, self.consumer_workload_service])
         self.active_topics = {"100k_replicas_bench[0-9]": {"numPartitions": 34, "replicationFactor": 3}}
         self.inactive_topics = {"100k_replicas_bench[10-99]": {"numPartitions": 34, "replicationFactor": 3}}
 
