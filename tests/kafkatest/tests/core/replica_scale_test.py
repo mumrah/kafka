@@ -47,39 +47,39 @@ class ReplicaScaleTest(Test):
         self.kafka.start()
 
     def teardown(self):
-        self.zk.stop()
-        self.trogdor.stop()
         # Need to increase the timeout due to partition count
         for node in self.kafka.nodes:
             self.kafka.stop_node(node, clean_shutdown=False, timeout_sec=60)
         self.kafka.stop()
+        self.zk.stop()
+        self.trogdor.stop()
 
     @cluster(num_nodes=12)
     def test_100k_bench(self):
         produce_spec = ProduceBenchWorkloadSpec(0, TaskSpec.MAX_DURATION_MS,
                                                 self.producer_workload_service.producer_node,
                                                 self.producer_workload_service.bootstrap_servers,
-                                                target_messages_per_sec=10000,
-                                                max_messages=1000000,
+                                                target_messages_per_sec=1000,
+                                                max_messages=340000,
                                                 producer_conf={},
                                                 admin_client_conf={},
                                                 common_client_conf={},
-                                                inactive_topics=self.inactive_topics,
-                                                active_topics=self.active_topics)
+                                                inactive_topics={},
+                                                active_topics={"100k_replicas_bench": {"numPartitions": 34, "replicationFactor": 3}})
         produce_workload = self.trogdor.create_task("100k-replicas-produce-workload", produce_spec)
         produce_workload.wait_for_done(timeout_sec=3600)
 
         consume_spec = ConsumeBenchWorkloadSpec(0, TaskSpec.MAX_DURATION_MS,
                                                 self.consumer_workload_service.consumer_node,
                                                 self.consumer_workload_service.bootstrap_servers,
-                                                target_messages_per_sec=10000,
-                                                max_messages=1000000,
+                                                target_messages_per_sec=1000,
+                                                max_messages=10000,
                                                 consumer_conf={},
                                                 admin_client_conf={},
                                                 common_client_conf={},
-                                                active_topics=["100k_replicas_bench[0-9]"])
+                                                active_topics=["100k_replicas_bench:1"])
         consume_workload = self.trogdor.create_task("100k-replicas-consume_workload", consume_spec)
-        consume_workload.wait_for_done(timeout_sec=3600)
+        consume_workload.wait_for_done(timeout_sec=600)
 
     @cluster(num_nodes=12)
     def test_100k_clean_bounce(self):
