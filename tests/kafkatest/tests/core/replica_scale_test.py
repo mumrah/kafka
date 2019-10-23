@@ -32,8 +32,8 @@ class ReplicaScaleTest(Test):
     def __init__(self, test_context):
         super(ReplicaScaleTest, self).__init__(test_context=test_context)
         self.test_context = test_context
-        self.zk = ZookeeperService(test_context, num_nodes=3)
-        self.kafka = KafkaService(self.test_context, num_nodes=7, zk=self.zk)
+        self.zk = ZookeeperService(test_context, num_nodes=1)
+        self.kafka = KafkaService(self.test_context, num_nodes=8, zk=self.zk)
         self.producer_workload_service = ProduceBenchWorkloadService(self.test_context, self.kafka)
         self.consumer_workload_service = ConsumeBenchWorkloadService(self.test_context, self.kafka)
         self.trogdor = TrogdorService(context=self.test_context,
@@ -54,7 +54,7 @@ class ReplicaScaleTest(Test):
             self.kafka.stop_node(node, clean_shutdown=False, timeout_sec=60)
         self.kafka.stop()
 
-    @cluster(num_nodes=13)
+    @cluster(num_nodes=12)
     def test_100k_bench(self):
         produce_spec = ProduceBenchWorkloadSpec(0, TaskSpec.MAX_DURATION_MS,
                                                 self.producer_workload_service.producer_node,
@@ -82,8 +82,8 @@ class ReplicaScaleTest(Test):
         produce_workload.wait_for_done(timeout_sec=3600)
         consume_workload.wait_for_done(timeout_sec=360)
 
-    @cluster(num_nodes=13)
-    def test_200k_replicas(self):
+    @cluster(num_nodes=12)
+    def test_100k_clean_bounce(self):
 
         t0 = time.time()
         for i in range(1000):
