@@ -54,7 +54,7 @@ class ReplicaScaleTest(Test):
             self.kafka.stop_node(node, clean_shutdown=False, timeout_sec=60)
         self.kafka.stop()
 
-    @cluster(num_nodes=12)
+    @cluster(num_nodes=13)
     def test_100k_bench(self):
         produce_spec = ProduceBenchWorkloadSpec(0, TaskSpec.MAX_DURATION_MS,
                                                 self.producer_workload_service.producer_node,
@@ -82,7 +82,7 @@ class ReplicaScaleTest(Test):
         produce_workload.wait_for_done(timeout_sec=3600)
         consume_workload.wait_for_done(timeout_sec=360)
 
-    @cluster(num_nodes=12)
+    @cluster(num_nodes=13)
     def test_200k_replicas(self):
 
         t0 = time.time()
