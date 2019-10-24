@@ -59,12 +59,12 @@ class ReplicaScaleTest(Test):
         produce_spec = ProduceBenchWorkloadSpec(0, TaskSpec.MAX_DURATION_MS,
                                                 self.producer_workload_service.producer_node,
                                                 self.producer_workload_service.bootstrap_servers,
-                                                target_messages_per_sec=1000,
-                                                max_messages=340000,
+                                                target_messages_per_sec=10000,
+                                                max_messages=3400000,
                                                 producer_conf={},
                                                 admin_client_conf={},
                                                 common_client_conf={},
-                                                inactive_topics={"100k_replicas_bench[10-99]": {"numPartitions": 34, "replicationFactor": 3}},
+                                                inactive_topics={"100k_replicas_bench[10-499]": {"numPartitions": 34, "replicationFactor": 3}},
                                                 active_topics={"100k_replicas_bench[0-9]": {"numPartitions": 34, "replicationFactor": 3}})
         produce_workload = self.trogdor.create_task("100k-replicas-produce-workload", produce_spec)
         produce_workload.wait_for_done(timeout_sec=3600)
@@ -72,8 +72,8 @@ class ReplicaScaleTest(Test):
         consume_spec = ConsumeBenchWorkloadSpec(0, TaskSpec.MAX_DURATION_MS,
                                                 self.consumer_workload_service.consumer_node,
                                                 self.consumer_workload_service.bootstrap_servers,
-                                                target_messages_per_sec=1000,
-                                                max_messages=340000,
+                                                target_messages_per_sec=10000,
+                                                max_messages=3400000,
                                                 consumer_conf={},
                                                 admin_client_conf={},
                                                 common_client_conf={},
