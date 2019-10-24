@@ -73,11 +73,11 @@ class ReplicaScaleTest(Test):
                                                 self.consumer_workload_service.consumer_node,
                                                 self.consumer_workload_service.bootstrap_servers,
                                                 target_messages_per_sec=1000,
-                                                max_messages=10000,
+                                                max_messages=340000,
                                                 consumer_conf={},
                                                 admin_client_conf={},
                                                 common_client_conf={},
-                                                active_topics=["100k_replicas_bench:1"])
+                                                active_topics=["100k_replicas_bench"])
         consume_workload = self.trogdor.create_task("100k-replicas-consume_workload", consume_spec)
         consume_workload.wait_for_done(timeout_sec=600)
 
