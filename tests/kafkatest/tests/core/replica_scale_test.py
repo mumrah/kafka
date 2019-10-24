@@ -64,7 +64,7 @@ class ReplicaScaleTest(Test):
                                                 producer_conf={},
                                                 admin_client_conf={},
                                                 common_client_conf={},
-                                                inactive_topics={},
+                                                inactive_topics={"100k_replicas_bench[10-14]": {"numPartitions": 34, "replicationFactor": 3}},
                                                 active_topics={"100k_replicas_bench[0-4]": {"numPartitions": 34, "replicationFactor": 3}})
         produce_workload = self.trogdor.create_task("100k-replicas-produce-workload", produce_spec)
         produce_workload.wait_for_done(timeout_sec=3600)
