@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import json
+import random
+import time
+
 from ducktape.mark import matrix
 from ducktape.mark.resource import cluster
 from ducktape.utils.util import wait_until
@@ -24,8 +28,7 @@ from kafkatest.services.verifiable_producer import VerifiableProducer
 from kafkatest.services.console_consumer import ConsoleConsumer
 from kafkatest.tests.produce_consume_validate import ProduceConsumeValidateTest
 from kafkatest.utils import is_int
-import random
-import time
+
 
 class ReassignPartitionsTest(ProduceConsumeValidateTest):
     """
@@ -121,12 +124,39 @@ class ReassignPartitionsTest(ProduceConsumeValidateTest):
         producer.stop()
         self.logger.info("Seeded topic with %d messages which will be deleted" %\
                          producer.num_acked)
-        # Since the configured check interval is 5 seconds, we wait another
-        # 6 seconds to ensure that at least one more cleaning so that the last
-        # segment is deleted. An altenate to using timeouts is to poll each
-        # partition until the log start offset matches the end offset. The
-        # latter is more robust.
-        time.sleep(6)
+
+        # Wait until the earliest and latest offsets match for all partitions. This will ensure that we have deleted
+        # the segments containing the "old" records created above.
+        attempt = 0
+        all_offsets_match = True
+        while attempt < 10:
+            earliest_offset_output = self.kafka.get_offset_shell(self.topic, None, 1000, 1, -2)
+            earliest_offsets = {}
+            for line in earliest_offset_output.strip().split("\n"):
+                topic, partition, offset = line.split(":")
+                earliest_offsets["%s-%s" % (topic, partition)] = offset
+
+            latest_offset_output = self.kafka.get_offset_shell(self.topic, None, 1000, 1, -1)
+            latest_offsets = {}
+            for line in latest_offset_output.strip().split("\n"):
+                topic, partition, offset = line.split(":")
+                latest_offsets["%s-%s" % (topic, partition)] = offset
+
+            self.logger.debug("Earliest Offsets: %s" % json.dumps(earliest_offsets, indent=2))
+            self.logger.debug("Latest Offsets: %s" % json.dumps(latest_offsets, indent=2))
+
+            all_offsets_match = True
+            for tp, offset in earliest_offsets.items():
+                if latest_offsets[tp] != offset:
+                    all_offsets_match = False
+                    attempt += 1
+                    break
+
+            if all_offsets_match:
+                break
+            time.sleep(5)
+
+        assert all_offsets_match, "Timed out waiting for start offsets to match end offsets"
 
     @cluster(num_nodes=8)
     @matrix(bounce_brokers=[True, False],
