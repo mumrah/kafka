@@ -16,6 +16,7 @@
 import itertools
 import os
 
+from ducktape.cluster.remoteaccount import RemoteCommandError
 from ducktape.services.background_thread import BackgroundThreadService
 
 from kafkatest.directory_layout.kafka_path import KafkaPathResolverMixin
@@ -296,3 +297,18 @@ class ConsoleConsumer(KafkaPathResolverMixin, JmxMixin, BackgroundThreadService)
 
     def java_class_name(self):
         return "ConsoleConsumer"
+
+    def has_log_message(self, node, message):
+        try:
+            node.account.ssh("grep '%s' %s" % (message, ConsoleConsumer.LOG_FILE))
+        except RemoteCommandError:
+            return False
+        return True
+
+    def wait_for_offset_reset(self, node, topic, num_partitions):
+        for partition in range(num_partitions):
+            message = "Resetting offset for partition %s-%d" % (topic, partition)
+            wait_until(lambda: self.has_log_message(node, message),
+                       timeout_sec=60,
+                       err_msg="Offset not reset for partition %s-%d" % (topic, partition))
+
