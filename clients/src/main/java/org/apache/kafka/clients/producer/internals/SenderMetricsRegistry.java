@@ -57,6 +57,8 @@ public class SenderMetricsRegistry {
     public final MetricName metadataAge;
     public final MetricName batchSplitRate;
     public final MetricName batchSplitTotal;
+    public final MetricName batchTimeAvg;
+    public final MetricName batchTimeMax;
 
     private final MetricNameTemplate topicRecordSendRate;
     private final MetricNameTemplate topicRecordSendTotal;
@@ -119,6 +121,10 @@ public class SenderMetricsRegistry {
                 "The average number of batch splits per second");
         this.batchSplitTotal = createMetricName("batch-split-total", 
                 "The total number of batch splits");
+        this.batchTimeAvg = createMetricName("batch-time-avg",
+                "The average time in ms batches were accumulating records");
+        this.batchTimeMax = createMetricName("batch-time-max",
+                "The maximum time in ms that a batch was accumulating records. Should not exceed linger.ms");
 
         this.produceThrottleTimeAvg = createMetricName("produce-throttle-time-avg",
                 "The average time in ms a request was throttled by a broker");

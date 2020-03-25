@@ -353,6 +353,10 @@ public final class ProducerBatch {
         return Math.max(0, nowMs - lastAttemptMs);
     }
 
+    long totalTimeMs(long nowMs) {
+        return Math.max(0, nowMs - this.createdMs);
+    }
+
     void drained(long nowMs) {
         this.drainedMs = Math.max(drainedMs, nowMs);
     }

@@ -29,6 +29,8 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
+
 import org.apache.kafka.clients.ApiVersions;
 import org.apache.kafka.clients.producer.Callback;
 import org.apache.kafka.common.utils.ProducerIdAndEpoch;
@@ -76,6 +78,7 @@ public final class RecordAccumulator {
     private final int lingerMs;
     private final long retryBackoffMs;
     private final int deliveryTimeoutMs;
+    private final int perNodeMaxSize;
     private final BufferPool free;
     private final Time time;
     private final ApiVersions apiVersions;
@@ -126,6 +129,7 @@ public final class RecordAccumulator {
         this.lingerMs = lingerMs;
         this.retryBackoffMs = retryBackoffMs;
         this.deliveryTimeoutMs = deliveryTimeoutMs;
+        this.perNodeMaxSize = batchSize;
         this.batches = new CopyOnWriteMap<>();
         this.free = bufferPool;
         this.incomplete = new IncompleteBatches();
@@ -453,6 +457,8 @@ public final class RecordAccumulator {
         Set<String> unknownLeaderTopics = new HashSet<>();
 
         boolean exhausted = this.free.queued() > 0;
+        Map<Node, AtomicLong> readyBytesPerNode = new HashMap<>();
+
         for (Map.Entry<TopicPartition, Deque<ProducerBatch>> entry : this.batches.entrySet()) {
             Deque<ProducerBatch> deque = entry.getValue();
             synchronized (deque) {
@@ -462,6 +468,7 @@ public final class RecordAccumulator {
                 if (batch != null) {
                     TopicPartition part = entry.getKey();
                     Node leader = cluster.leaderFor(part);
+                    readyBytesPerNode.putIfAbsent(leader, new AtomicLong(0L));
                     if (leader == null) {
                         // This is a partition for which leader is not known, but messages are available to send.
                         // Note that entries are currently not removed from batches when deque is empty.
@@ -472,7 +479,8 @@ public final class RecordAccumulator {
                         long timeToWaitMs = backingOff ? retryBackoffMs : lingerMs;
                         boolean full = deque.size() > 1 || batch.isFull();
                         boolean expired = waitedTimeMs >= timeToWaitMs;
-                        boolean sendable = full || expired || exhausted || closed || flushInProgress();
+                        boolean nodeFull = (readyBytesPerNode.get(leader).addAndGet(batch.estimatedSizeInBytes()) > perNodeMaxSize);
+                        boolean sendable = full || expired || nodeFull || exhausted || closed || flushInProgress();
                         if (sendable && !backingOff) {
                             readyNodes.add(leader);
                         } else {

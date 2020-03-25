@@ -775,6 +775,7 @@ public class Sender implements Runnable {
         public final Sensor compressionRateSensor;
         public final Sensor maxRecordSizeSensor;
         public final Sensor batchSplitSensor;
+        public final Sensor batchTimeSensor;
         private final SenderMetricsRegistry metrics;
         private final Time time;
 
@@ -817,6 +818,10 @@ public class Sender implements Runnable {
 
             this.batchSplitSensor = metrics.sensor("batch-split-rate");
             this.batchSplitSensor.add(new Meter(metrics.batchSplitRate, metrics.batchSplitTotal));
+
+            this.batchTimeSensor = metrics.sensor("batch-time");
+            this.batchTimeSensor.add(metrics.batchTimeAvg, new Avg());
+            this.batchTimeSensor.add(metrics.batchTimeMax, new Max());
         }
 
         private void maybeRegisterTopicMetrics(String topic) {
@@ -886,6 +891,7 @@ public class Sender implements Runnable {
                     this.queueTimeSensor.record(batch.queueTimeMs(), now);
                     this.compressionRateSensor.record(batch.compressionRatio());
                     this.maxRecordSizeSensor.record(batch.maxRecordSize, now);
+                    this.batchTimeSensor.record(batch.totalTimeMs(now), now);
                     records += batch.recordCount;
                 }
                 this.recordsPerRequestSensor.record(records, now);
