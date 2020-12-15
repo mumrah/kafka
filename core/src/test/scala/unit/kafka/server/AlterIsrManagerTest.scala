@@ -15,20 +15,19 @@
  * limitations under the License.
  */
 
-package unit.kafka.server
+package kafka.server
 
 import java.util.Collections
 import java.util.concurrent.atomic.AtomicInteger
-
 import kafka.api.LeaderAndIsr
-import kafka.server.{AlterIsrItem, AlterIsrManager, AlterIsrManagerImpl, BrokerToControllerChannelManager, ControllerRequestCompletionHandler}
-import kafka.utils.{MockScheduler, MockTime}
+import kafka.utils.{KafkaScheduler, MockScheduler, MockTime}
 import org.apache.kafka.clients.ClientResponse
 import org.apache.kafka.common.TopicPartition
 import org.apache.kafka.common.message.AlterIsrResponseData
 import org.apache.kafka.common.metrics.Metrics
 import org.apache.kafka.common.protocol.Errors
 import org.apache.kafka.common.requests.{AbstractRequest, AlterIsrRequest, AlterIsrResponse}
+import org.apache.kafka.common.utils.SystemTime
 import org.easymock.EasyMock
 import org.junit.Assert._
 import org.junit.{Before, Test}
@@ -95,10 +94,13 @@ class AlterIsrManagerTest {
   @Test
   def testSingleBatch(): Unit = {
     val capture = EasyMock.newCapture[AbstractRequest.Builder[AlterIsrRequest]]()
-    EasyMock.expect(brokerToController.sendRequest(EasyMock.capture(capture), EasyMock.anyObject(), EasyMock.eq(requestTimeout))).once()
+    EasyMock.expect(brokerToController.sendRequest(EasyMock.capture(capture), EasyMock.anyObject(), EasyMock.anyLong())).once()
     EasyMock.replay(brokerToController)
 
-    val scheduler = new MockScheduler(time)
+    val time = new SystemTime
+    val scheduler = new KafkaScheduler(1)
+    scheduler.startup()
+
     val alterIsrManager = new AlterIsrManagerImpl(brokerToController, scheduler, time, brokerId, () => 2)
     alterIsrManager.start()
 
@@ -108,18 +110,20 @@ class AlterIsrManagerTest {
       time.sleep(1)
     }
 
-    time.sleep(50)
-    scheduler.tick()
+    time.sleep(AlterIsrManagerImpl.lingerMs)
 
     // This should not be included in the batch
     alterIsrManager.enqueue(AlterIsrItem(new TopicPartition(topic, 10),
       new LeaderAndIsr(1, 1, List(1,2,3), 10), _ => {}))
 
+    scheduler.shutdown() // This will wait for threads to complete
     EasyMock.verify(brokerToController)
 
     val request = capture.getValue.build()
     assertEquals(request.data().topics().size(), 1)
     assertEquals(request.data().topics().get(0).partitions().size(), 10)
+
+
   }
 
   @Test
@@ -174,12 +178,14 @@ class AlterIsrManagerTest {
     val errors = Seq(Errors.INVALID_UPDATE_VERSION, Errors.UNKNOWN_TOPIC_OR_PARTITION, Errors.NOT_LEADER_OR_FOLLOWER)
     errors.foreach(error => {
       val alterIsrManager = testPartitionError(tp0, error)
+
       // Any partition-level error should clear the item from the pending queue allowing for future updates
-      assertTrue(alterIsrManager.enqueue(AlterIsrItem(tp0, null, _ => { })))
+      assertFalse(alterIsrManager.unsentIsrUpdates.containsKey(tp0))
+      assertFalse(alterIsrManager.inflightRequest.get())
     })
   }
 
-  def testPartitionError(tp: TopicPartition, error: Errors): AlterIsrManager = {
+  def testPartitionError(tp: TopicPartition, error: Errors): AlterIsrManagerImpl = {
     val callbackCapture = EasyMock.newCapture[ControllerRequestCompletionHandler]()
     EasyMock.reset(brokerToController)
     EasyMock.expect(brokerToController.sendRequest(EasyMock.anyObject(), EasyMock.capture(callbackCapture), EasyMock.eq(requestTimeout))).once()
@@ -199,8 +205,7 @@ class AlterIsrManagerTest {
 
     alterIsrManager.enqueue(AlterIsrItem(tp, new LeaderAndIsr(1, 1, List(1,2,3), 10), callback))
 
-    time.sleep(100)
-    scheduler.tick()
+    time.sleep(AlterIsrManagerImpl.lingerMs)
 
     EasyMock.verify(brokerToController)
 
@@ -303,5 +308,30 @@ class AlterIsrManagerTest {
     callbackCapture.getValue.onComplete(resp)
 
     assertEquals("Expected all callbacks to run", count.get, 3)
+  }
+
+  @Test
+  def testRequestLingerTime(): Unit = {
+    val scheduler = new MockScheduler(time)
+    val alterIsrManager = new AlterIsrManagerImpl(brokerToController, scheduler, time, brokerId, () => 2)
+    alterIsrManager.start()
+
+    // Initially, wait the linger time for new items to arrive
+    val t0 = time.milliseconds()
+    alterIsrManager.enqueue(AlterIsrItem(tp0, new LeaderAndIsr(1, 1, List(1,2,3), 10), _ => {}))
+    assertEquals(AlterIsrManagerImpl.lingerMs, alterIsrManager.waitTimeMs(t0, t0))
+
+    // linger time is extended when new items are enqueued
+    time.sleep(10)
+    alterIsrManager.enqueue(AlterIsrItem(tp1, new LeaderAndIsr(1, 1, List(1,2,3), 10), _ => {}))
+    assertEquals(AlterIsrManagerImpl.lingerMs, alterIsrManager.waitTimeMs(t0, time.milliseconds()))
+
+    time.sleep(AlterIsrManagerImpl.lingerMs)
+    assertEquals(0, alterIsrManager.waitTimeMs(t0, time.milliseconds()))
+
+    // Eventually, max delay prevents any more waiting
+    time.sleep(AlterIsrManagerImpl.maxDelayMs - 1)
+    alterIsrManager.enqueue(AlterIsrItem(tp2, new LeaderAndIsr(1, 1, List(1,2,3), 10), _ => {}))
+    assertEquals(0, alterIsrManager.waitTimeMs(t0, t0 + AlterIsrManagerImpl.maxDelayMs))
   }
 }

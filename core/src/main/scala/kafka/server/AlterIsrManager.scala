@@ -18,7 +18,7 @@ package kafka.server
 
 import java.util
 import java.util.concurrent.atomic.{AtomicBoolean, AtomicLong}
-import java.util.concurrent.{ConcurrentHashMap, TimeUnit}
+import java.util.concurrent.ConcurrentHashMap
 import kafka.api.LeaderAndIsr
 import kafka.metrics.KafkaMetricsGroup
 import kafka.utils.{Logging, Scheduler}
@@ -47,6 +47,11 @@ trait AlterIsrManager {
 
 case class AlterIsrItem(topicPartition: TopicPartition, leaderAndIsr: LeaderAndIsr, callback: Either[Errors, LeaderAndIsr] => Unit)
 
+object AlterIsrManagerImpl {
+  val lingerMs = 50
+  val maxDelayMs = 1000
+}
+
 class AlterIsrManagerImpl(val controllerChannelManager: BrokerToControllerChannelManager,
                           val scheduler: Scheduler,
                           val time: Time,
@@ -54,20 +59,27 @@ class AlterIsrManagerImpl(val controllerChannelManager: BrokerToControllerChanne
                           val brokerEpochSupplier: () => Long) extends AlterIsrManager with Logging with KafkaMetricsGroup {
 
   // Used to allow only one pending ISR update per partition
-  private val unsentIsrUpdates: util.Map[TopicPartition, AlterIsrItem] = new ConcurrentHashMap[TopicPartition, AlterIsrItem]()
+  private[server] val unsentIsrUpdates: util.Map[TopicPartition, AlterIsrItem] = new ConcurrentHashMap[TopicPartition, AlterIsrItem]()
 
   // Used to allow only one in-flight request at a time
-  private val inflightRequest: AtomicBoolean = new AtomicBoolean(false)
+  private[server] val inflightRequest: AtomicBoolean = new AtomicBoolean(false)
 
-  private val lastIsrPropagationMs = new AtomicLong(0)
+  // Updated whenever we enqueue an ISR update, used for linger calculation
+  private val lastIsrChangeMs = new AtomicLong(0)
+
+  private val lingerMs = AlterIsrManagerImpl.lingerMs
+
+  private val maxDelayMs = AlterIsrManagerImpl.maxDelayMs
 
   override def start(): Unit = { }
 
   override def enqueue(alterIsrItem: AlterIsrItem): Boolean = {
     if (unsentIsrUpdates.putIfAbsent(alterIsrItem.topicPartition, alterIsrItem) == null) {
+      lastIsrChangeMs.set(time.milliseconds())
+
       if (inflightRequest.compareAndSet(false, true)) {
         // optimistically set the inflight flag even though we haven't sent the request yet
-        scheduler.schedule("send-alter-isr", propagateIsrChanges, 50, -1, TimeUnit.MILLISECONDS)
+        scheduler.schedule("send-alter-isr", propagateIsrChanges)
       }
       true
     } else {
@@ -80,15 +92,34 @@ class AlterIsrManagerImpl(val controllerChannelManager: BrokerToControllerChanne
     unsentIsrUpdates.remove(topicPartition)
   }
 
+  /**
+   * Determine how long to wait before sending the AlterIsr request
+   *
+   * @param start Timestamp that we first started waiting, used to calculate a max delay
+   * @param now Current timestamp
+   * @return Number of milliseconds to wait, or zero one of the two timeout conditions is met
+   */
+  private[server] def waitTimeMs(start: Long, now: Long): Long = {
+    val lingerRemaining = lingerMs - (now - lastIsrChangeMs.get())
+    val maxTimeRemainig = maxDelayMs - (now - start)
+    Math.max(0, Math.min(lingerRemaining, maxTimeRemainig))
+  }
+
   private def propagateIsrChanges(): Unit = {
-    // Updates could have been cleared by new LeaderAndIsr, so check again
+    // Incorporate some linger time to allow AlterIsr requests to accumulate
+    val start = time.milliseconds()
+    var wait = waitTimeMs(start, start)
+    while (wait > 0) {
+      time.sleep(wait)
+      wait = waitTimeMs(start, time.milliseconds())
+    }
+
+    // Updates could have been cleared by a new LeaderAndIsr, so check if we have data to send
     if (!unsentIsrUpdates.isEmpty) {
       // Copy current unsent ISRs but don't remove from the map
       val inflightAlterIsrItems = new ListBuffer[AlterIsrItem]()
       unsentIsrUpdates.values().forEach(item => inflightAlterIsrItems.append(item))
 
-      val now = time.milliseconds()
-      lastIsrPropagationMs.set(now)
       sendRequest(inflightAlterIsrItems.toSeq)
     } else {
       // Never sent a request, so clear the flag
