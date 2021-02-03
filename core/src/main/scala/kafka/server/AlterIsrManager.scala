@@ -64,13 +64,13 @@ object AlterIsrManager {
    * Factory to AlterIsr based implementation, used when IBP >= 2.7-IV2
    */
   def apply(
-    config: KafkaConfig,
-    metadataCache: MetadataCache,
-    scheduler: KafkaScheduler,
-    time: Time,
-    metrics: Metrics,
-    threadNamePrefix: Option[String],
-    brokerEpochSupplier: () => Long
+             config: KafkaConfig,
+             metadataCache: MetadataCache,
+             scheduler: KafkaScheduler,
+             time: Time,
+             metrics: Metrics,
+             threadNamePrefix: Option[String],
+             brokerEpochSupplier: () => Long
   ): AlterIsrManager = {
     val channelManager = new BrokerToControllerChannelManager(
       metadataCache = metadataCache,

@@ -46,11 +46,11 @@ trait ForwardingManager {
 object ForwardingManager {
 
   def apply(
-    config: KafkaConfig,
-    metadataCache: MetadataCache,
-    time: Time,
-    metrics: Metrics,
-    threadNamePrefix: Option[String]
+             config: KafkaConfig,
+             metadataCache: MetadataCache,
+             time: Time,
+             metrics: Metrics,
+             threadNamePrefix: Option[String]
   ): ForwardingManager = {
     val channelManager = new BrokerToControllerChannelManager(
       metadataCache = metadataCache,
