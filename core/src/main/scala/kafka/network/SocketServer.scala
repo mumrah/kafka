@@ -33,7 +33,7 @@ import kafka.network.Processor._
 import kafka.network.RequestChannel.{CloseConnectionResponse, EndThrottlingResponse, NoOpResponse, SendResponse, StartThrottlingResponse}
 import kafka.network.SocketServer._
 import kafka.security.CredentialProvider
-import kafka.server.{BrokerReconfigurable, DynamicConfig, KafkaConfig}
+import kafka.server.{BrokerReconfigurable, KafkaConfig}
 import kafka.utils.Implicits._
 import kafka.utils._
 import org.apache.kafka.common.config.ConfigException
