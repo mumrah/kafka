@@ -41,13 +41,13 @@ import scala.jdk.CollectionConverters._
  * care must be taken to not block on outstanding requests for too long.
  */
 class BrokerToControllerChannelManager(
-  metadataCache: kafka.server.MetadataCache,
-  time: Time,
-  metrics: Metrics,
-  config: KafkaConfig,
-  channelName: String,
-  threadNamePrefix: Option[String],
-  retryTimeoutMs: Long
+                                        metadataCache: kafka.server.MetadataCache,
+                                        time: Time,
+                                        metrics: Metrics,
+                                        config: KafkaConfig,
+                                        channelName: String,
+                                        threadNamePrefix: Option[String],
+                                        retryTimeoutMs: Long
 ) extends Logging {
   private val logContext = new LogContext(s"[broker-${config.brokerId}-to-controller] ")
   private val manualMetadataUpdater = new ManualMetadataUpdater()
@@ -169,14 +169,14 @@ case class BrokerToControllerQueueItem(
 )
 
 class BrokerToControllerRequestThread(
-  networkClient: KafkaClient,
-  metadataUpdater: ManualMetadataUpdater,
-  metadataCache: kafka.server.MetadataCache,
-  config: KafkaConfig,
-  listenerName: ListenerName,
-  time: Time,
-  threadName: String,
-  retryTimeoutMs: Long
+                                       networkClient: KafkaClient,
+                                       metadataUpdater: ManualMetadataUpdater,
+                                       metadataCache: kafka.server.MetadataCache,
+                                       config: KafkaConfig,
+                                       listenerName: ListenerName,
+                                       time: Time,
+                                       threadName: String,
+                                       retryTimeoutMs: Long
 ) extends InterBrokerSendThread(threadName, networkClient, config.controllerSocketTimeoutMs, time, isInterruptible = false) {
 
   private val requestQueue = new LinkedBlockingDeque[BrokerToControllerQueueItem]()
@@ -251,7 +251,7 @@ class BrokerToControllerRequestThread(
       controllerOpt match {
         case Some(controller) =>
           info(s"Recorded new controller, from now on will use broker $controller")
-          val controllerNode = controller.node(listenerName)
+          val controllerNode = controller.endpoints(listenerName.value())
           updateControllerAddress(controllerNode)
           metadataUpdater.setNodes(Seq(controllerNode).asJava)
         case None =>

@@ -19,13 +19,10 @@ package kafka.server
 
 import java.util.Collections
 import java.util.concurrent.atomic.AtomicBoolean
-
-import kafka.cluster.{Broker, EndPoint}
+import kafka.server.metadata.MetadataBroker
 import kafka.utils.TestUtils
 import org.apache.kafka.clients.{ClientResponse, ManualMetadataUpdater, Metadata, MockClient}
 import org.apache.kafka.common.Node
-import org.apache.kafka.common.feature.Features
-import org.apache.kafka.common.feature.Features.emptySupportedFeatures
 import org.apache.kafka.common.message.MetadataRequestData
 import org.apache.kafka.common.network.ListenerName
 import org.apache.kafka.common.protocol.Errors
@@ -35,6 +32,7 @@ import org.apache.kafka.common.utils.MockTime
 import org.junit.jupiter.api.Assertions.{assertEquals, assertFalse, assertTrue}
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito._
+
 
 class BrokerToControllerRequestThreadTest {
 
@@ -82,8 +80,8 @@ class BrokerToControllerRequestThreadTest {
 
     val metadataCache = mock(classOf[MetadataCache])
     val listenerName = ListenerName.forSecurityProtocol(SecurityProtocol.PLAINTEXT)
-    val activeController = new Broker(controllerId,
-      Seq(new EndPoint("host", 1234, listenerName, SecurityProtocol.PLAINTEXT)), None, emptySupportedFeatures)
+    val activeController = new MetadataBroker(controllerId, "",
+      Map(listenerName.value() -> new Node(0, "host", 1234)), false)
 
     when(metadataCache.getControllerId).thenReturn(Some(controllerId))
     when(metadataCache.getAliveBrokers).thenReturn(Seq(activeController))
@@ -126,12 +124,12 @@ class BrokerToControllerRequestThreadTest {
 
     val metadataCache = mock(classOf[MetadataCache])
     val listenerName = ListenerName.forSecurityProtocol(SecurityProtocol.PLAINTEXT)
-    val oldController = new Broker(oldControllerId,
-      Seq(new EndPoint("host1", 1234, listenerName, SecurityProtocol.PLAINTEXT)), None, Features.emptySupportedFeatures)
-    val oldControllerNode = oldController.node(listenerName)
-    val newController = new Broker(newControllerId,
-      Seq(new EndPoint("host2", 1234, listenerName, SecurityProtocol.PLAINTEXT)), None, Features.emptySupportedFeatures)
+    val oldController = new MetadataBroker(oldControllerId, "",
+      Map(listenerName.value() -> new Node(oldControllerId, "host1", 1234)), false)
+    val oldControllerNode = oldController.endpoints(listenerName.value())
 
+    val newController = new MetadataBroker(newControllerId, "",
+      Map(listenerName.value() -> new Node(newControllerId, "host2", 1234)), false)
     when(metadataCache.getControllerId).thenReturn(Some(oldControllerId), Some(newControllerId))
     when(metadataCache.getAliveBroker(oldControllerId)).thenReturn(Some(oldController))
     when(metadataCache.getAliveBroker(newControllerId)).thenReturn(Some(newController))
@@ -179,10 +177,10 @@ class BrokerToControllerRequestThreadTest {
     val metadataCache = mock(classOf[MetadataCache])
     val listenerName = ListenerName.forSecurityProtocol(SecurityProtocol.PLAINTEXT)
     val port = 1234
-    val oldController = new Broker(oldControllerId,
-      Seq(new EndPoint("host1", port, listenerName, SecurityProtocol.PLAINTEXT)), None, Features.emptySupportedFeatures)
-    val newController = new Broker(2,
-      Seq(new EndPoint("host2", port, listenerName, SecurityProtocol.PLAINTEXT)), None, Features.emptySupportedFeatures)
+    val oldController = new MetadataBroker(oldControllerId, "",
+      Map(listenerName.value() -> new Node(oldControllerId, "host1", 1234)), false)
+    val newController = new MetadataBroker(2, "",
+      Map(listenerName.value() -> new Node(2, "host2", 1234)), false)
 
     when(metadataCache.getControllerId).thenReturn(Some(oldControllerId), Some(newControllerId))
     when(metadataCache.getAliveBrokers).thenReturn(Seq(oldController, newController))
@@ -240,8 +238,8 @@ class BrokerToControllerRequestThreadTest {
 
     val metadataCache = mock(classOf[MetadataCache])
     val listenerName = ListenerName.forSecurityProtocol(SecurityProtocol.PLAINTEXT)
-    val controller = new Broker(controllerId,
-      Seq(new EndPoint("host1", 1234, listenerName, SecurityProtocol.PLAINTEXT)), None, Features.emptySupportedFeatures)
+    val controller = new MetadataBroker(controllerId, "",
+      Map(listenerName.value() -> new Node(controllerId, "host1", 1234)), false)
 
     when(metadataCache.getControllerId).thenReturn(Some(controllerId))
     when(metadataCache.getAliveBrokers).thenReturn(Seq(controller))

@@ -128,11 +128,11 @@ class TxnMarkerQueue(@volatile var destination: Node) {
 }
 
 class TransactionMarkerChannelManager(
-  config: KafkaConfig,
-  metadataCache: MetadataCache,
-  networkClient: NetworkClient,
-  txnStateManager: TransactionStateManager,
-  time: Time
+                                       config: KafkaConfig,
+                                       metadataCache: MetadataCache,
+                                       networkClient: NetworkClient,
+                                       txnStateManager: TransactionStateManager,
+                                       time: Time
 ) extends InterBrokerSendThread("TxnMarkerSenderThread-" + config.brokerId, networkClient, config.requestTimeoutMs, time)
   with Logging with KafkaMetricsGroup {
 
