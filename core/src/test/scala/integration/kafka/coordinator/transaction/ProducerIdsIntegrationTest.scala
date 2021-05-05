@@ -15,11 +15,9 @@
  * limitations under the License.
  */
 
-package integration.kafka.coordinator.transaction
+package kafka.server
 
-import integration.kafka.server.IntegrationTestUtils
 import kafka.network.SocketServer
-import kafka.server.KafkaConfig
 import kafka.test.annotation.{ClusterTest, Type}
 import kafka.test.junit.ClusterTestExtensions
 import kafka.test.{ClusterConfig, ClusterInstance}
@@ -32,6 +30,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.extension.ExtendWith
 
 import java.util.stream.{Collectors, IntStream}
+import scala.jdk.CollectionConverters._
 
 @ExtendWith(value = Array(classOf[ClusterTestExtensions]))
 class ProducerIdsIntegrationTest {
@@ -42,7 +41,7 @@ class ProducerIdsIntegrationTest {
     clusterConfig.serverProperties().put(KafkaConfig.TransactionsTopicReplicationFactorProp, "3")
   }
 
-  @ClusterTest(clusterType = Type.ZK, brokers = 3)
+  @ClusterTest(clusterType = Type.BOTH, brokers = 3)
   def testNonOverlapping(clusterInstance: ClusterInstance): Unit = {
     val ids = clusterInstance.brokerSocketServers().stream().flatMap( broker => {
       IntStream.range(0, 1001).parallel().mapToObj( _ => nextProducerId(broker, clusterInstance.clientListener()))
@@ -51,7 +50,7 @@ class ProducerIdsIntegrationTest {
     assertEquals(3003, ids.size)
 
     val expectedIds = Set(0L, 999L, 1000L, 1999L, 2000L, 2999L, 3000L, 4000L, 5000L)
-    val idsAsString = expectedIds.mkString(", ")
+    val idsAsString = ids.asScala.toSet.mkString(", ")
     expectedIds.foreach { id =>
       assertTrue(ids.contains(id), s"Expected to see $id in $idsAsString")
     }

@@ -22,10 +22,9 @@ import java.util.concurrent.{CompletableFuture, TimeUnit, TimeoutException}
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.locks.ReentrantLock
 import java.net.InetAddress
-
 import kafka.cluster.Broker.ServerInfo
 import kafka.coordinator.group.GroupCoordinator
-import kafka.coordinator.transaction.{ProducerIdGenerator, TransactionCoordinator}
+import kafka.coordinator.transaction.{ProducerIdManager, TransactionCoordinator}
 import kafka.log.LogManager
 import kafka.metrics.KafkaYammerMetrics
 import kafka.network.SocketServer
@@ -41,7 +40,7 @@ import org.apache.kafka.common.security.auth.SecurityProtocol
 import org.apache.kafka.common.security.scram.internals.ScramMechanism
 import org.apache.kafka.common.security.token.delegation.internals.DelegationTokenCache
 import org.apache.kafka.common.utils.{AppInfoParser, LogContext, Time, Utils}
-import org.apache.kafka.common.{ClusterResource, Endpoint, KafkaException}
+import org.apache.kafka.common.{ClusterResource, Endpoint}
 import org.apache.kafka.metadata.{BrokerState, VersionRange}
 import org.apache.kafka.metalog.MetaLogManager
 import org.apache.kafka.raft.RaftConfig
@@ -245,9 +244,16 @@ class BrokerServer(
 
       // Create transaction coordinator, but don't start it until we've started replica manager.
       // Hardcode Time.SYSTEM for now as some Streams tests fail otherwise, it would be good to fix the underlying issue
+      val producerIdManagerSupplier = () => new ProducerIdManager(
+        config.brokerId,
+        brokerEpochSupplier = () => lifecycleManager.brokerEpoch(),
+        clientToControllerChannelManager,
+        config.requestTimeoutMs
+      )
+
       transactionCoordinator = TransactionCoordinator(config, replicaManager,
         new KafkaScheduler(threads = 1, threadNamePrefix = "transaction-log-manager-"),
-        createTemporaryProducerIdManager, metrics, metadataCache, Time.SYSTEM)
+        producerIdManagerSupplier, metrics, metadataCache, Time.SYSTEM)
 
       autoTopicCreationManager = new DefaultAutoTopicCreationManager(
         config, Some(clientToControllerChannelManager), None, None,
@@ -373,24 +379,6 @@ class BrokerServer(
         shutdown()
         throw e
     }
-  }
-
-  class TemporaryProducerIdManager() extends ProducerIdGenerator {
-    val maxProducerIdsPerBrokerEpoch = 1000000
-    var currentOffset = -1
-    override def generateProducerId(): Long = {
-      currentOffset = currentOffset + 1
-      if (currentOffset >= maxProducerIdsPerBrokerEpoch) {
-        fatal(s"Exhausted all demo/temporary producerIds as the next one will has extend past the block size of $maxProducerIdsPerBrokerEpoch")
-        throw new KafkaException("Have exhausted all demo/temporary producerIds.")
-      }
-      lifecycleManager.initialCatchUpFuture.get()
-      lifecycleManager.brokerEpoch() * maxProducerIdsPerBrokerEpoch + currentOffset
-    }
-  }
-
-  def createTemporaryProducerIdManager(): ProducerIdGenerator = {
-    new TemporaryProducerIdManager()
   }
 
   def shutdown(): Unit = {
