@@ -24,12 +24,18 @@ import org.apache.kafka.common.message.AllocateProducerIdsRequestData;
 import org.apache.kafka.common.message.AllocateProducerIdsResponseData;
 import org.apache.kafka.common.message.AlterIsrRequestData;
 import org.apache.kafka.common.message.AlterIsrResponseData;
+import org.apache.kafka.common.message.AlterPartitionReassignmentsRequestData;
+import org.apache.kafka.common.message.AlterPartitionReassignmentsResponseData;
 import org.apache.kafka.common.message.BrokerHeartbeatRequestData;
 import org.apache.kafka.common.message.BrokerRegistrationRequestData;
+import org.apache.kafka.common.message.CreatePartitionsRequestData.CreatePartitionsTopic;
+import org.apache.kafka.common.message.CreatePartitionsResponseData.CreatePartitionsTopicResult;
 import org.apache.kafka.common.message.CreateTopicsRequestData;
 import org.apache.kafka.common.message.CreateTopicsResponseData;
 import org.apache.kafka.common.message.ElectLeadersRequestData;
 import org.apache.kafka.common.message.ElectLeadersResponseData;
+import org.apache.kafka.common.message.ListPartitionReassignmentsRequestData;
+import org.apache.kafka.common.message.ListPartitionReassignmentsResponseData;
 import org.apache.kafka.common.quota.ClientQuotaAlteration;
 import org.apache.kafka.common.quota.ClientQuotaEntity;
 import org.apache.kafka.common.requests.ApiError;
@@ -38,6 +44,7 @@ import org.apache.kafka.metadata.BrokerRegistrationReply;
 import org.apache.kafka.metadata.FeatureMapAndEpoch;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
@@ -138,6 +145,26 @@ public interface Controller extends AutoCloseable {
         boolean validateOnly);
 
     /**
+     * Start or stop some partition reassignments.
+     *
+     * @param request       The alter partition reassignments request.
+     *
+     * @return              A future yielding the results.
+     */
+    CompletableFuture<AlterPartitionReassignmentsResponseData>
+        alterPartitionReassignments(AlterPartitionReassignmentsRequestData request);
+
+    /**
+     * List ongoing partition reassignments.
+     *
+     * @param request       The list partition reassignments request.
+     *
+     * @return              A future yielding the results.
+     */
+    CompletableFuture<ListPartitionReassignmentsResponseData>
+        listPartitionReassignments(ListPartitionReassignmentsRequestData request);
+
+    /**
      * Perform some configuration changes using the legacy API.
      *
      * @param newConfigs    The new configuration maps to apply.
@@ -197,6 +224,23 @@ public interface Controller extends AutoCloseable {
     CompletableFuture<AllocateProducerIdsResponseData> allocateProducerIds(
         AllocateProducerIdsRequestData request
     );
+
+    /**
+     * Begin writing a controller snapshot.  If there was already an ongoing snapshot, it
+     * simply returns information about that snapshot rather than starting a new one.
+     *
+     * @return              A future yielding the epoch of the snapshot.
+     */
+    CompletableFuture<Long> beginWritingSnapshot();
+
+    /**
+     * Create partitions on certain topics.
+     *
+     * @param topics            The list of topics to create partitions for.
+     * @return                  A future yielding per-topic results.
+     */
+    CompletableFuture<List<CreatePartitionsTopicResult>>
+            createPartitions(List<CreatePartitionsTopic> topics);
 
     /**
      * Begin shutting down, but don't block.  You must still call close to clean up all
