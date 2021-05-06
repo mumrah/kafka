@@ -17,6 +17,7 @@
 
 package org.apache.kafka.controller;
 
+import org.apache.kafka.common.errors.StaleBrokerEpochException;
 import org.apache.kafka.common.metadata.ProducerIdRecord;
 import org.apache.kafka.common.requests.ApiError;
 import org.apache.kafka.metadata.ApiMessageAndVersion;
@@ -32,13 +33,21 @@ public class ProducerIdControlManager {
     private static final Object PRODUCER_ID_KEY = new Object();
     private static final int PRODUCER_ID_BLOCK_SIZE = 1000;
 
-    final TimelineHashMap<Object, Long> lastProducerId;
+    private final ClusterControlManager clusterControlManager;
+    private final TimelineHashMap<Object, Long> lastProducerId;
 
-    ProducerIdControlManager(SnapshotRegistry snapshotRegistry) {
+    ProducerIdControlManager(ClusterControlManager clusterControlManager, SnapshotRegistry snapshotRegistry) {
+        this.clusterControlManager = clusterControlManager;
         this.lastProducerId = new TimelineHashMap<>(snapshotRegistry, 0);
     }
 
     ControllerResult<ResultOrError<ProducerIdRange>> generateNextProducerId(int brokerId, long brokerEpoch) {
+        try {
+            clusterControlManager.checkBrokerEpoch(brokerId, brokerEpoch);
+        } catch (StaleBrokerEpochException e) {
+            return ControllerResult.of(Collections.emptyList(), ResultOrError.of(ApiError.fromThrowable(e)));
+        }
+
         long producerId = lastProducerId.getOrDefault(PRODUCER_ID_KEY, 0L);
 
         if (producerId > Long.MAX_VALUE - PRODUCER_ID_BLOCK_SIZE) {
@@ -48,9 +57,7 @@ public class ProducerIdControlManager {
             return ControllerResult.of(Collections.emptyList(), ResultOrError.of(error));
         }
 
-
         long nextProducerId = producerId + PRODUCER_ID_BLOCK_SIZE;
-
         ProducerIdRecord record = new ProducerIdRecord()
             .setProducerIdEnd(nextProducerId)
             .setBrokerId(brokerId)

@@ -937,7 +937,7 @@ public final class QuorumController implements Controller {
         this.clusterControl = new ClusterControlManager(logContext, time,
             snapshotRegistry, sessionTimeoutNs, replicaPlacementPolicy);
         this.featureControl = new FeatureControlManager(supportedFeatures, snapshotRegistry);
-        this.producerIdControlManager = new ProducerIdControlManager(snapshotRegistry);
+        this.producerIdControlManager = new ProducerIdControlManager(clusterControl, snapshotRegistry);
         this.snapshotGeneratorManager = new SnapshotGeneratorManager(snapshotWriterBuilder);
         this.replicationControl = new ReplicationControlManager(snapshotRegistry,
             logContext, defaultReplicationFactor, defaultNumPartitions,
