@@ -236,7 +236,7 @@ class BrokerMetadataListener(brokerId: Int,
   }
 
   def handleProducerIdRecord(record: ProducerIdRecord): Unit = {
-    // TODO ???
+    // no-op
   }
 
   class HandleNewLeaderEvent(leader: MetaLogLeader)

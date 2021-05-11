@@ -24,7 +24,11 @@ import org.apache.kafka.metadata.ApiMessageAndVersion;
 import org.apache.kafka.timeline.SnapshotRegistry;
 import org.apache.kafka.timeline.TimelineHashMap;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import static org.apache.kafka.common.protocol.Errors.UNKNOWN_SERVER_ERROR;
 
@@ -74,6 +78,28 @@ public class ProducerIdControlManager {
         } else {
             lastProducerId.put(PRODUCER_ID_KEY, record.producerIdEnd());
         }
+    }
+
+    Iterator<List<ApiMessageAndVersion>> iterator(long epoch) {
+        List<ApiMessageAndVersion> records = new ArrayList<>(1);
+
+        long producerId = 0L;
+        for (Map.Entry<Object, Long> entry : lastProducerId.entrySet(epoch)) {
+            if (entry.getKey() == PRODUCER_ID_KEY) {
+                producerId = lastProducerId.getOrDefault(PRODUCER_ID_KEY, 0L);
+            } else {
+                throw new IllegalStateException("Unexpected key in producer ids map " + entry.getKey());
+            }
+        }
+        if (producerId > 0) {
+            records.add(new ApiMessageAndVersion(
+                new ProducerIdRecord()
+                    .setProducerIdEnd(producerId)
+                    .setBrokerId(0)
+                    .setBrokerEpoch(0L),
+                (short) 0));
+        }
+        return Collections.singleton(records).iterator();
     }
 
     static class ProducerIdRange {

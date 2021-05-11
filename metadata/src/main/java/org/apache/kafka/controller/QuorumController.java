@@ -367,7 +367,8 @@ public final class QuorumController implements Controller {
                     new Section("cluster", clusterControl.iterator(epoch)),
                     new Section("replication", replicationControl.iterator(epoch)),
                     new Section("configuration", configurationControl.iterator(epoch)),
-                    new Section("clientQuotas", clientQuotaControlManager.iterator(epoch))));
+                    new Section("clientQuotas", clientQuotaControlManager.iterator(epoch)),
+                    new Section("producerIds", producerIdControlManager.iterator(epoch))));
             reschedule(0);
         }
 
