@@ -157,7 +157,7 @@ class BrokerMetadataListener(brokerId: Int,
       case rec: RemoveTopicRecord => handleRemoveTopicRecord(imageBuilder, rec)
       case rec: ConfigRecord => handleConfigRecord(rec)
       case rec: QuotaRecord => handleQuotaRecord(imageBuilder, rec)
-      case rec: ProducerIdRecord => handleProducerIdRecord(rec)
+      case rec: ProducerIdsRecord => handleProducerIdRecord(rec)
       case _ => throw new RuntimeException(s"Unhandled record $record with type $recordType")
     }
   }
@@ -235,7 +235,7 @@ class BrokerMetadataListener(brokerId: Int,
     clientQuotaManager.handleQuotaRecord(record)
   }
 
-  def handleProducerIdRecord(record: ProducerIdRecord): Unit = {
+  def handleProducerIdRecord(record: ProducerIdsRecord): Unit = {
     // no-op
   }
 

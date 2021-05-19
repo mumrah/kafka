@@ -18,9 +18,10 @@
 package org.apache.kafka.controller;
 
 import org.apache.kafka.common.errors.StaleBrokerEpochException;
-import org.apache.kafka.common.metadata.ProducerIdRecord;
+import org.apache.kafka.common.metadata.ProducerIdsRecord;
 import org.apache.kafka.common.requests.ApiError;
-import org.apache.kafka.metadata.ApiMessageAndVersion;
+import org.apache.kafka.server.common.ApiMessageAndVersion;
+import org.apache.kafka.server.common.ProducerIdsBlock;
 import org.apache.kafka.timeline.SnapshotRegistry;
 import org.apache.kafka.timeline.TimelineHashMap;
 
@@ -45,7 +46,7 @@ public class ProducerIdControlManager {
         this.lastProducerId = new TimelineHashMap<>(snapshotRegistry, 0);
     }
 
-    ControllerResult<ResultOrError<ProducerIdRange>> generateNextProducerId(int brokerId, long brokerEpoch) {
+    ControllerResult<ResultOrError<ProducerIdsBlock>> generateNextProducerId(int brokerId, long brokerEpoch) {
         try {
             clusterControlManager.checkBrokerEpoch(brokerId, brokerEpoch);
         } catch (StaleBrokerEpochException e) {
@@ -62,21 +63,21 @@ public class ProducerIdControlManager {
         }
 
         long nextProducerId = producerId + PRODUCER_ID_BLOCK_SIZE;
-        ProducerIdRecord record = new ProducerIdRecord()
-            .setProducerIdEnd(nextProducerId)
+        ProducerIdsRecord record = new ProducerIdsRecord()
+            .setProducerIdsEnd(nextProducerId)
             .setBrokerId(brokerId)
             .setBrokerEpoch(brokerEpoch);
-        ProducerIdRange range = new ProducerIdRange(producerId, PRODUCER_ID_BLOCK_SIZE);
+        ProducerIdsBlock block = new ProducerIdsBlock(-1, producerId, PRODUCER_ID_BLOCK_SIZE);
         return ControllerResult.of(
-            Collections.singletonList(new ApiMessageAndVersion(record, (short) 0)), ResultOrError.of(range));
+            Collections.singletonList(new ApiMessageAndVersion(record, (short) 0)), ResultOrError.of(block));
     }
 
-    void replay(ProducerIdRecord record) {
+    void replay(ProducerIdsRecord record) {
         long currentProducerId = lastProducerId.getOrDefault(PRODUCER_ID_KEY, 0L);
-        if (record.producerIdEnd() <= currentProducerId) {
+        if (record.producerIdsEnd() <= currentProducerId) {
             throw new RuntimeException("Producer ID from record is not monotonically increasing");
         } else {
-            lastProducerId.put(PRODUCER_ID_KEY, record.producerIdEnd());
+            lastProducerId.put(PRODUCER_ID_KEY, record.producerIdsEnd());
         }
     }
 
@@ -93,30 +94,12 @@ public class ProducerIdControlManager {
         }
         if (producerId > 0) {
             records.add(new ApiMessageAndVersion(
-                new ProducerIdRecord()
-                    .setProducerIdEnd(producerId)
+                new ProducerIdsRecord()
+                    .setProducerIdsEnd(producerId)
                     .setBrokerId(0)
                     .setBrokerEpoch(0L),
                 (short) 0));
         }
         return Collections.singleton(records).iterator();
-    }
-
-    static class ProducerIdRange {
-        private final long producerIdStart;
-        private final int producerIdLen;
-
-        ProducerIdRange(long producerIdStart, int producerIdLen) {
-            this.producerIdStart = producerIdStart;
-            this.producerIdLen = producerIdLen;
-        }
-
-        public long producerIdStart() {
-            return producerIdStart;
-        }
-
-        public int producerIdLen() {
-            return producerIdLen;
-        }
     }
 }

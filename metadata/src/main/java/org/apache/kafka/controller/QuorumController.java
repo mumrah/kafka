@@ -61,7 +61,7 @@ import org.apache.kafka.common.metadata.FenceBrokerRecord;
 import org.apache.kafka.common.metadata.MetadataRecordType;
 import org.apache.kafka.common.metadata.PartitionChangeRecord;
 import org.apache.kafka.common.metadata.PartitionRecord;
-import org.apache.kafka.common.metadata.ProducerIdRecord;
+import org.apache.kafka.common.metadata.ProducerIdsRecord;
 import org.apache.kafka.common.metadata.QuotaRecord;
 import org.apache.kafka.common.metadata.RegisterBrokerRecord;
 import org.apache.kafka.common.metadata.RemoveTopicRecord;
@@ -788,8 +788,8 @@ public final class QuorumController implements Controller {
                 case QUOTA_RECORD:
                     clientQuotaControlManager.replay((QuotaRecord) message);
                     break;
-                case PRODUCER_ID_RECORD:
-                    producerIdControlManager.replay((ProducerIdRecord) message);
+                case PRODUCER_IDS_RECORD:
+                    producerIdControlManager.replay((ProducerIdsRecord) message);
                     break;
                 default:
                     throw new RuntimeException("Unhandled record type " + type);

@@ -17,13 +17,14 @@
 
 package org.apache.kafka.controller;
 
-import org.apache.kafka.common.metadata.ProducerIdRecord;
+import org.apache.kafka.common.metadata.ProducerIdsRecord;
 import org.apache.kafka.common.metadata.RegisterBrokerRecord;
 import org.apache.kafka.common.protocol.Errors;
 import org.apache.kafka.common.security.auth.SecurityProtocol;
 import org.apache.kafka.common.utils.LogContext;
 import org.apache.kafka.common.utils.MockTime;
-import org.apache.kafka.metadata.ApiMessageAndVersion;
+import org.apache.kafka.server.common.ApiMessageAndVersion;
+import org.apache.kafka.server.common.ProducerIdsBlock;
 import org.apache.kafka.timeline.SnapshotRegistry;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -70,50 +71,50 @@ public class ProducerIdControlManagerTest {
 
     @Test
     public void testInitialResult() {
-        ControllerResult<ResultOrError<ProducerIdControlManager.ProducerIdRange>> result =
+        ControllerResult<ResultOrError<ProducerIdsBlock>> result =
             producerIdControlManager.generateNextProducerId(1, 100);
         assertEquals(0, result.response().result().producerIdStart());
         assertEquals(1000, result.response().result().producerIdLen());
-        ProducerIdRecord record = (ProducerIdRecord) result.records().get(0).message();
-        assertEquals(1000, record.producerIdEnd());
+        ProducerIdsRecord record = (ProducerIdsRecord) result.records().get(0).message();
+        assertEquals(1000, record.producerIdsEnd());
     }
 
     @Test
     public void testMonotonic() {
         producerIdControlManager.replay(
-            new ProducerIdRecord()
+            new ProducerIdsRecord()
                 .setBrokerId(1)
                 .setBrokerEpoch(100)
-                .setProducerIdEnd(42));
+                .setProducerIdsEnd(42));
 
-        ProducerIdControlManager.ProducerIdRange range =
-                producerIdControlManager.generateNextProducerId(1, 100).response().result();
+        ProducerIdsBlock range =
+            producerIdControlManager.generateNextProducerId(1, 100).response().result();
         assertEquals(42, range.producerIdStart());
 
         // Can't go backwards in Producer IDs
         assertThrows(RuntimeException.class, () -> {
             producerIdControlManager.replay(
-                new ProducerIdRecord()
+                new ProducerIdsRecord()
                     .setBrokerId(1)
                     .setBrokerEpoch(100)
-                    .setProducerIdEnd(40));
+                    .setProducerIdsEnd(40));
         }, "Producer ID range must only increase");
         range = producerIdControlManager.generateNextProducerId(1, 100).response().result();
         assertEquals(42, range.producerIdStart());
 
         // Gaps in the ID range are okay.
         producerIdControlManager.replay(
-            new ProducerIdRecord()
+            new ProducerIdsRecord()
                 .setBrokerId(1)
                 .setBrokerEpoch(100)
-                .setProducerIdEnd(50));
+                .setProducerIdsEnd(50));
         range = producerIdControlManager.generateNextProducerId(1, 100).response().result();
         assertEquals(50, range.producerIdStart());
     }
 
     @Test
     public void testUnknownBrokerOrEpoch() {
-        ControllerResult<ResultOrError<ProducerIdControlManager.ProducerIdRange>> result;
+        ControllerResult<ResultOrError<ProducerIdsBlock>> result;
 
         result = producerIdControlManager.generateNextProducerId(99, 0);
         assertEquals(Errors.STALE_BROKER_EPOCH, result.response().error().error());
@@ -125,19 +126,19 @@ public class ProducerIdControlManagerTest {
     @Test
     public void testMaxValue() {
         producerIdControlManager.replay(
-            new ProducerIdRecord()
+            new ProducerIdsRecord()
                 .setBrokerId(1)
                 .setBrokerEpoch(100)
-                .setProducerIdEnd(Long.MAX_VALUE - 1));
+                .setProducerIdsEnd(Long.MAX_VALUE - 1));
 
-        ControllerResult<ResultOrError<ProducerIdControlManager.ProducerIdRange>> result =
+        ControllerResult<ResultOrError<ProducerIdsBlock>> result =
                 producerIdControlManager.generateNextProducerId(1, 100);
         assertEquals(Errors.UNKNOWN_SERVER_ERROR, result.response().error().error());
     }
 
     @Test
     public void testSnapshotIterator() {
-        ProducerIdControlManager.ProducerIdRange range = null;
+        ProducerIdsBlock range = null;
         for (int i = 0; i < 100; i++) {
             range = generateProducerIds(producerIdControlManager, i % 4, 100);
         }
@@ -146,13 +147,13 @@ public class ProducerIdControlManagerTest {
         assertTrue(snapshotIterator.hasNext());
         List<ApiMessageAndVersion> batch = snapshotIterator.next();
         assertEquals(1, batch.size(), "Producer IDs record batch should only contain a single record");
-        assertEquals(range.producerIdStart() + range.producerIdLen(), ((ProducerIdRecord) batch.get(0).message()).producerIdEnd());
+        assertEquals(range.producerIdStart() + range.producerIdLen(), ((ProducerIdsRecord) batch.get(0).message()).producerIdsEnd());
         assertFalse(snapshotIterator.hasNext(), "Producer IDs iterator should only contain a single batch");
 
         ProducerIdControlManager newProducerIdManager = new ProducerIdControlManager(clusterControl, snapshotRegistry);
         snapshotIterator = producerIdControlManager.iterator(Long.MAX_VALUE);
         while (snapshotIterator.hasNext()) {
-            snapshotIterator.next().forEach(message -> newProducerIdManager.replay((ProducerIdRecord) message.message()));
+            snapshotIterator.next().forEach(message -> newProducerIdManager.replay((ProducerIdsRecord) message.message()));
         }
 
         // Verify that after reloading state from this "snapshot", we don't produce any overlapping IDs
@@ -161,13 +162,13 @@ public class ProducerIdControlManagerTest {
         assertTrue(range.producerIdStart() > lastProducerID);
     }
 
-    static ProducerIdControlManager.ProducerIdRange generateProducerIds(
+    static ProducerIdsBlock generateProducerIds(
             ProducerIdControlManager producerIdControlManager, int brokerId, long brokerEpoch) {
-        ControllerResult<ResultOrError<ProducerIdControlManager.ProducerIdRange>> result =
+        ControllerResult<ResultOrError<ProducerIdsBlock>> result =
             producerIdControlManager.generateNextProducerId(brokerId, brokerEpoch);
         assertFalse(result.response().isError());
         result.records().forEach(apiMessageAndVersion ->
-            producerIdControlManager.replay((ProducerIdRecord) apiMessageAndVersion.message()));
+            producerIdControlManager.replay((ProducerIdsRecord) apiMessageAndVersion.message()));
         return result.response().result();
     }
 }
