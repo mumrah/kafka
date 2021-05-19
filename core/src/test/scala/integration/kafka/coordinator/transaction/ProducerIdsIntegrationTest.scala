@@ -15,10 +15,11 @@
  * limitations under the License.
  */
 
-package kafka.server
+package kafka.coordinator.transaction
 
 import kafka.network.SocketServer
-import kafka.test.annotation.{ClusterTest, Type}
+import kafka.server.{IntegrationTestUtils, KafkaConfig}
+import kafka.test.annotation.{AutoStart, ClusterTest, ClusterTests, Type}
 import kafka.test.junit.ClusterTestExtensions
 import kafka.test.{ClusterConfig, ClusterInstance}
 import org.apache.kafka.common.message.InitProducerIdRequestData
@@ -41,28 +42,38 @@ class ProducerIdsIntegrationTest {
     clusterConfig.serverProperties().put(KafkaConfig.TransactionsTopicReplicationFactorProp, "3")
   }
 
-  @ClusterTest(clusterType = Type.BOTH, brokers = 3)
-  def testNonOverlapping(clusterInstance: ClusterInstance): Unit = {
+  @ClusterTests(Array(
+    new ClusterTest(clusterType = Type.ZK, brokers = 3, ibp = "2.8"),
+    new ClusterTest(clusterType = Type.ZK, brokers = 3, ibp = "3.0-IV0"),
+    new ClusterTest(clusterType = Type.RAFT, brokers = 3, ibp = "3.0-IV0")
+  ))
+  def testUniqueProducerIds(clusterInstance: ClusterInstance): Unit = {
+    verifyNonOverlappingAndUniqueIds(clusterInstance)
+  }
+
+  @ClusterTest(clusterType = Type.ZK, brokers = 3, autoStart = AutoStart.NO)
+  def testUniqueProducerIdsBumpIBP(clusterInstance: ClusterInstance): Unit = {
+    clusterInstance.config().serverProperties().put(KafkaConfig.InterBrokerProtocolVersionProp, "2.8")
+    clusterInstance.config().brokerServerProperties(0).put(KafkaConfig.InterBrokerProtocolVersionProp, "3.0-IV0")
+    clusterInstance.start()
+    verifyNonOverlappingAndUniqueIds(clusterInstance)
+    clusterInstance.stop()
+  }
+
+  private def verifyNonOverlappingAndUniqueIds(clusterInstance: ClusterInstance): Unit = {
+    // Request enough PIDs from each broker to ensure each broker generates two PID blocks
     val ids = clusterInstance.brokerSocketServers().stream().flatMap( broker => {
       IntStream.range(0, 1001).parallel().mapToObj( _ => nextProducerId(broker, clusterInstance.clientListener()))
-    }).collect(Collectors.toSet[Long])
+    }).collect(Collectors.toList[Long]).asScala.toSeq
 
-    assertEquals(3003, ids.size)
+    assertEquals(3003, ids.size, "Expected 3003 IDs")
 
-    val expectedIds = Set(0L, 999L, 1000L, 1999L, 2000L, 2999L, 3000L, 4000L, 5000L)
-    val idsAsString = ids.asScala.toSet.mkString(", ")
+    val expectedIds = Set(0L, 1000L, 2000L, 3000L, 4000L, 5000L)
+    val idsAsString = ids.mkString(", ")
     expectedIds.foreach { id =>
       assertTrue(ids.contains(id), s"Expected to see $id in $idsAsString")
     }
-  }
-
-  @ClusterTest(clusterType = Type.ZK, brokers = 1)
-  def testNewBlockOnRestart(clusterInstance: ClusterInstance): Unit = {
-    val id0 = nextProducerId(clusterInstance.anyBrokerSocketServer(), clusterInstance.clientListener())
-    clusterInstance.rollingBrokerRestart()
-    val id1 = nextProducerId(clusterInstance.anyBrokerSocketServer(), clusterInstance.clientListener())
-    assertEquals(0, id0)
-    assertEquals(1000, id1)
+    assertEquals(ids.size, ids.distinct.size, "Found duplicate producer IDs")
   }
 
   private def nextProducerId(broker: SocketServer, listener: ListenerName): Long = {

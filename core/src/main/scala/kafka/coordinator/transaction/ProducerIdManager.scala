@@ -18,11 +18,13 @@ package kafka.coordinator.transaction
 
 import kafka.server.{BrokerToControllerChannelManager, ControllerRequestCompletionHandler}
 import kafka.utils.Logging
+import kafka.zk.{KafkaZkClient, ProducerIdBlockZNode}
 import org.apache.kafka.clients.ClientResponse
 import org.apache.kafka.common.KafkaException
 import org.apache.kafka.common.message.AllocateProducerIdsRequestData
 import org.apache.kafka.common.protocol.Errors
 import org.apache.kafka.common.requests.{AllocateProducerIdsRequest, AllocateProducerIdsResponse}
+import org.apache.kafka.server.common.ProducerIdsBlock
 
 import java.util.concurrent.{ArrayBlockingQueue, TimeUnit}
 import java.util.concurrent.atomic.AtomicBoolean
@@ -33,30 +35,102 @@ import scala.util.{Failure, Success, Try}
  * such that the same producerId will not be assigned twice across multiple transaction coordinators.
  *
  * ProducerIds are managed by the controller. When requesting a new range of IDs, we are guaranteed to receive
- * a unique block. The block start and block end are inclusive.
+ * a unique block.
  */
-object ProducerIdManager {
-  val PidBlockSize = 1000L
 
+object ProducerIdGenerator {
   // Once we reach this percentage of PIDs consumed from the current block, trigger a fetch of the next block
   val PidPrefetchThreshold = 0.90
-}
 
-case class ProducerIdBlock(brokerId: Int, blockStartId: Long, blockEndId: Long) {
-  override def toString: String = {
-    val producerIdBlockInfo = new StringBuilder
-    producerIdBlockInfo.append("(brokerId:" + brokerId)
-    producerIdBlockInfo.append(",blockStartProducerId:" + blockStartId)
-    producerIdBlockInfo.append(",blockEndProducerId:" + blockEndId + ")")
-    producerIdBlockInfo.toString()
+  // Creates a ProducerIdGenerate that directly interfaces with ZooKeeper, IBP < 3.0-IV0
+  def apply(brokerId: Int, zkClient: KafkaZkClient): ZkProducerIdManager = {
+    new ZkProducerIdManager(brokerId, zkClient)
   }
 
-  val blockSize: Long = blockEndId - blockStartId + 1 // inclusive
+  // Creates a ProducerIdGenerate that uses AllocateProducerIds RPC, IBP >= 3.0-IV0
+  def apply(brokerId: Int,
+            brokerEpochSupplier: () => Long,
+            controllerChannel: BrokerToControllerChannelManager,
+            maxWaitMs: Int): ProducerIdManager = {
+    new ProducerIdManager(brokerId, brokerEpochSupplier, controllerChannel, maxWaitMs)
+  }
 }
 
 trait ProducerIdGenerator {
   def generateProducerId(): Long
   def shutdown() : Unit = {}
+}
+
+object ZkProducerIdManager {
+  def getNewProducerIdBlock(brokerId: Int, zkClient: KafkaZkClient, logger: Logging): ProducerIdsBlock = {
+    // Get or create the existing PID block from ZK and attempt to update it. We retry in a loop here since other
+    // brokers may be generating PID blocks during a rolling upgrade
+    var zkWriteComplete = false
+    while (!zkWriteComplete) {
+      // refresh current producerId block from zookeeper again
+      val (dataOpt, zkVersion) = zkClient.getDataAndVersion(ProducerIdBlockZNode.path)
+
+      // generate the new producerId block
+      val newProducerIdBlock = dataOpt match {
+        case Some(data) =>
+          val currProducerIdBlock = ProducerIdBlockZNode.parseProducerIdBlockData(data)
+          logger.debug(s"Read current producerId block $currProducerIdBlock, Zk path version $zkVersion")
+
+          if (currProducerIdBlock.producerIdEnd > Long.MaxValue - ProducerIdsBlock.PRODUCER_ID_BLOCK_SIZE) {
+            // we have exhausted all producerIds (wow!), treat it as a fatal error
+            logger.fatal(s"Exhausted all producerIds as the next block's end producerId is will has exceeded long type limit (current block end producerId is ${currProducerIdBlock.producerIdEnd})")
+            throw new KafkaException("Have exhausted all producerIds.")
+          }
+
+          new ProducerIdsBlock(brokerId, currProducerIdBlock.producerIdEnd + 1L, ProducerIdsBlock.PRODUCER_ID_BLOCK_SIZE)
+        case None =>
+          logger.debug(s"There is no producerId block yet (Zk path version $zkVersion), creating the first block")
+          new ProducerIdsBlock(brokerId, 0L, ProducerIdsBlock.PRODUCER_ID_BLOCK_SIZE)
+      }
+
+      val newProducerIdBlockData = ProducerIdBlockZNode.generateProducerIdBlockJson(newProducerIdBlock)
+
+      // try to write the new producerId block into zookeeper
+      val (succeeded, version) = zkClient.conditionalUpdatePath(ProducerIdBlockZNode.path, newProducerIdBlockData, zkVersion, None)
+      zkWriteComplete = succeeded
+
+      if (zkWriteComplete) {
+        logger.info(s"Acquired new producerId block $newProducerIdBlock by writing to Zk with path version $version")
+        return newProducerIdBlock
+      }
+    }
+    throw new IllegalStateException()
+  }
+}
+
+class ZkProducerIdManager(brokerId: Int,
+                          zkClient: KafkaZkClient) extends ProducerIdGenerator with Logging {
+
+  private var currentProducerIdBlock: ProducerIdsBlock = ProducerIdsBlock.EMPTY
+  private var nextProducerId: Long = -1L
+
+  // grab the first block of producerIds
+  this synchronized {
+    getNewProducerIdBlock()
+    nextProducerId = currentProducerIdBlock.producerIdStart
+  }
+
+  private def getNewProducerIdBlock(): Unit = {
+    currentProducerIdBlock = ZkProducerIdManager.getNewProducerIdBlock(brokerId, zkClient, this)
+  }
+
+  def generateProducerId(): Long = {
+    this synchronized {
+      // grab a new block of producerIds if this block has been exhausted
+      if (nextProducerId > currentProducerIdBlock.producerIdEnd) {
+        getNewProducerIdBlock()
+        nextProducerId = currentProducerIdBlock.producerIdStart + 1
+      } else {
+        nextProducerId += 1
+      }
+      nextProducerId - 1
+    }
+  }
 }
 
 class ProducerIdManager(brokerId: Int,
@@ -66,25 +140,28 @@ class ProducerIdManager(brokerId: Int,
 
   this.logIdent = "[ProducerId Manager " + brokerId + "]: "
 
-  private val nextProducerIdBlock = new ArrayBlockingQueue[Try[ProducerIdBlock]](1)
+  private val nextProducerIdBlock = new ArrayBlockingQueue[Try[ProducerIdsBlock]](1)
   private val requestInFlight = new AtomicBoolean(false)
-  private var currentProducerIdBlock: ProducerIdBlock = ProducerIdBlock(brokerId, 0L, 0L)
-  private var nextProducerId: Long = 0L
-
-  // Send an initial request to get the first block
-  maybeRequestNextBlock()
+  private var currentProducerIdBlock: ProducerIdsBlock = ProducerIdsBlock.EMPTY
+  private var nextProducerId: Long = -1L
 
   override def generateProducerId(): Long = {
     this synchronized {
-      nextProducerId += 1
-
-      // Check if we need to fetch the next block
-      if (nextProducerId >= (currentProducerIdBlock.blockStartId + currentProducerIdBlock.blockSize * ProducerIdManager.PidPrefetchThreshold)) {
+      if (nextProducerId == -1L) {
+        // Send an initial request to get the first block
         maybeRequestNextBlock()
+        nextProducerId = 0L
+      } else {
+        nextProducerId += 1
+
+        // Check if we need to fetch the next block
+        if (nextProducerId >= (currentProducerIdBlock.producerIdStart + currentProducerIdBlock.producerIdLen * ProducerIdGenerator.PidPrefetchThreshold)) {
+          maybeRequestNextBlock()
+        }
       }
 
       // If we've exhausted the current block, grab the next block (waiting if necessary)
-      if (nextProducerId > currentProducerIdBlock.blockEndId) {
+      if (nextProducerId > currentProducerIdBlock.producerIdEnd) {
         val block = nextProducerIdBlock.poll(maxWaitMs, TimeUnit.MILLISECONDS)
         if (block == null) {
           throw Errors.REQUEST_TIMED_OUT.exception("Timed out waiting for next producer ID block")
@@ -92,7 +169,7 @@ class ProducerIdManager(brokerId: Int,
           block match {
             case Success(nextBlock) =>
               currentProducerIdBlock = nextBlock
-              nextProducerId = currentProducerIdBlock.blockStartId
+              nextProducerId = currentProducerIdBlock.producerIdStart
             case Failure(t) => throw t
           }
         }
@@ -132,17 +209,20 @@ class ProducerIdManager(brokerId: Int,
       case Errors.NONE =>
         debug(s"Got next producer ID block from controller $data")
         // Do some sanity checks on the response
-        if (data.producerIdStart() < currentProducerIdBlock.blockEndId) {
+        if (data.producerIdStart() < currentProducerIdBlock.producerIdEnd) {
           nextProducerIdBlock.put(Failure(new KafkaException(
             s"Producer ID block is not monotonic with current block: current=$currentProducerIdBlock response=$data")))
         } else if (data.producerIdStart() < 0 || data.producerIdLen() < 0 || data.producerIdStart() > Long.MaxValue - data.producerIdLen()) {
           nextProducerIdBlock.put(Failure(new KafkaException(s"Producer ID block includes invalid ID range: $data")))
         } else {
           nextProducerIdBlock.put(
-            Success(ProducerIdBlock(brokerId, data.producerIdStart(), data.producerIdStart() + data.producerIdLen() - 1)))
+            Success(new ProducerIdsBlock(brokerId, data.producerIdStart(), data.producerIdLen())))
         }
       case Errors.STALE_BROKER_EPOCH =>
         warn("Our broker epoch was stale, trying again.")
+        maybeRequestNextBlock()
+      case Errors.BROKER_ID_NOT_REGISTERED =>
+        warn("Our broker ID is not yet known by the controller, trying again.")
         maybeRequestNextBlock()
       case e: Errors =>
         warn("Had an unknown error from the controller, giving up.")

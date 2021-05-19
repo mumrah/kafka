@@ -36,7 +36,7 @@ import org.apache.kafka.common.utils.ThreadUtils;
 import org.apache.kafka.common.utils.Time;
 import org.apache.kafka.common.utils.Utils;
 import org.apache.kafka.controller.Controller;
-import org.apache.kafka.metadata.ApiMessageAndVersion;
+import org.apache.kafka.server.common.ApiMessageAndVersion;
 import org.apache.kafka.metalog.MetaLogManager;
 import org.apache.kafka.raft.RaftConfig;
 import org.apache.kafka.raft.metadata.MetaLogRaftShim;
@@ -220,6 +220,7 @@ public class KafkaClusterTestKit implements AutoCloseable {
                     // Just like above, we set a placeholder voter list here until we
                     // find out what ports the controllers picked.
                     props.put(RaftConfig.QUORUM_VOTERS_CONFIG, uninitializedQuorumVotersString);
+                    props.putAll(node.propertyOverrides());
                     KafkaConfig config = new KafkaConfig(props, false, Option.empty());
 
                     String threadNamePrefix = String.format("broker%d_", node.id());
