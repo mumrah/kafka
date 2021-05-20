@@ -29,6 +29,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.{EnumSource, ValueSource}
 
+import java.util.concurrent.{Executors}
 import java.util.stream.IntStream
 
 class RPCProducerIdManagerTest {
@@ -38,17 +39,23 @@ class RPCProducerIdManagerTest {
 
   // Mutable test implementation that lets us easily set the idStart and error
   class MockProducerIdManager(val brokerId: Int, var idStart: Long, val idLen: Int, var error: Errors = Errors.NONE)
-    extends RPCProducerIdManager(brokerId, () => 1, brokerToController, 100) {
+    extends RPCProducerIdManager(brokerId, () => 1, brokerToController, 1000) {
+
+    val executor = Executors.newSingleThreadExecutor()
 
     override private[transaction] def sendRequest(): Unit = {
-      if (error == Errors.NONE) {
-        handleAllocateProducerIdsResponse(new AllocateProducerIdsResponse(
-          new AllocateProducerIdsResponseData().setProducerIdStart(idStart).setProducerIdLen(idLen)))
-        idStart += idLen
-      } else {
-        handleAllocateProducerIdsResponse(new AllocateProducerIdsResponse(
-          new AllocateProducerIdsResponseData().setErrorCode(error.code)))
-      }
+      executor.submit(new Runnable() {
+        override def run(): Unit = {
+          if (error == Errors.NONE) {
+            handleAllocateProducerIdsResponse(new AllocateProducerIdsResponse(
+              new AllocateProducerIdsResponseData().setProducerIdStart(idStart).setProducerIdLen(idLen)))
+            idStart += idLen
+          } else {
+            handleAllocateProducerIdsResponse(new AllocateProducerIdsResponse(
+              new AllocateProducerIdsResponseData().setErrorCode(error.code)))
+          }
+        }
+      })
     }
   }
 

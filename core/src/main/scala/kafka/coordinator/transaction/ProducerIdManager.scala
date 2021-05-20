@@ -26,8 +26,9 @@ import org.apache.kafka.common.protocol.Errors
 import org.apache.kafka.common.requests.{AllocateProducerIdsRequest, AllocateProducerIdsResponse}
 import org.apache.kafka.server.common.ProducerIdsBlock
 
-import java.util.concurrent.{ArrayBlockingQueue, TimeUnit}
+import java.util.concurrent.{TimeUnit}
 import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.locks.ReentrantLock
 import scala.util.{Failure, Success, Try}
 
 /**
@@ -143,13 +144,18 @@ class RPCProducerIdManager(brokerId: Int,
 
   this.logIdent = "[RPC ProducerId Manager " + brokerId + "]: "
 
-  private val nextProducerIdBlock = new ArrayBlockingQueue[Try[ProducerIdsBlock]](1)
+  @volatile
+  private var nextProducerIdBlock: Try[ProducerIdsBlock] = _
+  private val nextProducerIdLock = new ReentrantLock()
+  private val nextProducerIdCond = nextProducerIdLock.newCondition()
+
   private val requestInFlight = new AtomicBoolean(false)
   private var currentProducerIdBlock: ProducerIdsBlock = ProducerIdsBlock.EMPTY
   private var nextProducerId: Long = -1L
 
   override def generateProducerId(): Long = {
-    this synchronized {
+    nextProducerIdLock.lock()
+    try {
       if (nextProducerId == -1L) {
         // Send an initial request to get the first block
         maybeRequestNextBlock()
@@ -165,30 +171,40 @@ class RPCProducerIdManager(brokerId: Int,
 
       // If we've exhausted the current block, grab the next block (waiting if necessary)
       if (nextProducerId > currentProducerIdBlock.producerIdEnd) {
-        val block = nextProducerIdBlock.poll(maxWaitMs, TimeUnit.MILLISECONDS)
-        if (block == null) {
+        System.err.println("await " + nextProducerId + " " + Thread.currentThread())
+        nextProducerIdCond.await(maxWaitMs, TimeUnit.MILLISECONDS)
+        System.err.println("done " + Thread.currentThread() + " " + nextProducerIdBlock)
+
+        if (nextProducerIdBlock == null) {
           throw Errors.REQUEST_TIMED_OUT.exception("Timed out waiting for next producer ID block")
         } else {
-          block match {
+          nextProducerIdBlock match {
             case Success(nextBlock) =>
               currentProducerIdBlock = nextBlock
               nextProducerId = currentProducerIdBlock.producerIdStart
-            case Failure(t) => throw t
+              nextProducerIdBlock = null
+            case Failure(t) =>
+              nextProducerId -= 1
+              nextProducerIdBlock = null
+              throw t
           }
         }
       }
       nextProducerId
+    } finally {
+      nextProducerIdLock.unlock()
     }
   }
 
-
+  // Must be called while holding nextProducerIdLock
   private def maybeRequestNextBlock(): Unit = {
-    if (nextProducerIdBlock.isEmpty && requestInFlight.compareAndSet(false, true)) {
+    if (nextProducerIdBlock == null && requestInFlight.compareAndSet(false, true)) {
       sendRequest()
     }
   }
 
   private[transaction] def sendRequest(): Unit = {
+    //System.err.println("sendRequest " + Thread.currentThread() + " " + nextProducerId)
     val message = new AllocateProducerIdsRequestData()
       .setBrokerEpoch(brokerEpochSupplier.apply())
       .setBrokerId(brokerId)
@@ -206,37 +222,44 @@ class RPCProducerIdManager(brokerId: Int,
   }
 
   private[transaction] def handleAllocateProducerIdsResponse(response: AllocateProducerIdsResponse): Unit = {
-    requestInFlight.set(false)
     val data = response.data
-    Errors.forCode(data.errorCode()) match {
-      case Errors.NONE =>
-        debug(s"Got next producer ID block from controller $data")
-        // Do some sanity checks on the response
-        if (data.producerIdStart() < currentProducerIdBlock.producerIdEnd) {
-          nextProducerIdBlock.put(Failure(new KafkaException(
-            s"Producer ID block is not monotonic with current block: current=$currentProducerIdBlock response=$data")))
-        } else if (data.producerIdStart() < 0 || data.producerIdLen() < 0 || data.producerIdStart() > Long.MaxValue - data.producerIdLen()) {
-          nextProducerIdBlock.put(Failure(new KafkaException(s"Producer ID block includes invalid ID range: $data")))
-        } else {
-          nextProducerIdBlock.put(
-            Success(new ProducerIdsBlock(brokerId, data.producerIdStart(), data.producerIdLen())))
-        }
-      case Errors.STALE_BROKER_EPOCH =>
-        warn("Our broker epoch was stale, trying again.")
-        maybeRequestNextBlock()
-      case Errors.BROKER_ID_NOT_REGISTERED =>
-        warn("Our broker ID is not yet known by the controller, trying again.")
-        maybeRequestNextBlock()
-      case e: Errors =>
-        warn("Had an unknown error from the controller, giving up.")
-        nextProducerIdBlock.put(Failure(e.exception()))
+    val result = try {
+      Errors.forCode(data.errorCode()) match {
+        case Errors.NONE =>
+          debug(s"Got next producer ID block from controller $data")
+          // Do some sanity checks on the response
+          if (data.producerIdStart() < currentProducerIdBlock.producerIdEnd) {
+            Failure(new KafkaException(
+              s"Producer ID block is not monotonic with current block: current=$currentProducerIdBlock response=$data"))
+          } else if (data.producerIdStart() < 0 || data.producerIdLen() < 0 || data.producerIdStart() > Long.MaxValue - data.producerIdLen()) {
+            Failure(new KafkaException(s"Producer ID block includes invalid ID range: $data"))
+          } else {
+            Success(new ProducerIdsBlock(brokerId, data.producerIdStart(), data.producerIdLen()))
+          }
+        case e: Errors =>
+          warn("Had an unknown error from the controller, giving up.")
+          Failure(e.exception())
+      }
+    } catch {
+      case t: Throwable => Failure(t)
     }
+    notifyNextBlock(result)
   }
 
   private[transaction] def handleTimeout(): Unit = {
     warn("Timed out when requesting AllocateProducerIds from the controller.")
-    requestInFlight.set(false)
-    nextProducerIdBlock.put(Failure(Errors.REQUEST_TIMED_OUT.exception))
-    maybeRequestNextBlock()
+    notifyNextBlock(Failure(Errors.REQUEST_TIMED_OUT.exception))
+  }
+
+  private def notifyNextBlock(result: Try[ProducerIdsBlock]): Unit = {
+    nextProducerIdLock.lock()
+    try {
+      nextProducerIdBlock = result
+      System.err.println("signalAll " + Thread.currentThread() + " " + result)
+      nextProducerIdCond.signalAll()
+      requestInFlight.set(false)
+    } finally {
+      nextProducerIdLock.unlock()
+    }
   }
 }
