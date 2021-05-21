@@ -38,25 +38,25 @@ import scala.util.{Failure, Success, Try}
  * a unique block.
  */
 
-object ProducerIdGenerator {
+object ProducerIdManager {
   // Once we reach this percentage of PIDs consumed from the current block, trigger a fetch of the next block
   val PidPrefetchThreshold = 0.90
 
   // Creates a ProducerIdGenerate that directly interfaces with ZooKeeper, IBP < 3.0-IV0
-  def apply(brokerId: Int, zkClient: KafkaZkClient): ZkProducerIdManager = {
+  def zk(brokerId: Int, zkClient: KafkaZkClient): ZkProducerIdManager = {
     new ZkProducerIdManager(brokerId, zkClient)
   }
 
   // Creates a ProducerIdGenerate that uses AllocateProducerIds RPC, IBP >= 3.0-IV0
-  def apply(brokerId: Int,
+  def rpc(brokerId: Int,
             brokerEpochSupplier: () => Long,
             controllerChannel: BrokerToControllerChannelManager,
-            maxWaitMs: Int): ProducerIdManager = {
-    new ProducerIdManager(brokerId, brokerEpochSupplier, controllerChannel, maxWaitMs)
+            maxWaitMs: Int): RPCProducerIdManager = {
+    new RPCProducerIdManager(brokerId, brokerEpochSupplier, controllerChannel, maxWaitMs)
   }
 }
 
-trait ProducerIdGenerator {
+trait ProducerIdManager {
   def generateProducerId(): Long
   def shutdown() : Unit = {}
 }
@@ -104,41 +104,44 @@ object ZkProducerIdManager {
 }
 
 class ZkProducerIdManager(brokerId: Int,
-                          zkClient: KafkaZkClient) extends ProducerIdGenerator with Logging {
+                          zkClient: KafkaZkClient) extends ProducerIdManager with Logging {
+
+  this.logIdent = "[ZK ProducerId Manager " + brokerId + "]: "
 
   private var currentProducerIdBlock: ProducerIdsBlock = ProducerIdsBlock.EMPTY
-  private var nextProducerId: Long = -1L
+  private var nextProducerId: Long = _
 
   // grab the first block of producerIds
   this synchronized {
-    getNewProducerIdBlock()
+    allocateNewProducerIdBlock()
     nextProducerId = currentProducerIdBlock.producerIdStart
   }
 
-  private def getNewProducerIdBlock(): Unit = {
-    currentProducerIdBlock = ZkProducerIdManager.getNewProducerIdBlock(brokerId, zkClient, this)
+  private def allocateNewProducerIdBlock(): Unit = {
+    this synchronized {
+      currentProducerIdBlock = ZkProducerIdManager.getNewProducerIdBlock(brokerId, zkClient, this)
+    }
   }
 
   def generateProducerId(): Long = {
     this synchronized {
       // grab a new block of producerIds if this block has been exhausted
       if (nextProducerId > currentProducerIdBlock.producerIdEnd) {
-        getNewProducerIdBlock()
-        nextProducerId = currentProducerIdBlock.producerIdStart + 1
-      } else {
-        nextProducerId += 1
+        allocateNewProducerIdBlock()
+        nextProducerId = currentProducerIdBlock.producerIdStart
       }
+      nextProducerId += 1
       nextProducerId - 1
     }
   }
 }
 
-class ProducerIdManager(brokerId: Int,
-                        brokerEpochSupplier: () => Long,
-                        controllerChannel: BrokerToControllerChannelManager,
-                        maxWaitMs: Int) extends ProducerIdGenerator with Logging {
+class RPCProducerIdManager(brokerId: Int,
+                           brokerEpochSupplier: () => Long,
+                           controllerChannel: BrokerToControllerChannelManager,
+                           maxWaitMs: Int) extends ProducerIdManager with Logging {
 
-  this.logIdent = "[ProducerId Manager " + brokerId + "]: "
+  this.logIdent = "[RPC ProducerId Manager " + brokerId + "]: "
 
   private val nextProducerIdBlock = new ArrayBlockingQueue[Try[ProducerIdsBlock]](1)
   private val requestInFlight = new AtomicBoolean(false)
@@ -155,7 +158,7 @@ class ProducerIdManager(brokerId: Int,
         nextProducerId += 1
 
         // Check if we need to fetch the next block
-        if (nextProducerId >= (currentProducerIdBlock.producerIdStart + currentProducerIdBlock.producerIdLen * ProducerIdGenerator.PidPrefetchThreshold)) {
+        if (nextProducerId >= (currentProducerIdBlock.producerIdStart + currentProducerIdBlock.producerIdLen * ProducerIdManager.PidPrefetchThreshold)) {
           maybeRequestNextBlock()
         }
       }

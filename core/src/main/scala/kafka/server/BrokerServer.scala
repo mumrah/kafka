@@ -244,7 +244,7 @@ class BrokerServer(
 
       // Create transaction coordinator, but don't start it until we've started replica manager.
       // Hardcode Time.SYSTEM for now as some Streams tests fail otherwise, it would be good to fix the underlying issue
-      val producerIdManagerSupplier = () => new ProducerIdManager(
+      val producerIdManagerSupplier = () => ProducerIdManager.rpc(
         config.brokerId,
         brokerEpochSupplier = () => lifecycleManager.brokerEpoch(),
         clientToControllerChannelManager,
