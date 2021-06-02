@@ -84,6 +84,7 @@ public class DescribeClientQuotasResponse extends AbstractResponse {
         return new DescribeClientQuotasResponse(new DescribeClientQuotasResponseData(new ByteBufferAccessor(buffer), version));
     }
 
+    // TODO: remove this function
     public static DescribeClientQuotasResponse fromQuotaEntities(Map<ClientQuotaEntity, Map<String, Double>> entities,
                                                                  int throttleTimeMs) {
         List<EntryData> entries = new ArrayList<>(entities.size());
@@ -115,5 +116,4 @@ public class DescribeClientQuotasResponse extends AbstractResponse {
             .setErrorMessage(null)
             .setEntries(entries));
     }
-
 }

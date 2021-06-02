@@ -46,6 +46,7 @@ import java.util.Optional
 import java.util.concurrent.{CountDownLatch, Semaphore}
 
 import kafka.server.epoch.LeaderEpochFileCache
+import kafka.server.metadata.MockConfigRepository
 
 import scala.jdk.CollectionConverters._
 
@@ -155,7 +156,7 @@ class PartitionTest extends AbstractPartitionTest {
   @Test
   def testMakeLeaderDoesNotUpdateEpochCacheForOldFormats(): Unit = {
     val leaderEpoch = 8
-    configRepository.setTopicConfig(topicPartition.topic,
+    configRepository = MockConfigRepository.forTopic(topicPartition.topic(),
       LogConfig.MessageFormatVersionProp, kafka.api.KAFKA_0_10_2_IV0.shortVersion)
     val log = logManager.getOrCreateLog(topicPartition, topicId = None)
     log.appendAsLeader(TestUtils.records(List(
