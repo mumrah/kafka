@@ -24,7 +24,6 @@ import kafka.server.QuotaFactory.{QuotaManagers, UnboundedQuota}
 import kafka.server.checkpoints.{LazyOffsetCheckpoints, OffsetCheckpointFile}
 import kafka.server.epoch.util.ReplicaFetcherMockBlockingSend
 import kafka.server.metadata.MockConfigRepository
-import kafka.utils.TestUtils.createBroker
 import kafka.utils.timer.MockTimer
 import kafka.utils.{MockScheduler, MockTime, TestUtils}
 import org.apache.kafka.common.message.FetchResponseData
@@ -46,6 +45,7 @@ import org.apache.kafka.common.{IsolationLevel, Node, TopicPartition, Uuid}
 import org.easymock.EasyMock
 import org.junit.jupiter.api.Assertions._
 import org.junit.jupiter.api.{AfterEach, BeforeEach, Test}
+import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito
 import java.io.File
 import java.net.InetAddress
@@ -158,9 +158,9 @@ class ReplicaManagerTest {
     val config = KafkaConfig.fromProps(props)
     val logProps = new Properties()
     val mockLogMgr = TestUtils.createLogManager(config.logDirs.map(new File(_)), LogConfig(logProps))
-    val aliveBrokers = Seq(createBroker(0, "host0", 0), createBroker(1, "host1", 1))
+    val aliveBrokers = Seq(new Node(0, "host0", 0), new Node(1, "host1", 1))
     val metadataCache: MetadataCache = EasyMock.createMock(classOf[MetadataCache])
-    EasyMock.expect(metadataCache.getAliveBrokers).andReturn(aliveBrokers).anyTimes()
+    EasyMock.expect(metadataCache.getAliveBrokerNodes(any)).andReturn(aliveBrokers).anyTimes()
     EasyMock.replay(metadataCache)
     val rm = new ReplicaManager(config, metrics, time, None, new MockScheduler(time), mockLogMgr,
       new AtomicBoolean(false), quotaManager, new BrokerTopicStats,
@@ -1553,13 +1553,13 @@ class ReplicaManagerTest {
     EasyMock.replay(mockLogMgr)
 
     val aliveBrokerIds = Seq[Integer](followerBrokerId, leaderBrokerId)
-    val aliveBrokers = aliveBrokerIds.map(brokerId => createBroker(brokerId, s"host$brokerId", brokerId))
+    val aliveBrokers = aliveBrokerIds.map(brokerId => new Node(brokerId, s"host$brokerId", brokerId))
 
     val metadataCache: MetadataCache = EasyMock.createMock(classOf[MetadataCache])
-    EasyMock.expect(metadataCache.getAliveBrokers).andReturn(aliveBrokers).anyTimes
+    EasyMock.expect(metadataCache.getAliveBrokerNodes(any)).andReturn(aliveBrokers).anyTimes
     aliveBrokerIds.foreach { brokerId =>
-      EasyMock.expect(metadataCache.getAliveBroker(EasyMock.eq(brokerId)))
-        .andReturn(Option(createBroker(brokerId, s"host$brokerId", brokerId)))
+      EasyMock.expect(metadataCache.getAliveBrokerNode(EasyMock.eq(brokerId), any))
+        .andReturn(Some(new Node(brokerId, s"host$brokerId", brokerId)))
         .anyTimes
     }
     EasyMock
@@ -1753,14 +1753,14 @@ class ReplicaManagerTest {
     val config = KafkaConfig.fromProps(props)
     val logProps = new Properties()
     val mockLogMgr = TestUtils.createLogManager(config.logDirs.map(new File(_)), LogConfig(logProps))
-    val aliveBrokers = aliveBrokerIds.map(brokerId => createBroker(brokerId, s"host$brokerId", brokerId))
+    val aliveBrokers = aliveBrokerIds.map(brokerId => new Node(brokerId, s"host$brokerId", brokerId))
 
     val metadataCache: MetadataCache = Mockito.mock(classOf[MetadataCache])
-    Mockito.when(metadataCache.getAliveBrokers).thenReturn(aliveBrokers)
+    Mockito.when(metadataCache.getAliveBrokerNodes(any)).thenReturn(aliveBrokers)
 
     aliveBrokerIds.foreach { brokerId =>
-      Mockito.when(metadataCache.getAliveBroker(brokerId))
-        .thenReturn(Option(createBroker(brokerId, s"host$brokerId", brokerId)))
+      Mockito.when(metadataCache.getAliveBrokerNode(brokerId, any))
+        .thenReturn(Some(new Node(brokerId, s"host$brokerId", brokerId)))
     }
 
     val mockProducePurgatory = new DelayedOperationPurgatory[DelayedProduce](
@@ -1979,11 +1979,11 @@ class ReplicaManagerTest {
     val metadataCache0: MetadataCache = EasyMock.createMock(classOf[MetadataCache])
     val metadataCache1: MetadataCache = EasyMock.createMock(classOf[MetadataCache])
 
-    val aliveBrokers = Seq(createBroker(0, "host0", 0), createBroker(1, "host1", 1))
+    val aliveBrokers = Seq(new Node(0, "host0", 0), new Node(1, "host1", 1))
 
-    EasyMock.expect(metadataCache0.getAliveBrokers).andReturn(aliveBrokers).anyTimes()
+    EasyMock.expect(metadataCache0.getAliveBrokerNodes(any)).andReturn(aliveBrokers).anyTimes()
     EasyMock.replay(metadataCache0)
-    EasyMock.expect(metadataCache1.getAliveBrokers).andReturn(aliveBrokers).anyTimes()
+    EasyMock.expect(metadataCache1.getAliveBrokerNodes(any)).andReturn(aliveBrokers).anyTimes()
     EasyMock.replay(metadataCache1)
 
     // each replica manager is for a broker
