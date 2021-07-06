@@ -40,7 +40,7 @@ import org.apache.kafka.common.security.auth.{KafkaPrincipal, KafkaPrincipalSerd
 import org.apache.kafka.common.utils.{SecurityUtils, Utils}
 import org.junit.jupiter.api.Assertions.{assertEquals, assertThrows, assertTrue}
 import org.junit.jupiter.api.{BeforeEach, Test}
-import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchers.{any, anyString}
 import org.mockito.invocation.InvocationOnMock
 import org.mockito.{ArgumentCaptor, ArgumentMatchers, Mockito}
 
@@ -77,7 +77,7 @@ class AutoTopicCreationManagerTest {
 
     Mockito.reset(metadataCache, controller, brokerToController, groupCoordinator, transactionCoordinator)
 
-    Mockito.when(metadataCache.getAliveBrokerNodes(any)).thenReturn(aliveBrokers)
+    Mockito.when(metadataCache.getAliveBrokerNodes(anyString())).thenReturn(aliveBrokers)
   }
 
   @Test

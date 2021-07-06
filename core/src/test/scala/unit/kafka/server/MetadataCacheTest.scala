@@ -42,9 +42,9 @@ import scala.jdk.CollectionConverters._
 
 object MetadataCacheTest {
   def zkCacheProvider(): util.stream.Stream[MetadataCache] = {
-    util.stream.Stream.of(
+    util.Collections.singletonList[MetadataCache](
       MetadataCache.zkMetadataCache(1)
-    )
+    ).stream()
   }
 
   def cacheProvider(): util.stream.Stream[MetadataCache] = {
