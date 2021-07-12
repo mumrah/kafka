@@ -47,7 +47,9 @@ object BrokerMetadataPublisher {
                     newImage: MetadataImage,
                     delta: MetadataDelta): Option[TopicDelta] = {
     Option(newImage.topics().getTopic(topicName)).flatMap {
-      topicImage => Option(delta.topicsDelta().changedTopic(topicImage.id()))
+      topicImage => Option(delta.topicsDelta()).flatMap {
+        topicDelta => Option(topicDelta.changedTopic(topicImage.id()))
+      }
     }
   }
 
