@@ -751,10 +751,9 @@ class KafkaService(KafkaPathResolverMixin, JmxMixin, Service):
         with node.account.monitor_log(KafkaService.STDOUT_STDERR_CAPTURE) as monitor:
             node.account.ssh(cmd)
             # Kafka 1.0.0 and higher don't have a space between "Kafka" and "Server"
-            if self.quorum_info.using_zk:
-                monitor.wait_until("Kafka\s*Server.*started", timeout_sec=timeout_sec, backoff_sec=.25,
+            monitor.wait_until("Kafka\s*Server.*started", timeout_sec=timeout_sec, backoff_sec=.25,
                                err_msg="Kafka server didn't finish startup in %d seconds" % timeout_sec)
-            else:
+            if self.quorum_info.using_kraft:
                 monitor.wait_until("The broker is RUNNING", timeout_sec=timeout_sec, backoff_sec=.25,
                                    err_msg="Kafka server didn't finish startup in %d seconds" % timeout_sec)
 
