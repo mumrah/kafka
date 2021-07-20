@@ -819,14 +819,6 @@ class KafkaService(KafkaPathResolverMixin, JmxMixin, Service):
                 node.account.ssh(cmd)
                 self.wait_for_start(node, monitor, timeout_sec)
 
-                if self.quorum_info.using_kraft and not self.remote_kafka:
-                    monitor.wait_until("The broker is RUNNING", timeout_sec=timeout_sec, backoff_sec=.25,
-                                       err_msg="Kafka server didn't finish startup in %d seconds" % timeout_sec)
-
-            if self.quorum_info.using_kraft and not self.remote_kafka:
-                # TODO remove this
-                time.sleep(5)
-
     def wait_for_start(self, node, monitor, timeout_sec=60):
         # Kafka 1.0.0 and higher don't have a space between "Kafka" and "Server"
         monitor.wait_until("Kafka\s*Server.*started", timeout_sec=timeout_sec, backoff_sec=.25,

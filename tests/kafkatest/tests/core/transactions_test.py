@@ -245,7 +245,7 @@ class TransactionsTest(Test):
             bounce_target=["brokers"],
             check_order=[True],
             use_group_metadata=[ False],
-            metadata_quorum=[quorum.remote_kraft])
+            metadata_quorum=quorum.all_non_upgrade)
     def test_transactions(self, failure_mode, bounce_target, check_order, use_group_metadata, metadata_quorum=quorum.zk):
         security_protocol = 'PLAINTEXT'
         self.kafka.security_protocol = security_protocol
