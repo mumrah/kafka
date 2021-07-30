@@ -122,7 +122,8 @@ class ReplicationTest(EndToEndTest):
     @matrix(failure_mode=["clean_shutdown", "hard_shutdown", "clean_bounce", "hard_bounce"],
             broker_type=["leader"],
             security_protocol=["PLAINTEXT"],
-            enable_idempotence=[True])
+            enable_idempotence=[True],
+            metadata_quorum=quorum.all_non_upgrade)
     @matrix(failure_mode=["clean_shutdown", "hard_shutdown", "clean_bounce", "hard_bounce"],
             broker_type=["leader"],
             security_protocol=["PLAINTEXT", "SASL_SSL"],
