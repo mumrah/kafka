@@ -924,10 +924,10 @@ public final class QuorumController implements Controller {
                             future = new CompletableFuture<>();
                             future.completeExceptionally(
                                 new IllegalStateException("Cannot become leader without an initial metadata.version to use."));
-                        } else if (initialMetadataVersion == MetadataVersion.V1) {
+                        } else if (initialMetadataVersion == MetadataVersion.IBP_3_0_IV0) {
                             future = appendWriteEvent("initializeMetadataVersion", OptionalLong.empty(), () -> {
                                 log.info("Upgrading from KRaft preview. Initializing metadata.version to 1");
-                                return featureControl.initializeMetadataVersion(MetadataVersion.V1.version());
+                                return featureControl.initializeMetadataVersion(MetadataVersion.IBP_3_0_IV0.version());
                             });
                         } else {
                             future = appendWriteEvent("initializeMetadataVersion", OptionalLong.empty(), () -> {

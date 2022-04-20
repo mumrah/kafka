@@ -483,9 +483,9 @@ public class QuorumControllerTest {
     private BrokerRegistrationRequestData.FeatureCollection brokerFeatures() {
         BrokerRegistrationRequestData.FeatureCollection features = new BrokerRegistrationRequestData.FeatureCollection();
         features.add(new BrokerRegistrationRequestData.Feature()
-            .setName("metadata.version")
-            .setMinSupportedVersion((short) 0)
-            .setMaxSupportedVersion((short) 2));
+            .setName(MetadataVersion.FEATURE_NAME)
+            .setMinSupportedVersion(MetadataVersion.IBP_3_0_IV0.version())
+            .setMaxSupportedVersion(MetadataVersion.latest().version()));
         return features;
     }
 

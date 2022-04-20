@@ -17,8 +17,6 @@
 
 package org.apache.kafka.metadata;
 
-import org.apache.kafka.common.metadata.MetadataRecordType;
-
 import java.util.Optional;
 
 
@@ -27,30 +25,31 @@ import java.util.Optional;
  */
 public enum MetadataVersion {
 
-    UNINITIALIZED(0, null, "Uninitialized version", false, type -> {
-        throw new IllegalStateException("Cannot determine record version with uninitialized metadata.version");
-    }),
-    V1(1, null, "KRaft preview version", false, MetadataVersion::recordResolverV1),
-    V2(2, V1, "Initial KRaft version", true, MetadataVersion::recordResolverV2);
-
+    UNINITIALIZED(-1),
+    IBP_2_7_IV1(-1, true),
+    // KRaft preview versions
+    IBP_3_0_IV0(1, true),
+    IBP_3_0_IV1(2, false),
+    IBP_3_1_IV0(3, false),
+    IBP_3_2_IV0(4, false),
+    // KRaft GA
+    IBP_3_3_IV0(5, false);
 
     public static final String FEATURE_NAME = "metadata.version";
 
     private final short version;
-    private final MetadataVersion previous;
-    private final String description;
-    private final boolean isBackwardsCompatible;
-    private final MetadataRecordVersionResolver resolver;
+    private final boolean didMetadataChange;
 
-    MetadataVersion(int version, MetadataVersion previous, String description, boolean isBackwardsCompatible, MetadataRecordVersionResolver resolver) {
+    MetadataVersion(int version) {
+        this(version, true);
+    }
+
+    MetadataVersion(int version, boolean didMetadataChange) {
         if (version > Short.MAX_VALUE || version < Short.MIN_VALUE) {
             throw new IllegalArgumentException("version must be a short");
         }
         this.version = (short) version;
-        this.previous = previous;
-        this.description = description;
-        this.isBackwardsCompatible = isBackwardsCompatible;
-        this.resolver = resolver;
+        this.didMetadataChange = didMetadataChange;
     }
 
     public static MetadataVersion fromValue(short value) {
@@ -63,19 +62,29 @@ public enum MetadataVersion {
     }
 
     public static MetadataVersion stable() {
-        return V2;
+        return IBP_3_2_IV0;
     }
 
     public static MetadataVersion latest() {
-        return V2;
+        MetadataVersion[] values = MetadataVersion.values();
+        return values[values.length - 1];
     }
 
-    public static boolean isBackwardsCompatible(MetadataVersion sourceVersion, MetadataVersion targetVersion) {
-        if (sourceVersion.compareTo(targetVersion) < 0) {
+    public static boolean checkIfMetadataChanged(MetadataVersion sourceVersion, MetadataVersion targetVersion) {
+        if (sourceVersion == targetVersion) {
             return false;
         }
-        MetadataVersion version = sourceVersion;
-        while (version.isBackwardsCompatible() && version != targetVersion) {
+
+        final MetadataVersion highVersion, lowVersion;
+        if (sourceVersion.compareTo(targetVersion) < 0) {
+            highVersion = targetVersion;
+            lowVersion = sourceVersion;
+        } else {
+            highVersion = sourceVersion;
+            lowVersion = targetVersion;
+        }
+        MetadataVersion version = highVersion;
+        while (!version.didMetadataChange() && version != lowVersion) {
             Optional<MetadataVersion> prev = version.previous();
             if (prev.isPresent()) {
                 version = prev.get();
@@ -83,7 +92,7 @@ public enum MetadataVersion {
                 break;
             }
         }
-        return version == targetVersion;
+        return version != targetVersion;
     }
 
 
@@ -92,26 +101,15 @@ public enum MetadataVersion {
     }
 
     public Optional<MetadataVersion> previous() {
-        return Optional.ofNullable(previous);
+        int idx = this.ordinal();
+        if (idx > 1) {
+            return Optional.of(MetadataVersion.values()[idx - 1]);
+        } else {
+            return Optional.empty();
+        }
     }
 
-    public boolean isBackwardsCompatible() {
-        return isBackwardsCompatible;
-    }
-
-    public String description() {
-        return description;
-    }
-
-    public short recordVersion(MetadataRecordType type) {
-        return resolver.recordVersion(type);
-    }
-
-    private static short recordResolverV1(MetadataRecordType type) {
-        return type.lowestSupportedVersion();
-    }
-
-    private static short recordResolverV2(MetadataRecordType type) {
-        return type.highestSupportedVersion();
+    public boolean didMetadataChange() {
+        return didMetadataChange;
     }
 }
