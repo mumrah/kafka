@@ -90,7 +90,7 @@ public class QuorumControllerTestEnv implements AutoCloseable {
             LeaderAndEpoch leader = logEnv.leaderAndEpoch();
             for (QuorumController controller : controllers) {
                 if (OptionalInt.of(controller.nodeId()).equals(leader.leaderId()) &&
-                    controller.curClaimEpoch() == leader.epoch()) {
+                        controller.curClaimEpoch() == leader.epoch()) {
                     value.set(controller);
                     break;
                 }
