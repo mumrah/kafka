@@ -60,7 +60,7 @@ public class QuorumFeatures {
 
     public static Map<String, VersionRange> defaultFeatureMap() {
         Map<String, VersionRange> features = new HashMap<>(1);
-        features.put(MetadataVersion.FEATURE_NAME, VersionRange.of(MetadataVersion.IBP_3_0_IV0.version(), MetadataVersion.latest().version()));
+        features.put(MetadataVersion.FEATURE_NAME, VersionRange.of(MetadataVersion.IBP_3_0_IV0.kraftVersion(), MetadataVersion.latest().kraftVersion()));
         return features;
     }
 

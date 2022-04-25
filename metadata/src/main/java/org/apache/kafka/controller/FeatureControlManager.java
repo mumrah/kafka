@@ -226,12 +226,12 @@ public class FeatureControlManager {
         MetadataVersion currentVersion = metadataVersion();
         final MetadataVersion newVersion;
         try {
-            newVersion = MetadataVersion.fromValue(newVersionLevel);
+            newVersion = MetadataVersion.fromFeatureLevel(newVersionLevel);
         } catch (IllegalArgumentException e) {
             return invalidMetadataVersion(newVersionLevel, "Unknown metadata.version.");
         }
 
-        if (!currentVersion.equals(MetadataVersion.UNINITIALIZED) && newVersion.compareTo(currentVersion) < 0) {
+        if (!currentVersion.equals(MetadataVersion.UNINITIALIZED) && newVersion.isLessThan(currentVersion)) {
             // This is a downgrade
             boolean metadataChanged = MetadataVersion.checkIfMetadataChanged(currentVersion, newVersion);
             if (!metadataChanged) {
@@ -257,7 +257,7 @@ public class FeatureControlManager {
     FinalizedControllerFeatures finalizedFeatures(long epoch) {
         Map<String, Short> features = new HashMap<>();
         if (!metadataVersion.get(epoch).equals(MetadataVersion.UNINITIALIZED)) {
-            features.put(MetadataVersion.FEATURE_NAME, metadataVersion.get(epoch).version());
+            features.put(MetadataVersion.FEATURE_NAME, metadataVersion.get(epoch).kraftVersion());
         }
         for (Entry<String, Short> entry : finalizedVersions.entrySet(epoch)) {
             features.put(entry.getKey(), entry.getValue());
@@ -268,7 +268,7 @@ public class FeatureControlManager {
     public void replay(FeatureLevelRecord record) {
         if (record.name().equals(MetadataVersion.FEATURE_NAME)) {
             log.info("Setting metadata.version to {}", record.featureLevel());
-            metadataVersion.set(MetadataVersion.fromValue(record.featureLevel()));
+            metadataVersion.set(MetadataVersion.fromFeatureLevel(record.featureLevel()));
         } else {
             log.info("Setting feature {} to {}", record.name(), record.featureLevel());
             finalizedVersions.put(record.name(), record.featureLevel());
@@ -307,7 +307,7 @@ public class FeatureControlManager {
                 wroteVersion = true;
                 return Collections.singletonList(new ApiMessageAndVersion(new FeatureLevelRecord()
                     .setName(MetadataVersion.FEATURE_NAME)
-                    .setFeatureLevel(metadataVersion.version()), FEATURE_LEVEL_RECORD.lowestSupportedVersion()));
+                    .setFeatureLevel(metadataVersion.kraftVersion()), FEATURE_LEVEL_RECORD.lowestSupportedVersion()));
             }
             // Then write the rest of the features
             if (!hasNext()) throw new NoSuchElementException();

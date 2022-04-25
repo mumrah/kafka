@@ -149,7 +149,7 @@ public final class MetadataDelta {
         if (featuresDelta == null) {
             return Optional.empty();
         } else {
-            return featuresDelta.metadataVersionChange().map(MetadataVersion::fromValue);
+            return featuresDelta.metadataVersionChange().map(MetadataVersion::fromFeatureLevel);
         }
     }
 

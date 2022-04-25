@@ -907,21 +907,20 @@ public final class QuorumController implements Controller {
                     // Check if we need to bootstrap a metadata.version into the log. This must happen before we can
                     // write any records to the log since we need the metadata.version to determine the correct
                     // record version
-                    if (featureControl.metadataVersion() == MetadataVersion.UNINITIALIZED) {
+                    if (featureControl.metadataVersion().equals(MetadataVersion.UNINITIALIZED)) {
                         final CompletableFuture<Map<String, ApiError>> future;
-                        if (initialMetadataVersion == MetadataVersion.UNINITIALIZED) {
+                        if (!initialMetadataVersion.isKraftVersion()) {
                             future = new CompletableFuture<>();
                             future.completeExceptionally(
-                                new IllegalStateException("Cannot become leader without an initial metadata.version to use."));
-                        } else if (initialMetadataVersion == MetadataVersion.IBP_3_0_IV0) {
-                            future = appendWriteEvent("initializeMetadataVersion", OptionalLong.empty(), () -> {
-                                log.info("Upgrading from KRaft preview. Initializing metadata.version to 1");
-                                return featureControl.initializeMetadataVersion(MetadataVersion.IBP_3_0_IV0.version());
-                            });
+                                    new IllegalStateException("Cannot become leader without a valid initial metadata.version to use. Got " + initialMetadataVersion.version()));
                         } else {
                             future = appendWriteEvent("initializeMetadataVersion", OptionalLong.empty(), () -> {
-                                log.info("Initializing metadata.version to {}", initialMetadataVersion.version());
-                                return featureControl.initializeMetadataVersion(initialMetadataVersion.version());
+                                if (initialMetadataVersion.isAtLeast(MetadataVersion.IBP_3_3_IV0)) {
+                                    log.info("Initializing metadata.version to {}", initialMetadataVersion.kraftVersion());
+                                } else {
+                                    log.info("Upgrading from KRaft preview. Initializing metadata.version to {}", initialMetadataVersion.kraftVersion());
+                                }
+                                return featureControl.initializeMetadataVersion(initialMetadataVersion.kraftVersion());
                             });
                         }
                         future.whenComplete((result, exception) -> {

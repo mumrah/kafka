@@ -27,7 +27,7 @@ import kafka.server.{KafkaConfig, MetaProperties}
 import kafka.utils.TestUtils
 import org.apache.kafka.common.utils.Utils
 import org.apache.kafka.metadata.MetadataVersion
-import org.junit.jupiter.api.Assertions.{assertEquals, assertThrows, assertTrue}
+import org.junit.jupiter.api.Assertions.{assertEquals, assertThrows}
 import org.junit.jupiter.api.{Test, Timeout}
 
 
@@ -196,9 +196,16 @@ Found problem:
 
   @Test
   def testDefaultMetadataVersion(): Unit = {
-    val namespace = StorageTool.parseArguments(Array("format", "-c", "config.props", "-t", "XcZZOzUqS4yHOjhMQB6JLQ"))
-    val mv = StorageTool.getMetadataVersion(namespace)
-    assertTrue(mv.version() > 0,
-      "Expected the default metadata.version to be non-zero")
+    var namespace = StorageTool.parseArguments(Array("format", "-c", "config.props", "-t", "XcZZOzUqS4yHOjhMQB6JLQ"))
+    var mv = StorageTool.getMetadataVersion(namespace)
+    assertEquals(MetadataVersion.latest().version(), mv.version(),
+      "Expected the default metadata.version to be the latest version")
+
+    namespace = StorageTool.parseArguments(Array("format", "-c", "config.props",
+      "--metadata-version", MetadataVersion.latest().shortVersionString(), "-t", "XcZZOzUqS4yHOjhMQB6JLQ"))
+    mv = StorageTool.getMetadataVersion(namespace)
+    assertEquals(MetadataVersion.latest().version(), mv.version(),
+      "Expected the default metadata.version to be the latest version")
+
   }
 }

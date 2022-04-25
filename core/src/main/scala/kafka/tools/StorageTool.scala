@@ -47,6 +47,9 @@ object StorageTool extends Logging {
           val directories = configToLogDirectories(config.get)
           val clusterId = namespace.getString("cluster_id")
           val metadataVersion = getMetadataVersion(namespace)
+          if (!metadataVersion.equals(MetadataVersion.latest())) {
+            throw new TerseFailure(s"Only the latest metadata version ${MetadataVersion.latest().versionString()} may be specified.")
+          }
           val metaProperties = buildMetadataProperties(clusterId, config.get, metadataVersion.version)
           val ignoreFormatted = namespace.getBoolean("ignore_formatted")
           if (!configToSelfManagedMode(config.get)) {
@@ -95,7 +98,7 @@ object StorageTool extends Logging {
       action(storeTrue())
     formatParser.addArgument("--metadata-version", "-v").
       action(store()).
-      help(s"The initial metadata.version to use. Default is (${MetadataVersion.stable().version()}).")
+      help(s"The initial metadata.version to use. Default is (${MetadataVersion.latest().versionString()}).")
 
     parser.parseArgsOrFail(args)
   }
@@ -111,8 +114,8 @@ object StorageTool extends Logging {
 
   def getMetadataVersion(namespace: Namespace): MetadataVersion = {
     Option(namespace.getString("metadata_version")).
-      map(mv => MetadataVersion.fromValue(mv.toShort)).
-      getOrElse(MetadataVersion.stable())
+      map(mv => MetadataVersion.fromVersionString(mv)).
+      getOrElse(MetadataVersion.latest())
   }
 
   def infoCommand(stream: PrintStream, selfManagedMode: Boolean, directories: Seq[String]): Int = {

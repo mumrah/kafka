@@ -217,7 +217,7 @@ public class FeatureControlManagerTest {
         checkMetadataVersion(features(), MetadataVersion.IBP_2_7_IV1, Errors.INVALID_UPDATE_VERSION);
 
         // Increased QuorumFeatures
-        QuorumFeatures features = features(MetadataVersion.FEATURE_NAME, MetadataVersion.IBP_3_2_IV0.version(), MetadataVersion.IBP_3_3_IV0.version());
+        QuorumFeatures features = features(MetadataVersion.FEATURE_NAME, MetadataVersion.IBP_3_2_IV0.kraftVersion(), MetadataVersion.IBP_3_3_IV0.kraftVersion());
         checkMetadataVersion(features, MetadataVersion.IBP_3_0_IV0, Errors.INVALID_UPDATE_VERSION);
 
         // Empty QuorumFeatures
@@ -231,8 +231,7 @@ public class FeatureControlManagerTest {
         LogContext logContext = new LogContext();
         SnapshotRegistry snapshotRegistry = new SnapshotRegistry(logContext);
         FeatureControlManager manager = new FeatureControlManager(logContext, features, snapshotRegistry);
-        ControllerResult<Map<String, ApiError>> result = manager.initializeMetadataVersion(
-            version.version());
+        ControllerResult<Map<String, ApiError>> result = manager.initializeMetadataVersion(version.kraftVersion());
         Errors actual = result.response().get(MetadataVersion.FEATURE_NAME).error();
         assertEquals(expected, actual);
     }
@@ -241,21 +240,21 @@ public class FeatureControlManagerTest {
     public void testDowngradeMetadataVersion() {
         LogContext logContext = new LogContext();
         SnapshotRegistry snapshotRegistry = new SnapshotRegistry(logContext);
-        QuorumFeatures features = features(MetadataVersion.FEATURE_NAME, MetadataVersion.IBP_3_2_IV0.version(), MetadataVersion.IBP_3_3_IV0.version());
+        QuorumFeatures features = features(MetadataVersion.FEATURE_NAME, MetadataVersion.IBP_3_2_IV0.kraftVersion(), MetadataVersion.IBP_3_3_IV0.kraftVersion());
         FeatureControlManager manager = new FeatureControlManager(logContext, features, snapshotRegistry);
-        ControllerResult<Map<String, ApiError>> result = manager.initializeMetadataVersion(MetadataVersion.IBP_3_3_IV0.version());
+        ControllerResult<Map<String, ApiError>> result = manager.initializeMetadataVersion(MetadataVersion.IBP_3_3_IV0.kraftVersion());
         RecordTestUtils.replayAll(manager, result.records());
         assertEquals(manager.metadataVersion(), MetadataVersion.latest());
 
         result = manager.updateFeatures(
-            Collections.singletonMap(MetadataVersion.FEATURE_NAME, MetadataVersion.IBP_3_2_IV0.version()),
+            Collections.singletonMap(MetadataVersion.FEATURE_NAME, MetadataVersion.IBP_3_2_IV0.kraftVersion()),
             Collections.singletonMap(MetadataVersion.FEATURE_NAME, FeatureUpdate.UpgradeType.SAFE_DOWNGRADE),
             Collections.emptyMap(),
             true);
         assertEquals(Errors.NONE, result.response().get(MetadataVersion.FEATURE_NAME).error());
 
         result = manager.updateFeatures(
-                Collections.singletonMap(MetadataVersion.FEATURE_NAME, MetadataVersion.IBP_3_0_IV0.version()),
+                Collections.singletonMap(MetadataVersion.FEATURE_NAME, MetadataVersion.IBP_3_0_IV0.kraftVersion()),
                 Collections.singletonMap(MetadataVersion.FEATURE_NAME, FeatureUpdate.UpgradeType.SAFE_DOWNGRADE),
                 Collections.emptyMap(),
                 true);

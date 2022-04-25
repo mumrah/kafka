@@ -71,7 +71,7 @@ public final class FeaturesImage {
         if (!metadataVersion().equals(MetadataVersion.UNINITIALIZED)) {
             batch.add(new ApiMessageAndVersion(new FeatureLevelRecord().
                 setName(MetadataVersion.FEATURE_NAME).
-                setFeatureLevel(metadataVersion.version()), FEATURE_LEVEL_RECORD.lowestSupportedVersion()));
+                setFeatureLevel(metadataVersion.kraftVersion()), FEATURE_LEVEL_RECORD.lowestSupportedVersion()));
         }
         for (Entry<String, Short> entry : finalizedVersions.entrySet()) {
             if (entry.getKey().equals(MetadataVersion.FEATURE_NAME)) {
