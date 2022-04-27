@@ -23,7 +23,7 @@ import kafka.test.junit.ClusterTestExtensions
 import kafka.utils.TestUtils
 import org.apache.kafka.clients.admin.FeatureUpdate.UpgradeType
 import org.apache.kafka.clients.admin.{FeatureUpdate, UpdateFeaturesOptions}
-import org.apache.kafka.metadata.MetadataVersion
+import org.apache.kafka.server.common.MetadataVersion
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -40,7 +40,7 @@ class MetadataVersionIntegrationTest {
     assertEquals(ff.maxVersionLevel(), 1)
 
     // Update to V2
-    val updateVersion = MetadataVersion.IBP_3_3_IV0.version.shortValue
+    val updateVersion = MetadataVersion.IBP_3_3_IV0.kraftVersion.shortValue
     val updateResult = admin.updateFeatures(
       Map("metadata.version" -> new FeatureUpdate(updateVersion, UpgradeType.UPGRADE)).asJava, new UpdateFeaturesOptions())
     updateResult.all().get()

@@ -31,16 +31,15 @@ import org.apache.kafka.common.protocol.Errors;
 import org.apache.kafka.common.requests.ApiError;
 import org.apache.kafka.common.utils.LogContext;
 import org.apache.kafka.metadata.FinalizedControllerFeatures;
-import org.apache.kafka.metadata.MetadataVersion;
 import org.apache.kafka.metadata.RecordTestUtils;
 import org.apache.kafka.metadata.VersionRange;
 import org.apache.kafka.server.common.ApiMessageAndVersion;
+import org.apache.kafka.server.common.MetadataVersion;
 import org.apache.kafka.timeline.SnapshotRegistry;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 @Timeout(value = 40)
@@ -125,7 +124,7 @@ public class FeatureControlManagerTest {
             features("foo", 1, 2), snapshotRegistry);
         manager.replay(record);
         snapshotRegistry.getOrCreateSnapshot(123);
-        assertEquals(new FinalizedControllerFeatures(versionMap( "foo", 2), 123),
+        assertEquals(new FinalizedControllerFeatures(versionMap("foo", 2), 123),
             manager.finalizedFeatures(123));
     }
 
@@ -212,7 +211,6 @@ public class FeatureControlManagerTest {
         // Default QuorumFeatures
         checkMetadataVersion(features(), MetadataVersion.IBP_3_0_IV0, Errors.NONE);
         checkMetadataVersion(features(), MetadataVersion.latest(), Errors.NONE);
-        checkMetadataVersion(features(), MetadataVersion.stable(), Errors.NONE);
         checkMetadataVersion(features(), MetadataVersion.UNINITIALIZED, Errors.INVALID_UPDATE_VERSION);
         checkMetadataVersion(features(), MetadataVersion.IBP_2_7_IV1, Errors.INVALID_UPDATE_VERSION);
 
@@ -223,7 +221,6 @@ public class FeatureControlManagerTest {
         // Empty QuorumFeatures
         features = new QuorumFeatures(0, new ApiVersions(), Collections.emptyMap(), Collections.emptyList());
         checkMetadataVersion(features, MetadataVersion.latest(), Errors.INVALID_UPDATE_VERSION);
-        checkMetadataVersion(features, MetadataVersion.stable(), Errors.INVALID_UPDATE_VERSION);
         checkMetadataVersion(features, MetadataVersion.IBP_3_0_IV0, Errors.INVALID_UPDATE_VERSION);
     }
 

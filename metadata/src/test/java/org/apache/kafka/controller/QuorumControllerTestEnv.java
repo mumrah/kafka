@@ -24,9 +24,9 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.kafka.clients.ApiVersions;
 import org.apache.kafka.controller.QuorumController.Builder;
-import org.apache.kafka.metadata.MetadataVersion;
 import org.apache.kafka.metalog.LocalLogManagerTestEnv;
 import org.apache.kafka.raft.LeaderAndEpoch;
+import org.apache.kafka.server.common.MetadataVersion;
 import org.apache.kafka.test.TestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

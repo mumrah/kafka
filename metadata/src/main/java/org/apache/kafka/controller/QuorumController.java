@@ -78,7 +78,6 @@ import org.apache.kafka.metadata.placement.StripedReplicaPlacer;
 import org.apache.kafka.server.authorizer.AclCreateResult;
 import org.apache.kafka.server.authorizer.AclDeleteResult;
 import org.apache.kafka.server.common.ApiMessageAndVersion;
-import org.apache.kafka.metadata.MetadataVersion;
 import org.apache.kafka.metadata.BrokerHeartbeatReply;
 import org.apache.kafka.metadata.BrokerRegistrationReply;
 import org.apache.kafka.metadata.FinalizedControllerFeatures;
@@ -90,6 +89,7 @@ import org.apache.kafka.raft.BatchReader;
 import org.apache.kafka.raft.LeaderAndEpoch;
 import org.apache.kafka.raft.OffsetAndEpoch;
 import org.apache.kafka.raft.RaftClient;
+import org.apache.kafka.server.common.MetadataVersion;
 import org.apache.kafka.server.policy.AlterConfigPolicy;
 import org.apache.kafka.server.policy.CreateTopicPolicy;
 import org.apache.kafka.snapshot.SnapshotReader;
@@ -1732,7 +1732,7 @@ public final class QuorumController implements Controller {
         final AtomicLong offsetToSnapshot = new AtomicLong(0L);
         return appendWriteEvent("updateFeatures", context.deadlineNs(), new ControllerWriteOperation<Map<String, ApiError>>() {
             @Override
-            public ControllerResult<Map<String, ApiError>   > generateRecordsAndResult() throws Exception {
+            public ControllerResult<Map<String, ApiError>> generateRecordsAndResult() {
                 Map<String, Short> updates = new HashMap<>();
                 Map<String, FeatureUpdate.UpgradeType> upgradeTypes = new HashMap<>();
                 request.featureUpdates().forEach(featureUpdate -> {

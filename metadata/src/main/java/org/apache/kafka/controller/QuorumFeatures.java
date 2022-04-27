@@ -19,8 +19,8 @@ package org.apache.kafka.controller;
 
 import org.apache.kafka.clients.ApiVersions;
 import org.apache.kafka.common.Node;
-import org.apache.kafka.metadata.MetadataVersion;
 import org.apache.kafka.metadata.VersionRange;
+import org.apache.kafka.server.common.MetadataVersion;
 
 import java.util.Collection;
 import java.util.Collections;

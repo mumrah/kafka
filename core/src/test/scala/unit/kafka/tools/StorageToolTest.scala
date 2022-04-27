@@ -26,7 +26,7 @@ import java.util.Properties
 import kafka.server.{KafkaConfig, MetaProperties}
 import kafka.utils.TestUtils
 import org.apache.kafka.common.utils.Utils
-import org.apache.kafka.metadata.MetadataVersion
+import org.apache.kafka.server.common.MetadataVersion
 import org.junit.jupiter.api.Assertions.{assertEquals, assertThrows}
 import org.junit.jupiter.api.{Test, Timeout}
 
@@ -184,14 +184,14 @@ Found problem:
     assertEquals("Cluster ID string invalid does not appear to be a valid UUID: " +
       "Input string `invalid` decoded as 5 bytes, which is not equal to the expected " +
         "16 bytes of a base64-encoded UUID", assertThrows(classOf[TerseFailure],
-          () => StorageTool.buildMetadataProperties("invalid", config, MetadataVersion.latest().version())).getMessage)
+          () => StorageTool.buildMetadataProperties("invalid", config, MetadataVersion.latest().kraftVersion())).getMessage)
   }
 
   @Test
   def testFormatWithInvalidMetadataVersion(): Unit = {
     val config = new KafkaConfig(newSelfManagedProperties())
     assertEquals("The initial metadata.version must be greater than zero.", assertThrows(classOf[TerseFailure],
-      () => StorageTool.buildMetadataProperties("XcZZOzUqS4yHOjhMQB6JLQ", config, MetadataVersion.UNINITIALIZED.version())).getMessage)
+      () => StorageTool.buildMetadataProperties("XcZZOzUqS4yHOjhMQB6JLQ", config, MetadataVersion.UNINITIALIZED.kraftVersion())).getMessage)
   }
 
   @Test
@@ -202,7 +202,7 @@ Found problem:
       "Expected the default metadata.version to be the latest version")
 
     namespace = StorageTool.parseArguments(Array("format", "-c", "config.props",
-      "--metadata-version", MetadataVersion.latest().shortVersionString(), "-t", "XcZZOzUqS4yHOjhMQB6JLQ"))
+      "--metadata-version", MetadataVersion.latest().shortVersion(), "-t", "XcZZOzUqS4yHOjhMQB6JLQ"))
     mv = StorageTool.getMetadataVersion(namespace)
     assertEquals(MetadataVersion.latest().version(), mv.version(),
       "Expected the default metadata.version to be the latest version")

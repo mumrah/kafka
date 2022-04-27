@@ -34,9 +34,10 @@ import org.apache.kafka.common.{TopicPartition, Uuid}
 import org.apache.kafka.common.security.JaasUtils
 import org.apache.kafka.common.security.auth.SecurityProtocol
 import org.apache.kafka.common.utils.{Exit, Time}
-import org.apache.kafka.metadata.{MetadataRecordSerde, MetadataVersion}
+import org.apache.kafka.metadata.MetadataRecordSerde
 import org.apache.kafka.raft.RaftConfig.{AddressSpec, InetAddressSpec}
 import org.apache.kafka.server.common.ApiMessageAndVersion
+import org.apache.kafka.server.common.MetadataVersion
 import org.apache.zookeeper.client.ZKClientConfig
 import org.apache.zookeeper.{WatchedEvent, Watcher, ZooKeeper}
 import org.junit.jupiter.api.Assertions._
@@ -80,7 +81,7 @@ class KRaftQuorumImplementation(val raftManager: KafkaRaftManager[ApiMessageAndV
                             time: Time,
                             startup: Boolean): KafkaBroker = {
     val broker = new BrokerServer(config = config,
-      metaProps = new MetaProperties(clusterId, config.nodeId, MetadataVersion.latest().version()),
+      metaProps = new MetaProperties(clusterId, config.nodeId, MetadataVersion.latest().kraftVersion()),
       raftManager = raftManager,
       time = time,
       metrics = new Metrics(),
@@ -250,7 +251,7 @@ abstract class QuorumTestHarness extends Logging {
     }
     val nodeId = Integer.parseInt(props.getProperty(KafkaConfig.NodeIdProp))
     val metadataDir = TestUtils.tempDir()
-    val metaProperties = new MetaProperties(Uuid.randomUuid().toString, nodeId, MetadataVersion.latest().version())
+    val metaProperties = new MetaProperties(Uuid.randomUuid().toString, nodeId, MetadataVersion.latest().kraftVersion())
     formatDirectories(immutable.Seq(metadataDir.getAbsolutePath()), metaProperties)
     val controllerMetrics = new Metrics()
     props.setProperty(KafkaConfig.MetadataLogDirProp, metadataDir.getAbsolutePath())

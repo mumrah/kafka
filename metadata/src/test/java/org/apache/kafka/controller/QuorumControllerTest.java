@@ -43,8 +43,6 @@ import org.apache.kafka.common.Uuid;
 import org.apache.kafka.common.errors.BrokerIdNotRegisteredException;
 import org.apache.kafka.common.errors.UnknownTopicOrPartitionException;
 import org.apache.kafka.common.message.UpdateFeaturesRequestData;
-import org.apache.kafka.common.message.UpdateFeaturesResponseData;
-import org.apache.kafka.common.requests.UpdateFeaturesRequest;
 import org.apache.kafka.common.security.auth.KafkaPrincipal;
 import org.apache.kafka.common.utils.Utils;
 import org.apache.kafka.common.config.ConfigResource;
@@ -84,12 +82,12 @@ import org.apache.kafka.controller.QuorumController.ConfigResourceExistenceCheck
 import org.apache.kafka.metadata.BrokerHeartbeatReply;
 import org.apache.kafka.metadata.BrokerRegistrationReply;
 import org.apache.kafka.metadata.MetadataRecordSerde;
-import org.apache.kafka.metadata.MetadataVersion;
 import org.apache.kafka.metadata.PartitionRegistration;
 import org.apache.kafka.metadata.RecordTestUtils;
 import org.apache.kafka.metalog.LocalLogManagerTestEnv;
 import org.apache.kafka.raft.Batch;
 import org.apache.kafka.server.common.ApiMessageAndVersion;
+import org.apache.kafka.server.common.MetadataVersion;
 import org.apache.kafka.snapshot.SnapshotReader;
 import org.apache.kafka.snapshot.RawSnapshotReader;
 import org.apache.kafka.snapshot.RecordsSnapshotReader;
@@ -1112,7 +1110,7 @@ public class QuorumControllerTest {
                 data.featureUpdates().add(
                     new UpdateFeaturesRequestData.FeatureUpdateKey()
                         .setFeature(MetadataVersion.FEATURE_NAME)
-                        .setMaxVersionLevel(MetadataVersion.IBP_3_1_IV1.kraftVersion())
+                        .setMaxVersionLevel(MetadataVersion.IBP_3_0_IV1.kraftVersion())
                         .setUpgradeType(FeatureUpdate.UpgradeType.UPGRADE.code()));
 
                 controller.updateFeatures(ANONYMOUS_CONTEXT, data).get();
@@ -1128,7 +1126,7 @@ public class QuorumControllerTest {
                         setFeatureLevel(MetadataVersion.IBP_3_0_IV0.kraftVersion()), (short) 0));
                 checkSnapshotContent(expectedSnapshot, snapshot);
 
-                assertEquals(MetadataVersion.IBP_3_1_IV1, controller.currentMetadataVersion());
+                assertEquals(MetadataVersion.IBP_3_0_IV1, controller.currentMetadataVersion());
             }
         }
     }

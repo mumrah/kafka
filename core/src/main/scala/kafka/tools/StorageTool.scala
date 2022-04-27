@@ -26,7 +26,7 @@ import net.sourceforge.argparse4j.impl.Arguments.{store, storeTrue}
 import net.sourceforge.argparse4j.inf.Namespace
 import org.apache.kafka.common.Uuid
 import org.apache.kafka.common.utils.Utils
-import org.apache.kafka.metadata.MetadataVersion
+import org.apache.kafka.server.common.MetadataVersion
 
 import scala.collection.mutable
 
@@ -48,9 +48,9 @@ object StorageTool extends Logging {
           val clusterId = namespace.getString("cluster_id")
           val metadataVersion = getMetadataVersion(namespace)
           if (!metadataVersion.equals(MetadataVersion.latest())) {
-            throw new TerseFailure(s"Only the latest metadata version ${MetadataVersion.latest().versionString()} may be specified.")
+            throw new TerseFailure(s"Only the latest metadata version ${MetadataVersion.latest().version()} may be specified.")
           }
-          val metaProperties = buildMetadataProperties(clusterId, config.get, metadataVersion.version)
+          val metaProperties = buildMetadataProperties(clusterId, config.get, metadataVersion.kraftVersion())
           val ignoreFormatted = namespace.getBoolean("ignore_formatted")
           if (!configToSelfManagedMode(config.get)) {
             throw new TerseFailure("The kafka configuration file appears to be for " +
@@ -98,7 +98,7 @@ object StorageTool extends Logging {
       action(storeTrue())
     formatParser.addArgument("--metadata-version", "-v").
       action(store()).
-      help(s"The initial metadata.version to use. Default is (${MetadataVersion.latest().versionString()}).")
+      help(s"The initial metadata.version to use. Default is (${MetadataVersion.latest().version()}).")
 
     parser.parseArgsOrFail(args)
   }

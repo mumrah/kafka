@@ -26,7 +26,7 @@ import kafka.server.RawMetaProperties._
 import kafka.utils._
 import org.apache.kafka.common.KafkaException
 import org.apache.kafka.common.utils.Utils
-import org.apache.kafka.metadata.MetadataVersion
+import org.apache.kafka.server.common.MetadataVersion
 
 import scala.collection.mutable
 import scala.jdk.CollectionConverters._
@@ -113,14 +113,15 @@ class RawMetaProperties(val props: Properties = new Properties()) {
 
 object MetaProperties {
   def apply(clusterId: String, nodeId: Int): MetaProperties = {
-    MetaProperties(clusterId, nodeId, MetadataVersion.latest().version())
+    MetaProperties(clusterId, nodeId, MetadataVersion.latest().kraftVersion())
   }
 
   def parse(properties: RawMetaProperties): MetaProperties = {
     properties.requireVersion(expectedVersion = 1)
     val clusterId = require(ClusterIdKey, properties.clusterId)
     val nodeId = require(NodeIdKey, properties.nodeId)
-    val metadataVersion = properties.initialMetadataVersion.getOrElse(MetadataVersion.IBP_3_0_IV0.version())
+    // If the meta.properties did not contain an initial metadata.version assume oldest KRaft preview (3.0)
+    val metadataVersion = properties.initialMetadataVersion.getOrElse(MetadataVersion.IBP_3_0_IV0.kraftVersion())
     new MetaProperties(clusterId, nodeId, metadataVersion)
   }
 
