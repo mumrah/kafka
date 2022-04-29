@@ -899,21 +899,21 @@ public final class QuorumController implements Controller {
                             newEpoch + ", but we never renounced controller epoch " +
                             curEpoch);
                     }
-                    log.info(
-                        "Becoming the active controller at epoch {}, committed offset {}, committed epoch {}, and metadata.version {}",
-                        newEpoch, lastCommittedOffset, lastCommittedEpoch, featureControl.metadataVersion()
-                    );
+
 
                     // Check if we need to bootstrap a metadata.version into the log. This must happen before we can
                     // write any records to the log since we need the metadata.version to determine the correct
                     // record version
+                    final MetadataVersion metadataVersion;
                     if (featureControl.metadataVersion().equals(MetadataVersion.UNINITIALIZED)) {
                         final CompletableFuture<Map<String, ApiError>> future;
                         if (!initialMetadataVersion.isKraftVersion()) {
+                            metadataVersion = MetadataVersion.UNINITIALIZED;
                             future = new CompletableFuture<>();
                             future.completeExceptionally(
                                     new IllegalStateException("Cannot become leader without a valid initial metadata.version to use. Got " + initialMetadataVersion.version()));
                         } else {
+                            metadataVersion = initialMetadataVersion;
                             future = appendWriteEvent("initializeMetadataVersion", OptionalLong.empty(), () -> {
                                 if (initialMetadataVersion.isAtLeast(MetadataVersion.IBP_3_3_IV0)) {
                                     log.info("Initializing metadata.version to {}", initialMetadataVersion.kraftVersion());
@@ -934,7 +934,14 @@ public final class QuorumController implements Controller {
                                 });
                             }
                         });
+                    } else {
+                        metadataVersion = featureControl.metadataVersion();
                     }
+
+                    log.info(
+                            "Becoming the active controller at epoch {}, committed offset {}, committed epoch {}, and metadata.version {}",
+                            newEpoch, lastCommittedOffset, lastCommittedEpoch, metadataVersion.kraftVersion()
+                    );
 
                     curClaimEpoch = newEpoch;
                     controllerMetrics.setActive(true);
