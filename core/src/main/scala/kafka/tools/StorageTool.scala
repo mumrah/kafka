@@ -50,7 +50,7 @@ object StorageTool extends Logging {
           if (!metadataVersion.equals(MetadataVersion.latest())) {
             throw new TerseFailure(s"Only the latest metadata version ${MetadataVersion.latest().version()} may be specified.")
           }
-          val metaProperties = buildMetadataProperties(clusterId, config.get, metadataVersion.kraftVersion())
+          val metaProperties = buildMetadataProperties(clusterId, config.get)
           val ignoreFormatted = namespace.getBoolean("ignore_formatted")
           if (!configToSelfManagedMode(config.get)) {
             throw new TerseFailure("The kafka configuration file appears to be for " +
@@ -207,7 +207,6 @@ object StorageTool extends Logging {
   def buildMetadataProperties(
     clusterIdStr: String,
     config: KafkaConfig,
-    metadataVersion: Short
   ): MetaProperties = {
     val effectiveClusterId = try {
       Uuid.fromString(clusterIdStr)
@@ -218,10 +217,7 @@ object StorageTool extends Logging {
     if (config.nodeId < 0) {
       throw new TerseFailure(s"The node.id must be set to a non-negative integer. We saw ${config.nodeId}")
     }
-    if (metadataVersion < 1) {
-      throw new TerseFailure("The initial metadata.version must be greater than zero.")
-    }
-    new MetaProperties(effectiveClusterId.toString, config.nodeId, metadataVersion)
+    new MetaProperties(effectiveClusterId.toString, config.nodeId)
   }
 
   def formatCommand(stream: PrintStream,

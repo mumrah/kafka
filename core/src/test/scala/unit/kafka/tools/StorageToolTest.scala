@@ -184,14 +184,7 @@ Found problem:
     assertEquals("Cluster ID string invalid does not appear to be a valid UUID: " +
       "Input string `invalid` decoded as 5 bytes, which is not equal to the expected " +
         "16 bytes of a base64-encoded UUID", assertThrows(classOf[TerseFailure],
-          () => StorageTool.buildMetadataProperties("invalid", config, MetadataVersion.latest().kraftVersion())).getMessage)
-  }
-
-  @Test
-  def testFormatWithInvalidMetadataVersion(): Unit = {
-    val config = new KafkaConfig(newSelfManagedProperties())
-    assertEquals("The initial metadata.version must be greater than zero.", assertThrows(classOf[TerseFailure],
-      () => StorageTool.buildMetadataProperties("XcZZOzUqS4yHOjhMQB6JLQ", config, MetadataVersion.UNINITIALIZED.kraftVersion())).getMessage)
+          () => StorageTool.buildMetadataProperties("invalid", config)).getMessage)
   }
 
   @Test

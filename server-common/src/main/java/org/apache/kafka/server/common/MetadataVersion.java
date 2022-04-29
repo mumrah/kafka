@@ -43,7 +43,7 @@ import org.apache.kafka.common.record.RecordVersion;
  * released version, they can use "0.10.0" when upgrading to the 0.10.0 release.
  */
 public enum MetadataVersion {
-    UNINITIALIZED(-1, "", ""),
+    UNINITIALIZED(-1, "0.0", ""),
 
     IBP_0_8_0(-1, "0.8.0", ""),
     IBP_0_8_1(-1, "0.8.1", ""),
@@ -251,7 +251,7 @@ public enum MetadataVersion {
     }
 
     public short kraftVersion() {
-        return metadataVersion.get();
+        return metadataVersion.orElse((short) -1);
     }
 
     public boolean isKraftVersion() {
