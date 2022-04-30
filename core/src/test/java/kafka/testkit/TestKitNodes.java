@@ -111,7 +111,7 @@ public class TestKitNodes {
                 clusterId = Uuid.randomUuid();
             }
             if (initialMetadataVersion == null) {
-                initialMetadataVersion = MetadataVersion.latest().kraftVersion();
+                initialMetadataVersion = MetadataVersion.latest().featureLevel();
             }
             return new TestKitNodes(clusterId, initialMetadataVersion, controllerNodes, brokerNodes);
         }

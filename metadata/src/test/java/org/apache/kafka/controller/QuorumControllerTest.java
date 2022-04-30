@@ -486,8 +486,8 @@ public class QuorumControllerTest {
         BrokerRegistrationRequestData.FeatureCollection features = new BrokerRegistrationRequestData.FeatureCollection();
         features.add(new BrokerRegistrationRequestData.Feature()
             .setName(MetadataVersion.FEATURE_NAME)
-            .setMinSupportedVersion(MetadataVersion.IBP_3_0_IV0.kraftVersion())
-            .setMaxSupportedVersion(MetadataVersion.latest().kraftVersion()));
+            .setMinSupportedVersion(MetadataVersion.IBP_3_0_IV0.featureLevel())
+            .setMaxSupportedVersion(MetadataVersion.latest().featureLevel()));
         return features;
     }
 
@@ -687,7 +687,7 @@ public class QuorumControllerTest {
         return Arrays.asList(
             new ApiMessageAndVersion(new FeatureLevelRecord().
                 setName(MetadataVersion.FEATURE_NAME).
-                setFeatureLevel(MetadataVersion.latest().kraftVersion()), (short) 0),
+                setFeatureLevel(MetadataVersion.latest().featureLevel()), (short) 0),
             new ApiMessageAndVersion(new TopicRecord().
                 setName("foo").setTopicId(fooId), (short) 0),
             new ApiMessageAndVersion(new PartitionRecord().setPartitionId(0).
@@ -1110,7 +1110,7 @@ public class QuorumControllerTest {
                 data.featureUpdates().add(
                     new UpdateFeaturesRequestData.FeatureUpdateKey()
                         .setFeature(MetadataVersion.FEATURE_NAME)
-                        .setMaxVersionLevel(MetadataVersion.IBP_3_0_IV1.kraftVersion())
+                        .setMaxVersionLevel(MetadataVersion.IBP_3_0_IV1.featureLevel())
                         .setUpgradeType(FeatureUpdate.UpgradeType.UPGRADE.code()));
 
                 controller.updateFeatures(ANONYMOUS_CONTEXT, data).get();
@@ -1123,7 +1123,7 @@ public class QuorumControllerTest {
                 List<ApiMessageAndVersion> expectedSnapshot = Arrays.asList(
                     new ApiMessageAndVersion(new FeatureLevelRecord().
                         setName(MetadataVersion.FEATURE_NAME).
-                        setFeatureLevel(MetadataVersion.IBP_3_0_IV0.kraftVersion()), (short) 0));
+                        setFeatureLevel(MetadataVersion.IBP_3_0_IV0.featureLevel()), (short) 0));
                 checkSnapshotContent(expectedSnapshot, snapshot);
 
                 assertEquals(MetadataVersion.IBP_3_0_IV1, controller.currentMetadataVersion());

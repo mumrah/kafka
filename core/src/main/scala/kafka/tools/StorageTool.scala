@@ -49,7 +49,7 @@ object StorageTool extends Logging {
           val clusterId = namespace.getString("cluster_id")
           val metadataVersion = getMetadataVersion(namespace)
           if (metadataVersion.isLessThan(MetadataVersion.IBP_3_0_IV0)) {
-            throw new TerseFailure(s"Cannot specify a metadata version less than ${MetadataVersion.IBP_3_0_IV0.kraftVersion()}.")
+            throw new TerseFailure(s"Cannot specify a metadata version less than ${MetadataVersion.IBP_3_0_IV0.featureLevel()}.")
           }
           val metaProperties = buildMetadataProperties(clusterId, config.get)
           val ignoreFormatted = namespace.getBoolean("ignore_formatted")
@@ -99,7 +99,7 @@ object StorageTool extends Logging {
       action(storeTrue())
     formatParser.addArgument("--metadata-version", "-v").
       action(store()).
-      help(s"The initial metadata.version to use. Default is (${MetadataVersion.latest().kraftVersion()}).")
+      help(s"The initial metadata.version to use. Default is (${MetadataVersion.latest().featureLevel()}).")
 
     parser.parseArgsOrFail(args)
   }

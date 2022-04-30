@@ -86,7 +86,7 @@ public class RaftClusterInvocationContext implements TestTemplateInvocationConte
         return Arrays.asList(
             (BeforeTestExecutionCallback) context -> {
                 TestKitNodes nodes = new TestKitNodes.Builder().
-                        setInitialMetadataVersion(clusterConfig.metadataVersion().orElse(MetadataVersion.latest()).kraftVersion()).
+                        setInitialMetadataVersion(clusterConfig.metadataVersion().orElse(MetadataVersion.latest()).featureLevel()).
                         setNumBrokerNodes(clusterConfig.numBrokers()).
                         setNumControllerNodes(clusterConfig.numControllers()).build();
                 nodes.brokerNodes().forEach((brokerId, brokerNode) -> {

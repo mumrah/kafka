@@ -180,10 +180,6 @@ public enum MetadataVersion {
         this.didMetadataChange = didMetadataChange;
     }
 
-    public Optional<Short> featureLevel() {
-        return featureLevel;
-    }
-
     public boolean isSaslInterBrokerHandshakeRequestEnabled() {
         return this.isAtLeast(IBP_0_10_0_IV1);
     }
@@ -239,7 +235,7 @@ public enum MetadataVersion {
         }
     }
 
-    public short kraftVersion() {
+    public short featureLevel() {
         return featureLevel.orElse((short) -1);
     }
 
@@ -277,7 +273,7 @@ public enum MetadataVersion {
 
     public static MetadataVersion fromFeatureLevel(short version) {
         for (MetadataVersion metadataVersion: MetadataVersion.values()) {
-            if (metadataVersion.metadataVersion.isPresent() && metadataVersion.metadataVersion.get() == version) {
+            if (metadataVersion.featureLevel() == version) {
                 return metadataVersion;
             }
         }

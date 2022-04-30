@@ -257,7 +257,7 @@ public class FeatureControlManager {
     FinalizedControllerFeatures finalizedFeatures(long epoch) {
         Map<String, Short> features = new HashMap<>();
         if (!metadataVersion.get(epoch).equals(MetadataVersion.UNINITIALIZED)) {
-            features.put(MetadataVersion.FEATURE_NAME, metadataVersion.get(epoch).kraftVersion());
+            features.put(MetadataVersion.FEATURE_NAME, metadataVersion.get(epoch).featureLevel());
         }
         for (Entry<String, Short> entry : finalizedVersions.entrySet(epoch)) {
             features.put(entry.getKey(), entry.getValue());
@@ -307,7 +307,7 @@ public class FeatureControlManager {
                 wroteVersion = true;
                 return Collections.singletonList(new ApiMessageAndVersion(new FeatureLevelRecord()
                     .setName(MetadataVersion.FEATURE_NAME)
-                    .setFeatureLevel(metadataVersion.kraftVersion()), FEATURE_LEVEL_RECORD.lowestSupportedVersion()));
+                    .setFeatureLevel(metadataVersion.featureLevel()), FEATURE_LEVEL_RECORD.lowestSupportedVersion()));
             }
             // Then write the rest of the features
             if (!hasNext()) throw new NoSuchElementException();

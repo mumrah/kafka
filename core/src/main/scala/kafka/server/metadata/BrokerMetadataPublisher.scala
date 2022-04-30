@@ -130,7 +130,7 @@ class BrokerMetadataPublisher(conf: KafkaConfig,
 
       val metadataVersion: Option[Short] = Option(newImage.features().metadataVersion())
         .filterNot(mv => mv.equals(MetadataVersion.UNINITIALIZED))
-        .map(_.kraftVersion())
+        .map(_.featureLevel())
 
       if (_firstPublish) {
         info(s"Publishing initial metadata at offset $highestOffsetAndEpoch  with metadata.version $metadataVersion.")

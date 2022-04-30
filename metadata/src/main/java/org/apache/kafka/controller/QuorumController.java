@@ -907,7 +907,7 @@ public final class QuorumController implements Controller {
                     final MetadataVersion metadataVersion;
                     if (featureControl.metadataVersion().equals(MetadataVersion.UNINITIALIZED)) {
                         final CompletableFuture<Map<String, ApiError>> future;
-                        if (!initialMetadataVersion.isKraftVersion()) {
+                        if (initialMetadataVersion.featureLevel() < 1) {
                             metadataVersion = MetadataVersion.UNINITIALIZED;
                             future = new CompletableFuture<>();
                             future.completeExceptionally(
@@ -916,11 +916,11 @@ public final class QuorumController implements Controller {
                             metadataVersion = initialMetadataVersion;
                             future = appendWriteEvent("initializeMetadataVersion", OptionalLong.empty(), () -> {
                                 if (initialMetadataVersion.isAtLeast(MetadataVersion.IBP_3_3_IV0)) {
-                                    log.info("Initializing metadata.version to {}", initialMetadataVersion.kraftVersion());
+                                    log.info("Initializing metadata.version to {}", initialMetadataVersion.featureLevel());
                                 } else {
-                                    log.info("Upgrading from KRaft preview. Initializing metadata.version to {}", initialMetadataVersion.kraftVersion());
+                                    log.info("Upgrading from KRaft preview. Initializing metadata.version to {}", initialMetadataVersion.featureLevel());
                                 }
-                                return featureControl.initializeMetadataVersion(initialMetadataVersion.kraftVersion());
+                                return featureControl.initializeMetadataVersion(initialMetadataVersion.featureLevel());
                             });
                         }
                         future.whenComplete((result, exception) -> {
@@ -940,7 +940,7 @@ public final class QuorumController implements Controller {
 
                     log.info(
                             "Becoming the active controller at epoch {}, committed offset {}, committed epoch {}, and metadata.version {}",
-                            newEpoch, lastCommittedOffset, lastCommittedEpoch, metadataVersion.kraftVersion()
+                            newEpoch, lastCommittedOffset, lastCommittedEpoch, metadataVersion.featureLevel()
                     );
 
                     curClaimEpoch = newEpoch;

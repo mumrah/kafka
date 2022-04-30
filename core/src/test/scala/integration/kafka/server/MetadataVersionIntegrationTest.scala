@@ -40,7 +40,7 @@ class MetadataVersionIntegrationTest {
     assertEquals(ff.maxVersionLevel(), 1)
 
     // Update to V2
-    val updateVersion = MetadataVersion.IBP_3_3_IV0.kraftVersion.shortValue
+    val updateVersion = MetadataVersion.IBP_3_3_IV0.featureLevel.shortValue
     val updateResult = admin.updateFeatures(
       Map("metadata.version" -> new FeatureUpdate(updateVersion, UpgradeType.UPGRADE)).asJava, new UpdateFeaturesOptions())
     updateResult.all().get()
@@ -58,7 +58,7 @@ class MetadataVersionIntegrationTest {
     val admin = clusterInstance.createAdminClient()
     val describeResult = admin.describeFeatures()
     val ff = describeResult.featureMetadata().get().finalizedFeatures().get(MetadataVersion.FEATURE_NAME)
-    assertEquals(ff.minVersionLevel(), MetadataVersion.latest().kraftVersion())
-    assertEquals(ff.maxVersionLevel(), MetadataVersion.latest().kraftVersion())
+    assertEquals(ff.minVersionLevel(), MetadataVersion.latest().featureLevel())
+    assertEquals(ff.maxVersionLevel(), MetadataVersion.latest().featureLevel())
   }
 }

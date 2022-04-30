@@ -137,7 +137,7 @@ public class BootstrapMetadata {
             new ApiMessageAndVersion(
                 new FeatureLevelRecord()
                     .setName(MetadataVersion.FEATURE_NAME)
-                    .setFeatureLevel(metadata.initialMetadataVersion.kraftVersion()),
+                    .setFeatureLevel(metadata.initialMetadataVersion.featureLevel()),
                 FeatureLevelRecord.LOWEST_SUPPORTED_VERSION));
         bootstrapWriter.close();
     }
