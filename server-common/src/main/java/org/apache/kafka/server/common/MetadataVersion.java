@@ -156,32 +156,32 @@ public enum MetadataVersion {
 
     public static final String FEATURE_NAME = "metadata.version";
 
-    private final Optional<Short> metadataVersion;
-    private final String shortVersion;
-    private final String version;
+    private final Optional<Short> featureLevel;
+    private final String apacheRelease;
+    private final String name;
     private final boolean didMetadataChange;
 
-    MetadataVersion(int metadataVersion, String shortVersion, String subVersion) {
-        this(metadataVersion, shortVersion, subVersion, true);
+    MetadataVersion(int featureLevel, String apacheRelease, String subVersion) {
+        this(featureLevel, apacheRelease, subVersion, true);
     }
 
-    MetadataVersion(int metadataVersion, String shortVersion, String subVersion, boolean didMetadataChange) {
-        if (metadataVersion > 0) {
-            this.metadataVersion = Optional.of((short) metadataVersion);
+    MetadataVersion(int featureLevel, String apacheRelease, String subVersion, boolean didMetadataChange) {
+        if (featureLevel > 0) {
+            this.featureLevel = Optional.of((short) featureLevel);
         } else {
-            this.metadataVersion = Optional.empty();
+            this.featureLevel = Optional.empty();
         }
-        this.shortVersion = shortVersion;
-        if (subVersion.equals("")) {
-            this.version = shortVersion;
+        this.apacheRelease = apacheRelease;
+        if (subVersion.isEmpty()) {
+            this.name = apacheRelease;
         } else {
-            this.version = String.format("%s-%s", shortVersion, subVersion);
+            this.name = String.format("%s-%s", apacheRelease, subVersion);
         }
         this.didMetadataChange = didMetadataChange;
     }
 
-    public Optional<Short> metadataVersion() {
-        return metadataVersion;
+    public Optional<Short> featureLevel() {
+        return featureLevel;
     }
 
     public boolean isSaslInterBrokerHandshakeRequestEnabled() {
@@ -213,15 +213,12 @@ public enum MetadataVersion {
     }
 
 
-    public RecordVersion recordVersion() {
+    public RecordVersion highestSupportedRecordVersion() {
         if (this.isLessThan(IBP_0_10_0_IV0)) {
-            // IBPs less than IBP_0_10_0_IV0 use Record Version V0
             return RecordVersion.V0;
         } else if (this.isLessThan(IBP_0_11_0_IV0)) {
-            // IBPs >= IBP_0_10_0_IV0 and less than IBP_0_11_0_IV0 use V1
             return RecordVersion.V1;
         } else {
-            // all greater IBPs use V2
             return RecordVersion.V2;
         }
     }
@@ -235,40 +232,34 @@ public enum MetadataVersion {
                 if (metadataVersion.equals(MetadataVersion.UNINITIALIZED)) {
                     continue;
                 }
-                maxInterVersion.compute(metadataVersion.shortVersion, (__, currentMetadataVersion) -> {
-                    if (currentMetadataVersion == null) {
-                        return metadataVersion;
-                    } else if (metadataVersion.compareTo(currentMetadataVersion) > 0) {
-                        return metadataVersion;
-                    } else {
-                        return currentMetadataVersion;
-                    }
-                });
-                IBP_VERSIONS.put(metadataVersion.version, metadataVersion);
+                maxInterVersion.put(metadataVersion.apacheRelease, metadataVersion);
+                IBP_VERSIONS.put(metadataVersion.name, metadataVersion);
             }
             IBP_VERSIONS.putAll(maxInterVersion);
         }
     }
 
     public short kraftVersion() {
-        return metadataVersion.orElse((short) -1);
+        return featureLevel.orElse((short) -1);
     }
 
     public boolean isKraftVersion() {
-        return metadataVersion.isPresent();
+        return featureLevel.isPresent();
     }
 
     public String shortVersion() {
-        return shortVersion;
+        return apacheRelease;
     }
 
     public String version() {
-        return version;
+        return name;
     }
 
     /**
      * Return an `MetadataVersion` instance for `versionString`, which can be in a variety of formats (e.g. "0.8.0", "0.8.0.x",
      * "0.10.0", "0.10.0-IV1"). `IllegalArgumentException` is thrown if `versionString` cannot be mapped to an `MetadataVersion`.
+     * Note that 'misconfigured' values such as "1.0.1" will be parsed to `IBP_1_0_IV0` as we ignore anything after the first
+     * two digits for versions that don't start with "0."
      */
     public static MetadataVersion fromVersionString(String versionString) {
         String[] versionSegments = versionString.split(Pattern.quote("."));
@@ -362,6 +353,6 @@ public enum MetadataVersion {
 
     @Override
     public String toString() {
-        return version;
+        return name;
     }
 }
