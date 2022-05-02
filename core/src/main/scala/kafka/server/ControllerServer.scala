@@ -190,7 +190,7 @@ class ControllerServer(
           setAlterConfigPolicy(alterConfigPolicy.asJava).
           setConfigurationValidator(new ControllerConfigurationValidator()).
           setStaticConfig(config.originals).
-          setInitialMetadataVersion(bootstrapMetadata.map(_.initialMetadataVersion()).getOrElse(MetadataVersion.latest()))
+          setBootstrapMetadataVersion(bootstrapMetadata.map(_.metadataVersion()).getOrElse(MetadataVersion.latest()))
       }
       authorizer match {
         case Some(a: ClusterMetadataAuthorizer) => controllerBuilder.setAuthorizer(a)

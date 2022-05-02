@@ -41,19 +41,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+
+/**
+ * A read-only class that holds the controller bootstrap metadata. A file named "bootstrap.snapshot" is used and the
+ * format is the same as a KRaft snapshot.
+ */
 public class BootstrapMetadata {
     private static final Logger log = LoggerFactory.getLogger(BootstrapMetadata.class);
 
     public static final String BOOTSTRAP_FILE = "bootstrap.snapshot";
 
-    private final MetadataVersion initialMetadataVersion;
+    private final MetadataVersion metadataVersion;
 
-    BootstrapMetadata(MetadataVersion initialMetadataVersion) {
-        this.initialMetadataVersion = initialMetadataVersion;
+    BootstrapMetadata(MetadataVersion metadataVersion) {
+        this.metadataVersion = metadataVersion;
     }
 
-    public MetadataVersion initialMetadataVersion() {
-        return this.initialMetadataVersion;
+    public MetadataVersion metadataVersion() {
+        return this.metadataVersion;
     }
 
     /**
@@ -101,15 +106,22 @@ public class BootstrapMetadata {
         }
     }
 
-    public static BootstrapMetadata create(MetadataVersion initialMetadataVersion) {
-        return new BootstrapMetadata(initialMetadataVersion);
+    public static BootstrapMetadata create(MetadataVersion metadataVersion) {
+        return new BootstrapMetadata(metadataVersion);
     }
 
+    /**
+     * Load a bootstrap snapshot into a read-only bootstrap metadata object and return it.
+     *
+     * @param bootstrapDir  The directory from which to read the snapshot file.
+     * @return              The read-only bootstrap metadata
+     * @throws Exception
+     */
     public static BootstrapMetadata load(Path bootstrapDir) throws Exception {
         final Path bootstrapPath = bootstrapDir.resolve(BOOTSTRAP_FILE);
 
         if (!Files.exists(bootstrapPath)) {
-            log.warn("Missing bootstrap file, this appears to be a KRaft preview cluster.");
+            log.debug("Missing bootstrap file, this appears to be a KRaft preview cluster.");
             return new BootstrapMetadata(MetadataVersion.IBP_3_0_IV0);
         }
 
@@ -130,6 +142,13 @@ public class BootstrapMetadata {
         }
     }
 
+    /**
+     * Write a set of bootstrap metadata to the bootstrap snapshot in a given directory
+     *
+     * @param metadata      The metadata to persist
+     * @param bootstrapDir  The directory in which to create the bootstrap snapshot
+     * @throws IOException
+     */
     public static void write(BootstrapMetadata metadata, Path bootstrapDir) throws IOException {
         final Path bootstrapPath = bootstrapDir.resolve(BootstrapMetadata.BOOTSTRAP_FILE);
         SnapshotFileWriter bootstrapWriter = SnapshotFileWriter.open(bootstrapPath);
@@ -137,7 +156,7 @@ public class BootstrapMetadata {
             new ApiMessageAndVersion(
                 new FeatureLevelRecord()
                     .setName(MetadataVersion.FEATURE_NAME)
-                    .setFeatureLevel(metadata.initialMetadataVersion.featureLevel()),
+                    .setFeatureLevel(metadata.metadataVersion.featureLevel()),
                 FeatureLevelRecord.LOWEST_SUPPORTED_VERSION));
         bootstrapWriter.close();
     }

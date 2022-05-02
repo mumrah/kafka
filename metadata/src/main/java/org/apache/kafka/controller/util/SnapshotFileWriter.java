@@ -34,6 +34,11 @@ import java.util.List;
 
 import static org.apache.kafka.raft.KafkaRaftClient.MAX_BATCH_SIZE_BYTES;
 
+
+/**
+ * Write an arbitrary set of metadata records into a Kafka metadata snapshot format. The resulting snapshot will be use
+ * epoch of zero and an initial offset of zero. This class should not be used for creating actual metadata snapshots.
+ */
 public class SnapshotFileWriter implements AutoCloseable {
     private final FileChannel channel;
     private final BatchAccumulator<ApiMessageAndVersion> batchAccumulator;
