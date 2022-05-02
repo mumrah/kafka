@@ -156,7 +156,7 @@ public enum MetadataVersion {
 
     public static final String FEATURE_NAME = "metadata.version";
 
-    private static final MetadataVersion[] METADATA_VERSIONS = MetadataVersion.values();
+    public static final MetadataVersion[] METADATA_VERSIONS;
 
     private final Optional<Short> featureLevel;
     private final String release;
@@ -224,12 +224,13 @@ public enum MetadataVersion {
     private static final Map<String, MetadataVersion> IBP_VERSIONS;
     static {
         {
+            // Make a copy of values() and omit UNINITIALIZED
+            MetadataVersion[] enumValues = MetadataVersion.values();
+            METADATA_VERSIONS = Arrays.copyOfRange(enumValues, 1, enumValues.length);
+
             IBP_VERSIONS = new HashMap<>();
             Map<String, MetadataVersion> maxInterVersion = new HashMap<>();
-            for (MetadataVersion metadataVersion : MetadataVersion.values()) {
-                if (metadataVersion.equals(MetadataVersion.UNINITIALIZED)) {
-                    continue;
-                }
+            for (MetadataVersion metadataVersion : METADATA_VERSIONS) {
                 maxInterVersion.put(metadataVersion.release, metadataVersion);
                 IBP_VERSIONS.put(metadataVersion.ibpVersion, metadataVersion);
             }
@@ -241,15 +242,11 @@ public enum MetadataVersion {
         return featureLevel.orElse((short) -1);
     }
 
-    public boolean isKraftVersion() {
-        return featureLevel.isPresent();
-    }
-
-    public String shortVersion() {
+    public String release() {
         return release;
     }
 
-    public String version() {
+    public String ibpVersion() {
         return ibpVersion;
     }
 

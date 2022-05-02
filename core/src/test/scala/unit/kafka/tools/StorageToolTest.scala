@@ -191,13 +191,13 @@ Found problem:
   def testDefaultMetadataVersion(): Unit = {
     var namespace = StorageTool.parseArguments(Array("format", "-c", "config.props", "-t", "XcZZOzUqS4yHOjhMQB6JLQ"))
     var mv = StorageTool.getMetadataVersion(namespace)
-    assertEquals(MetadataVersion.latest().version(), mv.version(),
+    assertEquals(MetadataVersion.latest().ibpVersion(), mv.ibpVersion(),
       "Expected the default metadata.version to be the latest version")
 
     namespace = StorageTool.parseArguments(Array("format", "-c", "config.props",
-      "--metadata-version", MetadataVersion.latest().shortVersion(), "-t", "XcZZOzUqS4yHOjhMQB6JLQ"))
+      "--metadata-version", MetadataVersion.latest().release(), "-t", "XcZZOzUqS4yHOjhMQB6JLQ"))
     mv = StorageTool.getMetadataVersion(namespace)
-    assertEquals(MetadataVersion.latest().version(), mv.version(),
+    assertEquals(MetadataVersion.latest().ibpVersion(), mv.ibpVersion(),
       "Expected the default metadata.version to be the latest version")
 
   }

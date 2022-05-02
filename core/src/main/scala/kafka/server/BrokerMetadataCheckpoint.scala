@@ -104,7 +104,7 @@ class RawMetaProperties(val props: Properties = new Properties()) {
 
 object MetaProperties {
   def apply(clusterId: String, nodeId: Int): MetaProperties = {
-    MetaProperties(clusterId, nodeId)
+    new MetaProperties(clusterId, nodeId)
   }
 
   def parse(properties: RawMetaProperties): MetaProperties = {

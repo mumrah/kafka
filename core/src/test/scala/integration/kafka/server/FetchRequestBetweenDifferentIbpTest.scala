@@ -147,7 +147,7 @@ class FetchRequestBetweenDifferentIbpTest extends BaseRequestTest {
 
   private def createConfig(nodeId: Int, interBrokerVersion: MetadataVersion): KafkaConfig = {
     val props = TestUtils.createBrokerConfig(nodeId, zkConnect)
-    props.put(KafkaConfig.InterBrokerProtocolVersionProp, interBrokerVersion.version)
+    props.put(KafkaConfig.InterBrokerProtocolVersionProp, interBrokerVersion.ibpVersion)
     KafkaConfig.fromProps(props)
   }
 

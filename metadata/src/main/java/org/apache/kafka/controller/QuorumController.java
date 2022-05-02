@@ -911,7 +911,7 @@ public final class QuorumController implements Controller {
                             metadataVersion = MetadataVersion.UNINITIALIZED;
                             future = new CompletableFuture<>();
                             future.completeExceptionally(
-                                    new IllegalStateException("Cannot become leader without a valid initial metadata.version to use. Got " + bootstrapMetadataVersion.version()));
+                                    new IllegalStateException("Cannot become leader without a valid initial metadata.version to use. Got " + bootstrapMetadataVersion.ibpVersion()));
                         } else {
                             metadataVersion = bootstrapMetadataVersion;
                             future = appendWriteEvent("initializeMetadataVersion", OptionalLong.empty(), () -> {

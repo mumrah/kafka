@@ -363,10 +363,10 @@ object TestUtils extends Logging {
 
   @nowarn("cat=deprecation")
   def setIbpAndMessageFormatVersions(config: Properties, version: MetadataVersion): Unit = {
-    config.setProperty(KafkaConfig.InterBrokerProtocolVersionProp, version.version)
+    config.setProperty(KafkaConfig.InterBrokerProtocolVersionProp, version.ibpVersion)
     // for clarity, only set the log message format version if it's not ignored
     if (!LogConfig.shouldIgnoreMessageFormatVersion(version))
-      config.setProperty(KafkaConfig.LogMessageFormatVersionProp, version.version)
+      config.setProperty(KafkaConfig.LogMessageFormatVersionProp, version.ibpVersion)
   }
 
  def createAdminClient[B <: KafkaBroker](
