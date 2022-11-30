@@ -217,6 +217,11 @@ public final class MetadataDelta {
                  * updating the highest offset and epoch.
                  */
                 break;
+            case BEGIN_TRANSACTION_RECORD:
+            case END_TRANSACTION_RECORD:
+            case ABORT_TRANSACTION_RECORD:
+                // TODO handle these
+                break;
             default:
                 throw new RuntimeException("Unknown metadata record type " + type);
         }

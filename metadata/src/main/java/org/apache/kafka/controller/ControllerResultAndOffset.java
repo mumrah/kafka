@@ -27,7 +27,7 @@ final class ControllerResultAndOffset<T> extends ControllerResult<T> {
     private final long offset;
 
     private ControllerResultAndOffset(long offset, ControllerResult<T> result) {
-        super(result.records(), result.response(), result.isAtomic());
+        super(result.records(), result.response(), result.isAtomic(), result.isTransaction());
         this.offset = offset;
     }
 
@@ -44,22 +44,24 @@ final class ControllerResultAndOffset<T> extends ControllerResult<T> {
         return records().equals(other.records()) &&
             response().equals(other.response()) &&
             isAtomic() == other.isAtomic() &&
-            offset == other.offset;
+            offset == other.offset &&
+            isTransaction() == other.isTransaction();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(records(), response(), isAtomic(), offset);
+        return Objects.hash(records(), response(), isAtomic(), offset, isTransaction());
     }
 
     @Override
     public String toString() {
         return String.format(
-            "ControllerResultAndOffset(records=%s, response=%s, isAtomic=%s, offset=%s)",
-            String.join(",", records().stream().map(ApiMessageAndVersion::toString).collect(Collectors.toList())),
+            "ControllerResultAndOffset(records=%s, response=%s, isAtomic=%s, offset=%s, isTransaction=%s)",
+            records().stream().map(ApiMessageAndVersion::toString).collect(Collectors.joining(",")),
             response(),
             isAtomic(),
-            offset
+            offset,
+            isTransaction()
         );
     }
 

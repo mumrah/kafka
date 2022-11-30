@@ -49,9 +49,11 @@ import org.apache.kafka.common.message.ListPartitionReassignmentsResponseData;
 import org.apache.kafka.common.message.UpdateFeaturesRequestData;
 import org.apache.kafka.common.message.UpdateFeaturesResponseData;
 import org.apache.kafka.common.metadata.AccessControlEntryRecord;
+import org.apache.kafka.common.metadata.BeginTransactionRecord;
 import org.apache.kafka.common.metadata.BrokerRegistrationChangeRecord;
 import org.apache.kafka.common.metadata.ConfigRecord;
 import org.apache.kafka.common.metadata.ClientQuotaRecord;
+import org.apache.kafka.common.metadata.EndTransactionRecord;
 import org.apache.kafka.common.metadata.FeatureLevelRecord;
 import org.apache.kafka.common.metadata.FenceBrokerRecord;
 import org.apache.kafka.common.metadata.MetadataRecordType;
@@ -866,7 +868,7 @@ public final class QuorumController implements Controller {
     ) {
         try {
             List<ApiMessageAndVersion> records = result.records();
-            if (result.isAtomic()) {
+            if (result.isAtomic() && !result.isTransaction()) {
                 // If the result must be written out atomically, check that it is not too large.
                 // In general, we create atomic batches when it is important to commit "all, or
                 // nothing". They are limited in size and must only be used when the batch size
@@ -883,10 +885,18 @@ public final class QuorumController implements Controller {
                 }
                 return offset;
             } else {
-                // If the result is non-atomic, then split it into as many batches as needed.
+                // If the result is non-atomic or is transactional, then split it into as many batches as needed.
                 // The appender callback will create an in-memory snapshot for each batch,
                 // since we might need to revert to any of them. We will only return the final
                 // offset of the last batch, however.
+
+                if (result.isTransaction()) {
+                    // For transactions, add the begin and end records
+                    result.records().add(0,
+                        new ApiMessageAndVersion(new BeginTransactionRecord(), BeginTransactionRecord.HIGHEST_SUPPORTED_VERSION));
+                    result.records().add(
+                        new ApiMessageAndVersion(new EndTransactionRecord(), BeginTransactionRecord.HIGHEST_SUPPORTED_VERSION));
+                }
                 int startIndex = 0, numBatches = 0;
                 while (true) {
                     numBatches++;
@@ -931,27 +941,59 @@ public final class QuorumController implements Controller {
             appendRaftEvent("handleCommit[baseOffset=" + reader.baseOffset() + "]", () -> {
                 try {
                     maybeCompleteAuthorizerInitialLoad();
-                    long processedRecordsSize = 0;
                     boolean isActive = isActiveController();
                     while (reader.hasNext()) {
                         Batch<ApiMessageAndVersion> batch = reader.next();
                         long offset = batch.lastOffset();
                         int epoch = batch.epoch();
                         List<ApiMessageAndVersion> messages = batch.records();
-
                         if (isActive) {
-                            // If the controller is active, the records were already replayed,
-                            // so we don't need to do it here.
-                            log.debug("Completing purgatory items up to offset {} and epoch {}.", offset, epoch);
+                            if (!messages.isEmpty()) {
+                                // Check the beginning of each batch for a BeginTransactionRecord
+                                MetadataRecordType firstRecordType = MetadataRecordType.fromId(messages.get(0).message().apiKey());
+                                if (firstRecordType == MetadataRecordType.BEGIN_TRANSACTION_RECORD) {
+                                    if (startTransactionOffset != -1) {
+                                        log.error(
+                                            "Found BeginTransactionRecord at {} and epoch {} while still processing " +
+                                            "an in-flight transaction. Aborting transaction starting at {}.",
+                                            batch.baseOffset(), epoch, startTransactionOffset);
+                                        snapshotRegistry.revertToSnapshot(lastCommittedOffset);
+                                    } else {
+                                        log.info("Starting new metadata transaction at offset {}", batch.baseOffset());
+                                    }
+                                    startTransactionOffset = batch.baseOffset();
+                                }
 
-                            // Complete any events in the purgatory that were waiting for this offset.
-                            purgatory.completeUpTo(offset);
+                                MetadataRecordType lastRecordType = MetadataRecordType.fromId(messages.get(messages.size() - 1).message().apiKey());
+                                if (lastRecordType == MetadataRecordType.END_TRANSACTION_RECORD) {
+                                    log.info("Completing transaction starting with offset {} and ending with {}",
+                                        startTransactionOffset, offset);
+                                    startTransactionOffset = -1;
+                                } else if (lastRecordType == MetadataRecordType.ABORT_TRANSACTION_RECORD) {
+                                    log.info("Aborting transaction starting with offset {}. Resetting to {}",
+                                        startTransactionOffset, lastCommittedOffset);
+                                    snapshotRegistry.revertToSnapshot(lastCommittedOffset);
+                                    startTransactionOffset = -1;
+                                }
+                            }
 
-                            // Delete all the in-memory snapshots that we no longer need.
-                            // If we are writing a new snapshot, then we need to keep that around;
-                            // otherwise, we should delete up to the current committed offset.
-                            snapshotRegistry.deleteSnapshotsUpTo(
-                                snapshotGeneratorManager.snapshotLastOffsetFromLog().orElse(offset));
+                            // Only complete the purgatory and delete snapshots if we've completed a transaction
+                            if (startTransactionOffset == -1) {
+                                // If the controller is active, the records were already replayed,
+                                // so we don't need to do it here.
+                                log.debug("Completing purgatory items up to offset {} and epoch {}.", offset, epoch);
+
+                                // Complete any events in the purgatory that were waiting for this offset.
+                                purgatory.completeUpTo(offset);
+
+                                // Delete all the in-memory snapshots that we no longer need.
+                                // If we are writing a new snapshot, then we need to keep that around;
+                                // otherwise, we should delete up to the current committed offset.
+                                snapshotRegistry.deleteSnapshotsUpTo(
+                                    snapshotGeneratorManager.snapshotLastOffsetFromLog().orElse(offset));
+                            } else {
+                                log.info("Deferring transactional records from {} to {}", startTransactionOffset, offset);
+                            }
                         } else {
                             // If the controller is a standby, replay the records that were
                             // created by the active controller.
@@ -980,12 +1022,17 @@ public final class QuorumController implements Controller {
                                 i++;
                             }
                         }
-                        updateLastCommittedState(
-                            offset,
-                            epoch,
-                            batch.appendTimestamp(),
-                            committedBytesSinceLastSnapshot + batch.sizeInBytes()
-                        );
+                        if (startTransactionOffset == -1) {
+                            // Only update the committed offset if we've completed a transaction.
+                            updateLastCommittedState(
+                                offset,
+                                epoch,
+                                batch.appendTimestamp(),
+                                committedBytesSinceLastSnapshot + batch.sizeInBytes()
+                            );
+                        } else {
+                            log.info("Not advancing offset to {} due to in-flight transaction starting at {}", offset, startTransactionOffset);
+                        }
                     }
 
                     maybeGenerateSnapshot();
@@ -1449,6 +1496,12 @@ public final class QuorumController implements Controller {
             case NO_OP_RECORD:
                 // NoOpRecord is an empty record and doesn't need to be replayed
                 break;
+            case BEGIN_TRANSACTION_RECORD:
+                break;
+            case END_TRANSACTION_RECORD:
+                break;
+            case ABORT_TRANSACTION_RECORD:
+                break;
             default:
                 throw new RuntimeException("Unhandled record type " + type);
         }
@@ -1456,7 +1509,8 @@ public final class QuorumController implements Controller {
 
     private void maybeGenerateSnapshot() {
         if (committedBytesSinceLastSnapshot >= snapshotMaxNewRecordBytes &&
-            snapshotGeneratorManager.generator == null
+            snapshotGeneratorManager.generator == null &&
+            startTransactionOffset == -1
         ) {
             if (!isActiveController()) {
                 // The active controller creates in-memory snapshot every time an uncommitted
@@ -1632,6 +1686,11 @@ public final class QuorumController implements Controller {
      * The last offset we have committed, or -1 if we have not committed any offsets.
      */
     private long lastCommittedOffset = -1;
+
+    /**
+     * The start offset of a metadata transaction, or -1 if there are is transaction in-flight.
+     */
+    private long startTransactionOffset = -1;
 
     /**
      * The epoch of the last offset we have committed, or -1 if we have not committed any offsets.

@@ -627,7 +627,7 @@ public class ReplicationControlManager {
             return ControllerResult.atomicOf(Collections.emptyList(), data);
         } else {
             log.info("CreateTopics result(s): {}", resultsBuilder.toString());
-            return ControllerResult.atomicOf(records, data);
+            return ControllerResult.transactionOf(records, data);
         }
     }
 

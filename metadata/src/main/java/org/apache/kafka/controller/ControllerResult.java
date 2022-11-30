@@ -29,12 +29,17 @@ class ControllerResult<T> {
     private final List<ApiMessageAndVersion> records;
     private final T response;
     private final boolean isAtomic;
+    private final boolean isTransaction;
 
-    protected ControllerResult(List<ApiMessageAndVersion> records, T response, boolean isAtomic) {
+    protected ControllerResult(List<ApiMessageAndVersion> records, T response, boolean isAtomic, boolean isTransaction) {
         Objects.requireNonNull(records);
+        if (isTransaction && !isAtomic) {
+            throw new IllegalArgumentException("Cannot create a transactional result that is not also atomic");
+        }
         this.records = records;
         this.response = response;
         this.isAtomic = isAtomic;
+        this.isTransaction = isTransaction;
     }
 
     public List<ApiMessageAndVersion> records() {
@@ -49,6 +54,10 @@ class ControllerResult<T> {
         return isAtomic;
     }
 
+    public boolean isTransaction() {
+        return isTransaction;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || (!o.getClass().equals(getClass()))) {
@@ -57,33 +66,39 @@ class ControllerResult<T> {
         ControllerResult other = (ControllerResult) o;
         return records.equals(other.records) &&
             Objects.equals(response, other.response) &&
-            Objects.equals(isAtomic, other.isAtomic);
+            Objects.equals(isAtomic, other.isAtomic) &&
+            Objects.equals(isTransaction, other.isTransaction);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(records, response, isAtomic);
+        return Objects.hash(records, response, isAtomic, isTransaction);
     }
 
     @Override
     public String toString() {
         return String.format(
-            "ControllerResult(records=%s, response=%s, isAtomic=%s)",
-            String.join(",", records.stream().map(ApiMessageAndVersion::toString).collect(Collectors.toList())),
+            "ControllerResult(records=%s, response=%s, isAtomic=%s, isTransaction=%s)",
+            records.stream().map(ApiMessageAndVersion::toString).collect(Collectors.joining(",")),
             response,
-            isAtomic
+            isAtomic,
+            isTransaction
         );
     }
 
     public ControllerResult<T> withoutRecords() {
-        return new ControllerResult<>(Collections.emptyList(), response, false);
+        return new ControllerResult<>(Collections.emptyList(), response, false, false);
     }
 
     public static <T> ControllerResult<T> atomicOf(List<ApiMessageAndVersion> records, T response) {
-        return new ControllerResult<>(records, response, true);
+        return new ControllerResult<>(records, response, true, false);
+    }
+
+    public static <T> ControllerResult<T> transactionOf(List<ApiMessageAndVersion> records, T response) {
+        return new ControllerResult<>(records, response, true, true);
     }
 
     public static <T> ControllerResult<T> of(List<ApiMessageAndVersion> records, T response) {
-        return new ControllerResult<>(records, response, false);
+        return new ControllerResult<>(records, response, false, false);
     }
 }

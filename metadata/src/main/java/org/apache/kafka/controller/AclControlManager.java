@@ -97,7 +97,7 @@ public class AclControlManager {
             }
             results.add(AclCreateResult.SUCCESS);
         }
-        return new ControllerResult<>(records, results, true);
+        return ControllerResult.atomicOf(records, results);
     }
 
     Uuid newAclId() {
