@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 from collections import defaultdict
-import operator
 import os
 import re
 
@@ -10,7 +9,7 @@ import re
 def prompt_for_user():
     while True:
         try:
-            user_input = input("\nName or email (case insensitive): ") 
+            user_input = input("\nName or email (case insensitive, partial matches allowed): ")
         except (KeyboardInterrupt, EOFError):
             return None
         clean_input = user_input.strip().lower()
@@ -18,10 +17,11 @@ def prompt_for_user():
             return clean_input
 
 
-if __name__ == "__main__":
-    print("Utility to help generate 'Reviewers' string for Pull Requests. Use Ctrl+D or Ctrl+C to exit")
+def main():
+    print("Utility to help generate 'Reviewers' string for Pull Requests.")
+    print("Use Ctrl+D or Ctrl+C to print the selected reviewers and exit.")
     
-    stream = os.popen("git log | grep Reviewers")
+    stream = os.popen('git log --grep "Reviewers: " --format=%b | grep "Reviewers: "')
     lines = stream.readlines()
     all_reviewers = defaultdict(int)
     for line in lines:
@@ -53,12 +53,15 @@ if __name__ == "__main__":
         if len(candidates) == 0:
             continue
 
-        print("\nPossible matches (in order of most recent):")
+        print("\nMatches in order by most recent. Format is: [Selection] Name <Email> (Occurrences):")
         for i, candidate in zip(range(10), candidates):
-            print(f"[{i+1}] {candidate[0]} {candidate[1]} ({candidate[2]})")
+            print(f"[{i+1}] {candidate[0]} <{candidate[1]}> ({candidate[2]})")
 
         try:
             selection_input = input("\nMake a selection: ")
+            if selection_input == "":
+                print("Nothing selected")
+                continue
             selected_candidate = candidates[int(selection_input)-1]
             selected_reviewers.append(selected_candidate)
         except (EOFError, KeyboardInterrupt):
@@ -72,5 +75,9 @@ if __name__ == "__main__":
         out += ", ".join([f"{name} <{email}>" for name, email, _ in selected_reviewers])
         out += "\n"
         print(out)
-        
+    else:
+        print("\n\nNo reviewers selected")
 
+
+if __name__ == "__main__":
+    main()
