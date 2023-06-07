@@ -1,7 +1,6 @@
 name: 'Close stale issues and PRs'
-on:
-  schedule:
-    - cron: '*/15 * * * *'
+
+on: workflow_dispatch
 
 permissions:
   pull-requests: read
