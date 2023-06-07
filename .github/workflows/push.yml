@@ -21,6 +21,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: gradle/gradle-build-action@v2
+        env:
+          GRADLE_BUILD_ACTION_CACHE_DEBUG_ENABLED: true
         with:
           cache-read-only: ${{ github.ref != 'refs/heads/trunk' }}
       - run: ./gradlew --version
