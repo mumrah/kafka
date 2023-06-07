@@ -9,6 +9,15 @@ on:
         required: true
         default: true
         type: boolean
+      operationsPerRun:
+        description: 'Max GitHub API operations'
+        required: true
+        default: 30
+        type: number
+
+permissions:
+  issues: write
+  pull-requests: write
 
 jobs:
   stale:
@@ -17,6 +26,8 @@ jobs:
       - uses: actions/stale@v8
         with:
           debug-only: ${{ inputs.dryRun }}
+          operations-per-run: ${{ inputs.operationsPerRun }}
           days-before-stale: 30
           days-before-close: -1
+          stale-issue-label: 'stale'
 
