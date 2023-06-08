@@ -39,7 +39,7 @@ jobs:
               notifications
               jdks
           gradle-home-cache-cleanup: true
-      - run: ./gradlew :metadata:test
+      - run: ./gradlew --debug --build-cache :metadata:processMessages
       - uses: actions/cache/save@v3
         name: Save Generated Message Classes
         with:
