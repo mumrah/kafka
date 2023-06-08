@@ -20,8 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/cache@v3
-        id: restore-metadata-messages
+      - uses: actions/cache/restore@v3
         name: Restore Generated Message Classes
         with:
           path: metadata/src/generated
@@ -43,4 +42,4 @@ jobs:
         name: Save Generated Message Classes
         with:
           path: metadata/src/generated
-          key:  ${{ steps.restore-metadata-messages.outputs.cache-primary-key }}
+          key: cache-${{ hashFiles('metadata/src/main/resources/common/metadata/*.json') }}
