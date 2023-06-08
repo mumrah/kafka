@@ -24,9 +24,9 @@ jobs:
         name: Restore Generated Message Classes
         with:
           path: metadata/src/generated/java/org/apache/kafka/common/metadata
-          key: cache-${{ hashFiles('metadata/src/main/resources/common/metadata/*.json') }}
-      - name: "List metadata generated classes"
-        run: find metadata/src/generated 
+          key: generated-classes-${{ hashFiles('metadata/src/main/resources/common/metadata/*.json') }}
+      - name: "List metadata files"
+        run: find metadata/src/
       - uses: gradle/gradle-build-action@v2
         env:
           GRADLE_BUILD_ACTION_CACHE_DEBUG_ENABLED: true
@@ -44,4 +44,4 @@ jobs:
         name: Save Generated Message Classes
         with:
           path: metadata/src/generated/java/org/apache/kafka/common/metadata
-          key: cache-${{ hashFiles('metadata/src/main/resources/common/metadata/*.json') }}
+          key: generated-classes-${{ hashFiles('metadata/src/main/resources/common/metadata/*.json') }}
