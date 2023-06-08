@@ -20,6 +20,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        id: restore-metadata-messages
+        name: Restore Generated Message Classes
+        with:
+          path: metadata/src/generated
+          key: cache-${{ hashFiles('metadata/src/main/resources/common/metadata/*.json') }}
       - uses: gradle/gradle-build-action@v2
         env:
           GRADLE_BUILD_ACTION_CACHE_DEBUG_ENABLED: true
@@ -29,8 +35,12 @@ jobs:
           # Cache downloaded JDKs in addition to the default directories.
           gradle-home-cache-includes: |
               caches
-              caches/build-cache-1
               notifications
               jdks
           gradle-home-cache-cleanup: true
       - run: ./gradlew :metadata:test
+      - uses: actions/cache/save@v3
+        name: Save Generated Message Classes
+        with:
+          path: metadata/src/generated
+          key:  ${{ steps.restore-metadata-messages.outputs.cache-primary-key }}
