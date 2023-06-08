@@ -26,4 +26,4 @@ jobs:
         with:
           cache-read-only: ${{ github.ref != 'refs/heads/trunk' }}
       - run: ./gradlew --version
-      - run: ./gradlew --build-cache :metadata:test
+      - run: ./gradlew --info --build-cache :metadata:test
