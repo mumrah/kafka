@@ -29,7 +29,8 @@ jobs:
           # Cache downloaded JDKs in addition to the default directories.
           gradle-home-cache-includes: |
               caches
+              caches/build-cache-1
               notifications
               jdks
-      - run: ./gradlew --version
-      - run: ./gradlew --build-cache :metadata:test
+          gradle-home-cache-cleanup: true
+      - run: ./gradlew :metadata:test
