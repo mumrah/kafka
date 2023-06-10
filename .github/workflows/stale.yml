@@ -41,7 +41,7 @@ jobs:
     steps:
       - uses: actions/stale@v8
         with:
-          debug-only: ${{ inputs.dryRun || true }}
+          debug-only: ${{ inputs.dryRun || false }}
           operations-per-run: ${{ inputs.operationsPerRun || 30 }}
           days-before-stale: 0
           days-before-close: -1
