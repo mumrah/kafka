@@ -20,8 +20,28 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: gradle/gradle-build-action@v2
+      - uses: actions/cache/restore@v3
+        name: Restore Generated Message Classes
         with:
+          path: metadata/src/generated/java/org/apache/kafka/common/metadata
+          key: generated-classes-${{ hashFiles('metadata/src/main/resources/common/metadata/*.json') }}
+      - name: "List metadata files"
+        run: find metadata/src/
+      - uses: gradle/gradle-build-action@v2
+        env:
+          GRADLE_BUILD_ACTION_CACHE_DEBUG_ENABLED: true
+        with:
+          # Only write to the cache from trunk
           cache-read-only: ${{ github.ref != 'refs/heads/trunk' }}
-      - run: ./gradlew --version
-      - run: ./gradlew check -x test
+          # Cache downloaded JDKs in addition to the default directories.
+          gradle-home-cache-includes: |
+              caches
+              notifications
+              jdks
+          gradle-home-cache-cleanup: true
+      - run: ./gradlew --debug --build-cache :metadata:processMessages
+      - uses: actions/cache/save@v3
+        name: Save Generated Message Classes
+        with:
+          path: metadata/src/generated/java/org/apache/kafka/common/metadata
+          key: generated-classes-${{ hashFiles('metadata/src/main/resources/common/metadata/*.json') }}

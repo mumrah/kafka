@@ -17,16 +17,18 @@ name: 'Close stale issues and PRs'
 
 on:
   schedule:
-    - cron: '*/5 * * * *'
+    - cron: '42 * * * *'
   workflow_dispatch:
     inputs:
       dryRun:
         description: 'Dry Run'
         default: true
+        required: true
         type: boolean
       operationsPerRun:
         description: 'Max GitHub API operations'
         default: 30
+        required: true
         type: number
 
 permissions:
@@ -39,9 +41,16 @@ jobs:
     steps:
       - uses: actions/stale@v8
         with:
-          debug-only: ${{ inputs.dryRun }}
-          operations-per-run: ${{ inputs.operationsPerRun }}
-          days-before-stale: 30
+          debug-only: ${{ inputs.dryRun || false }}
+          operations-per-run: ${{ inputs.operationsPerRun || 30 }}
+          days-before-stale: 0
           days-before-close: -1
           stale-issue-label: 'stale'
+          stale-pr-message: >
+            This PR is being marked as stale since it has not had any activity in 90 days. If you
+            would like to keep this PR alive, please ask a committer for review. If the PR has 
+            merge conflicts, please update it with the latest from trunk (or appropriate release branch)
+            <p>
+            If this PR is no longer valid or desired, please feel free to close it. If no activity
+            occurrs in the next 30 days, it will be automatically closed.
 
