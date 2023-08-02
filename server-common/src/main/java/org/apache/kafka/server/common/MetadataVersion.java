@@ -271,7 +271,7 @@ public enum MetadataVersion {
     }
 
     public boolean isMetadataTransactionSupported() {
-        return !this.isAtLeast(IBP_3_6_IV1);
+        return this.isAtLeast(IBP_3_6_IV1);
     }
 
     public boolean isKRaftSupported() {

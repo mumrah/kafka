@@ -183,6 +183,8 @@ public class MetadataLoader implements RaftClient.Listener<ApiMessageAndVersion>
      */
     private MetadataImage image;
 
+    private Optional<MetadataDelta> transactionDelta;
+
     /**
      * The event queue which runs this loader.
      */
@@ -205,6 +207,7 @@ public class MetadataLoader implements RaftClient.Listener<ApiMessageAndVersion>
         this.uninitializedPublishers = new LinkedHashMap<>();
         this.publishers = new LinkedHashMap<>();
         this.image = MetadataImage.EMPTY;
+        this.transactionDelta = Optional.empty();
         this.eventQueue = new KafkaEventQueue(Time.SYSTEM, logContext,
                 threadNamePrefix + "metadata-loader-",
                 new ShutdownEvent());
@@ -310,15 +313,24 @@ public class MetadataLoader implements RaftClient.Listener<ApiMessageAndVersion>
     public void handleCommit(BatchReader<ApiMessageAndVersion> reader) {
         eventQueue.append(() -> {
             try {
-                MetadataDelta delta = new MetadataDelta.Builder().
-                        setImage(image).
-                        build();
-                LogDeltaManifest manifest = loadLogDelta(delta, reader);
+                final MetadataDelta delta;
+                final LogDeltaManifest manifest;
+                delta = transactionDelta.orElseGet(() -> new MetadataDelta.Builder().setImage(image).build());
+                manifest = loadLogDelta(delta, reader);
                 if (log.isDebugEnabled()) {
                     log.debug("handleCommit: Generated a metadata delta between {} and {} from {} batch(es) " +
-                            "in {} us.", image.offset(), manifest.provenance().lastContainedOffset(),
+                                    "in {} us.", image.offset(), manifest.provenance().lastContainedOffset(),
                             manifest.numBatches(), NANOSECONDS.toMicros(manifest.elapsedNs()));
                 }
+                if (manifest.isInTransaction()) {
+                    // If we started a transaction in this batch, or if we're continuing a transaction, don't publish.
+                    log.debug("handleCommit: not publishing since a transaction is still in progress");
+                    transactionDelta = Optional.of(delta);
+                    return;
+                } else {
+                    transactionDelta = Optional.empty();
+                }
+
                 try {
                     image = delta.apply(manifest.provenance());
                 } catch (Throwable e) {
@@ -406,6 +418,7 @@ public class MetadataLoader implements RaftClient.Listener<ApiMessageAndVersion>
         metrics.updateBatchProcessingTimeNs(elapsedNs);
         return new LogDeltaManifest(provenance,
                 currentLeaderAndEpoch,
+                delta.inTransaction(),
                 numBatches,
                 elapsedNs,
                 numBytes);
@@ -427,6 +440,11 @@ public class MetadataLoader implements RaftClient.Listener<ApiMessageAndVersion>
                         "and this snapshot in {} us.", snapshotName,
                         image.provenance().lastContainedOffset(),
                         NANOSECONDS.toMicros(manifest.elapsedNs()));
+                if (delta.inTransaction()) {
+                    faultHandler.handleFault("Cannot generate MetadataImage from snapshot " +
+                        "snapshot " + snapshotName + " since it includes a partial metadata transaction");
+                    return;
+                }
                 try {
                     image = delta.apply(manifest.provenance());
                 } catch (Throwable e) {

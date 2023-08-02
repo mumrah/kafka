@@ -270,6 +270,10 @@ class LogReplayTracker {
         return empty;
     }
 
+    boolean inTransaction() {
+        return transactionStartOffset != -1L;
+    }
+
     int curClaimEpoch() {
         return curClaimEpoch;
     }
@@ -498,9 +502,6 @@ class LogReplayTracker {
             if (transactionStartOffset == -1L) {
                 throw fatalFaultHandler.handleFault("tried to end metadata transaction at " + offset +
                         ", but we are not currently inside a metadata transaction.");
-            } else {
-                throw fatalFaultHandler.handleFault("tried to end metadata transaction at " + offset +
-                        ", but the current transaction started at " + transactionStartOffset);
             }
         }
         log.debug("Successfully ending metadata transaction at offset {}.", offset);
@@ -512,9 +513,6 @@ class LogReplayTracker {
             if (transactionStartOffset == -1L) {
                 throw fatalFaultHandler.handleFault("tried to abort metadata transaction at " + offset +
                         ", but we are not currently inside a metadata transaction.");
-            } else {
-                throw fatalFaultHandler.handleFault("tried to abort metadata transaction at " + offset +
-                        ", but the current transaction started at " + transactionStartOffset);
             }
         }
         log.warn("Aborting metadata transaction at offset {}.", offset);

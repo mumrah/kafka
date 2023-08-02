@@ -45,6 +45,8 @@ import org.apache.kafka.common.Uuid;
 import org.apache.kafka.common.errors.BrokerIdNotRegisteredException;
 import org.apache.kafka.common.errors.UnknownTopicOrPartitionException;
 import org.apache.kafka.common.message.RequestHeaderData;
+import org.apache.kafka.common.metadata.AbortTransactionRecord;
+import org.apache.kafka.common.metadata.BeginTransactionRecord;
 import org.apache.kafka.common.metadata.BrokerRegistrationChangeRecord;
 import org.apache.kafka.common.metadata.ConfigRecord;
 import org.apache.kafka.common.metadata.UnfenceBrokerRecord;
@@ -52,6 +54,7 @@ import org.apache.kafka.common.metadata.ZkMigrationStateRecord;
 import org.apache.kafka.common.requests.AlterPartitionRequest;
 import org.apache.kafka.common.security.auth.KafkaPrincipal;
 import org.apache.kafka.common.utils.LogContext;
+import org.apache.kafka.common.utils.MockTime;
 import org.apache.kafka.common.utils.Time;
 import org.apache.kafka.common.utils.Utils;
 import org.apache.kafka.common.config.ConfigResource;
@@ -103,6 +106,7 @@ import org.apache.kafka.raft.OffsetAndEpoch;
 import org.apache.kafka.server.common.ApiMessageAndVersion;
 import org.apache.kafka.server.common.MetadataVersion;
 import org.apache.kafka.server.fault.FaultHandlerException;
+import org.apache.kafka.server.fault.MockFaultHandler;
 import org.apache.kafka.snapshot.FileRawSnapshotReader;
 import org.apache.kafka.snapshot.RawSnapshotReader;
 import org.apache.kafka.snapshot.Snapshots;
@@ -111,6 +115,9 @@ import org.apache.kafka.timeline.SnapshotRegistry;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -1327,6 +1334,7 @@ public class QuorumControllerTest {
         List<ApiMessageAndVersion> records = QuorumController.generateActivationRecords(
             log,
             !stateInLog.isPresent(),
+            false,
             zkMigrationEnabled,
             BootstrapMetadata.fromVersion(metadataVersion, "test"),
             featureControlManager);
@@ -1425,5 +1433,67 @@ public class QuorumControllerTest {
                 () -> active.featureControl().zkMigrationState()).get(30, TimeUnit.SECONDS));
             assertThrows(FaultHandlerException.class, controlEnv::close);
         }
+    }
+
+    @Test
+    public void testActivationRecordsPartialTransaction() {
+        SnapshotRegistry snapshotRegistry = new SnapshotRegistry(new LogContext());
+        FeatureControlManager featureControlManager = new FeatureControlManager.Builder()
+            .setSnapshotRegistry(snapshotRegistry)
+            .setMetadataVersion(MetadataVersion.IBP_3_6_IV1)
+            .build();
+
+        LogReplayTracker tracker = new LogReplayTracker.Builder()
+            .setTime(new MockTime())
+            .setNodeId(3)
+            .setFatalFaultHandler(new MockFaultHandler("testActivationRecordsPartialTransaction"))
+            .build();
+
+        tracker.setNotEmpty();
+        tracker.updateLastCommittedState(20, 1, 1L);
+        tracker.replay(new BeginTransactionRecord(), 10);
+
+        List<ApiMessageAndVersion> records = QuorumController.generateActivationRecords(
+            log,
+            tracker.empty(),
+            tracker.inTransaction(),
+            false,
+            BootstrapMetadata.fromVersion(MetadataVersion.IBP_3_6_IV1, "test"),
+            featureControlManager);
+
+        tracker.replay(
+            RecordTestUtils.recordAtIndexAs(AbortTransactionRecord.class, records, 0).get(),
+            21
+        );
+        assertFalse(tracker.inTransaction());
+    }
+
+    @Test
+    public void testActivationRecordsPartialTransactionNoSupport() {
+        SnapshotRegistry snapshotRegistry = new SnapshotRegistry(new LogContext());
+        FeatureControlManager featureControlManager = new FeatureControlManager.Builder()
+                .setSnapshotRegistry(snapshotRegistry)
+                .setMetadataVersion(MetadataVersion.IBP_3_6_IV0)
+                .build();
+
+        LogReplayTracker tracker = new LogReplayTracker.Builder()
+                .setTime(new MockTime())
+                .setNodeId(3)
+                .setFatalFaultHandler(new MockFaultHandler("testActivationRecordsPartialTransactionNoSupport"))
+                .build();
+
+        tracker.setNotEmpty();
+        tracker.updateLastCommittedState(20, 1, 1L);
+        tracker.replay(new BeginTransactionRecord(), 10);
+
+        assertThrows(RuntimeException.class, () ->
+            QuorumController.generateActivationRecords(
+                    log,
+                    tracker.empty(),
+                    tracker.inTransaction(),
+                    false,
+                    BootstrapMetadata.fromVersion(MetadataVersion.IBP_3_6_IV0, "test"),
+                    featureControlManager)
+        );
     }
 }

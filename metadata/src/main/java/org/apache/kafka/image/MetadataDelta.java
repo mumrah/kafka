@@ -17,10 +17,13 @@
 
 package org.apache.kafka.image;
 
+import org.apache.kafka.common.metadata.AbortTransactionRecord;
 import org.apache.kafka.common.metadata.AccessControlEntryRecord;
+import org.apache.kafka.common.metadata.BeginTransactionRecord;
 import org.apache.kafka.common.metadata.BrokerRegistrationChangeRecord;
 import org.apache.kafka.common.metadata.ClientQuotaRecord;
 import org.apache.kafka.common.metadata.ConfigRecord;
+import org.apache.kafka.common.metadata.EndTransactionRecord;
 import org.apache.kafka.common.metadata.FeatureLevelRecord;
 import org.apache.kafka.common.metadata.FenceBrokerRecord;
 import org.apache.kafka.common.metadata.MetadataRecordType;
@@ -77,12 +80,18 @@ public final class MetadataDelta {
 
     private ScramDelta scramDelta = null;
 
+    private boolean inTransaction = false;
+
     public MetadataDelta(MetadataImage image) {
         this.image = image;
     }
 
     public MetadataImage image() {
         return image;
+    }
+
+    public boolean inTransaction() {
+        return inTransaction;
     }
 
     public FeaturesDelta featuresDelta() {
@@ -229,6 +238,15 @@ public final class MetadataDelta {
             case ZK_MIGRATION_STATE_RECORD:
                 replay((ZkMigrationStateRecord) record);
                 break;
+            case BEGIN_TRANSACTION_RECORD:
+                replay((BeginTransactionRecord) record);
+                break;
+            case END_TRANSACTION_RECORD:
+                replay((EndTransactionRecord) record);
+                break;
+            case ABORT_TRANSACTION_RECORD:
+                replay((AbortTransactionRecord) record);
+                break;
             default:
                 throw new RuntimeException("Unknown metadata record type " + type);
         }
@@ -317,6 +335,18 @@ public final class MetadataDelta {
         getOrCreateFeaturesDelta().replay(record);
     }
 
+    public void replay(BeginTransactionRecord record) {
+        this.inTransaction = true;
+    }
+
+    public void replay(EndTransactionRecord record) {
+        this.inTransaction = false;
+    }
+
+    public void replay(AbortTransactionRecord record) {
+        this.inTransaction = false;
+    }
+
     /**
      * Create removal deltas for anything which was in the base image, but which was not
      * referenced in the snapshot records we just applied.
@@ -333,6 +363,9 @@ public final class MetadataDelta {
     }
 
     public MetadataImage apply(MetadataProvenance provenance) {
+        if (inTransaction) {
+            throw new IllegalStateException("Cannot apply MetadataDelta in the middle of a transaction");
+        }
         FeaturesImage newFeatures;
         if (featuresDelta == null) {
             newFeatures = image.features();

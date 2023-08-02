@@ -37,6 +37,7 @@ public class LogDeltaManifest implements LoaderManifest {
      */
     private final LeaderAndEpoch leaderAndEpoch;
 
+    private final boolean inTransaction;
     /**
      * The number of batches that were loaded.
      */
@@ -55,12 +56,29 @@ public class LogDeltaManifest implements LoaderManifest {
     public LogDeltaManifest(
         MetadataProvenance provenance,
         LeaderAndEpoch leaderAndEpoch,
+        boolean inTransaction,
         int numBatches,
         long elapsedNs,
         long numBytes
     ) {
         this.provenance = provenance;
         this.leaderAndEpoch = leaderAndEpoch;
+        this.inTransaction = inTransaction;
+        this.numBatches = numBatches;
+        this.elapsedNs = elapsedNs;
+        this.numBytes = numBytes;
+    }
+
+    public LogDeltaManifest(
+        MetadataProvenance provenance,
+        LeaderAndEpoch leaderAndEpoch,
+        int numBatches,
+        long elapsedNs,
+        long numBytes
+    ) {
+        this.provenance = provenance;
+        this.leaderAndEpoch = leaderAndEpoch;
+        this.inTransaction = false;
         this.numBatches = numBatches;
         this.elapsedNs = elapsedNs;
         this.numBytes = numBytes;
@@ -80,6 +98,10 @@ public class LogDeltaManifest implements LoaderManifest {
         return leaderAndEpoch;
     }
 
+    public boolean isInTransaction() {
+        return inTransaction;
+    }
+
     public int numBatches() {
         return numBatches;
     }
@@ -97,6 +119,7 @@ public class LogDeltaManifest implements LoaderManifest {
         return Objects.hash(
                 provenance,
                 leaderAndEpoch,
+                inTransaction,
                 numBatches,
                 elapsedNs,
                 numBytes);
@@ -108,6 +131,7 @@ public class LogDeltaManifest implements LoaderManifest {
         LogDeltaManifest other = (LogDeltaManifest) o;
         return provenance.equals(other.provenance) &&
                 leaderAndEpoch == other.leaderAndEpoch &&
+                inTransaction == other.inTransaction &&
                 numBatches == other.numBatches &&
                 elapsedNs == other.elapsedNs &&
                 numBytes == other.numBytes;
@@ -118,6 +142,7 @@ public class LogDeltaManifest implements LoaderManifest {
         return "LogDeltaManifest(" +
                 "provenance=" + provenance +
                 ", leaderAndEpoch=" + leaderAndEpoch +
+                ", inTransaction=" + inTransaction +
                 ", numBatches=" + numBatches +
                 ", elapsedNs=" + elapsedNs +
                 ", numBytes=" + numBytes +
