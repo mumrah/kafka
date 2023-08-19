@@ -241,6 +241,11 @@ public class MetadataLoader implements RaftClient.Listener<ApiMessageAndVersion>
                     offset + ", but the high water mark is {}", where, highWaterMark.getAsLong());
             return true;
         }
+        if (batchLoader.isEmpty()) {
+            log.info("{}: The loader is still catching up because we have not loaded a controller record as of offset " +
+                    offset + " and high water mark is {}", where, highWaterMark.getAsLong());
+            return true;
+        }
         log.info("{}: The loader finished catching up to the current high water mark of {}",
                 where, highWaterMark.getAsLong());
         catchingUp = false;
