@@ -122,7 +122,7 @@ public final class Utils {
         return Collections.unmodifiableList(res);
     }
 
-    public static foo() {
+    public static void foo() {
 
     }
 
