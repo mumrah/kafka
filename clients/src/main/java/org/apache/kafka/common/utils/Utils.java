@@ -122,6 +122,10 @@ public final class Utils {
         return Collections.unmodifiableList(res);
     }
 
+    public static foo() {
+
+    }
+
     /**
      * Turn the given UTF8 byte array into a string
      *
