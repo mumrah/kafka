@@ -51,3 +51,5 @@ jobs:
         cache-overwrite-existing: true
     - name: Compile and validate
       run: ./gradlew --build-cache --info check -x test
+    - name: Test
+      run: ./gradlew test
