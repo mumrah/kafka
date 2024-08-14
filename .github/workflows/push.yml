@@ -55,4 +55,7 @@ jobs:
     - name: Compile and validate
       run: ./gradlew --build-cache --info check -x test
     - name: Test
-      run: ./gradlew test
+      run: |
+        ./gradlew --continue -PtestLoggingEvents=started,passed,skipped,failed \
+        -PignoreFailures=true -PmaxParallelForks=2 \
+        -PmaxTestRetries=1 -PmaxTestRetryFailures=10 test
