@@ -268,6 +268,7 @@ class ReplicaManager(val config: KafkaConfig,
                      delayedDeleteRecordsPurgatoryParam: Option[DelayedOperationPurgatory[DelayedDeleteRecords]] = None,
                      delayedElectLeaderPurgatoryParam: Option[DelayedOperationPurgatory[DelayedElectLeader]] = None,
                      delayedRemoteFetchPurgatoryParam: Option[DelayedOperationPurgatory[DelayedRemoteFetch]] = None,
+                     delayedShareFetchPurgatoryParam: Option[DelayedOperationPurgatory[DelayedShareFetch]] = None,
                      threadNamePrefix: Option[String] = None,
                      val brokerEpochSupplier: () => Long = () => -1,
                      addPartitionsToTxnManager: Option[AddPartitionsToTxnManager] = None,
@@ -293,6 +294,9 @@ class ReplicaManager(val config: KafkaConfig,
   val delayedRemoteFetchPurgatory = delayedRemoteFetchPurgatoryParam.getOrElse(
     DelayedOperationPurgatory[DelayedRemoteFetch](
       purgatoryName = "RemoteFetch", brokerId = config.brokerId))
+  val delayedShareFetchPurgatory = delayedShareFetchPurgatoryParam.getOrElse(
+    DelayedOperationPurgatory[DelayedShareFetch](
+      purgatoryName = "ShareFetch", brokerId = config.brokerId))
 
   /* epoch of the controller that last changed the leader */
   @volatile private[server] var controllerEpoch: Int = KafkaController.InitialControllerEpoch
@@ -445,6 +449,7 @@ class ReplicaManager(val config: KafkaConfig,
     delayedProducePurgatory.checkAndComplete(topicPartitionOperationKey)
     delayedFetchPurgatory.checkAndComplete(topicPartitionOperationKey)
     delayedRemoteFetchPurgatory.checkAndComplete(topicPartitionOperationKey)
+    delayedShareFetchPurgatory.checkAndComplete(topicPartitionOperationKey)
   }
 
   /**
@@ -928,6 +933,7 @@ class ReplicaManager(val config: KafkaConfig,
             delayedProducePurgatory.checkAndComplete(requestKey)
             delayedFetchPurgatory.checkAndComplete(requestKey)
             delayedDeleteRecordsPurgatory.checkAndComplete(requestKey)
+            delayedShareFetchPurgatory.checkAndComplete(requestKey)
           case LeaderHwChange.SAME =>
             // probably unblock some follower fetch requests since log end offset has been updated
             delayedFetchPurgatory.checkAndComplete(requestKey)
@@ -2516,6 +2522,7 @@ class ReplicaManager(val config: KafkaConfig,
     delayedProducePurgatory.shutdown()
     delayedDeleteRecordsPurgatory.shutdown()
     delayedElectLeaderPurgatory.shutdown()
+    delayedShareFetchPurgatory.shutdown()
     if (checkpointHW)
       checkpointHighWatermarks()
     replicaSelectorOpt.foreach(_.close)

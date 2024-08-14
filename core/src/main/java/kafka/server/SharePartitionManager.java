@@ -60,10 +60,12 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import scala.Tuple2;
@@ -89,6 +91,8 @@ public class SharePartitionManager implements AutoCloseable {
     private final int maxDeliveryCount;
     private final Persister persister;
     private final ShareGroupMetrics shareGroupMetrics;
+
+    private final SharePartitionManager2 spm2;
 
     public SharePartitionManager(
             ReplicaManager replicaManager,
@@ -120,6 +124,7 @@ public class SharePartitionManager implements AutoCloseable {
         this.maxInFlightMessages = maxInFlightMessages;
         this.persister = persister;
         this.shareGroupMetrics = new ShareGroupMetrics(metrics, time);
+        this.spm2 = new SharePartitionManager2(replicaManager, time, cache, recordLockDurationMs, maxDeliveryCount, maxInFlightMessages, persister, metrics);
     }
 
     // TODO: Move some part in share session context and change method signature to accept share
@@ -132,14 +137,20 @@ public class SharePartitionManager implements AutoCloseable {
         Map<TopicIdPartition, Integer> partitionMaxBytes) {
         log.trace("Fetch request for topicIdPartitions: {} with groupId: {} fetch params: {}",
                 topicIdPartitions, groupId, fetchParams);
-
         CompletableFuture<Map<TopicIdPartition, ShareFetchResponseData.PartitionData>> future = new CompletableFuture<>();
-        ShareFetchPartitionData shareFetchPartitionData = new ShareFetchPartitionData(fetchParams, groupId, memberId,
-                topicIdPartitions, future, partitionMaxBytes);
-        fetchQueue.add(shareFetchPartitionData);
-        maybeProcessFetchQueue();
-
+        fetchMessages(groupId, memberId, fetchParams, topicIdPartitions, partitionMaxBytes, future::complete);
         return future;
+    }
+
+    public void fetchMessages(
+            String groupId,
+            String memberId,
+            FetchParams fetchParams,
+            List<TopicIdPartition> topicIdPartitions,
+            Map<TopicIdPartition, Integer> partitionMaxBytes,
+            Consumer<Map<TopicIdPartition, PartitionData>> responseCallback
+    ) {
+        spm2.fetchMessages(groupId, memberId, fetchParams, topicIdPartitions, partitionMaxBytes, responseCallback);
     }
 
     /**
@@ -319,6 +330,8 @@ public class SharePartitionManager implements AutoCloseable {
         log.debug("Acknowledge request for topicIdPartitions: {} with groupId: {}",
                 acknowledgeTopics.keySet(), groupId);
         this.shareGroupMetrics.shareAcknowledgement();
+        this.spm2.acknowledge(memberId, groupId, acknowledgeTopics);
+        /*
         Map<TopicIdPartition, CompletableFuture<Errors>> futures = new HashMap<>();
         acknowledgeTopics.forEach((topicIdPartition, acknowledgePartitionBatches) -> {
             SharePartition sharePartition = partitionCacheMap.get(sharePartitionKey(groupId, topicIdPartition));
@@ -351,6 +364,9 @@ public class SharePartitionManager implements AutoCloseable {
             });
             return result;
         });
+
+         */
+        return CompletableFuture.completedFuture(new HashMap<>());
     }
 
     private SharePartitionKey sharePartitionKey(String groupId, TopicIdPartition topicIdPartition) {
