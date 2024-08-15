@@ -53,9 +53,9 @@ jobs:
         gradle-home-cache-cleanup: true
         cache-overwrite-existing: true
     - name: Compile and validate
-      run: ./gradlew --build-cache --info check -x test
+      run: ./gradlew --build-cache --info --scan check -x test
     - name: Test
       run: |
-        ./gradlew --continue -PtestLoggingEvents=started,passed,skipped,failed \
+        ./gradlew --build-cache --scan --continue -PtestLoggingEvents=started,passed,skipped,failed \
         -PignoreFailures=true -PmaxParallelForks=2 \
         -PmaxTestRetries=1 -PmaxTestRetryFailures=10 test
