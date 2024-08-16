@@ -54,6 +54,7 @@ jobs:
         cache-overwrite-existing: true
     - name: Compile and validate
       run: ./gradlew --build-cache --info --scan check -x test
+
   test:
     needs: validate
     runs-on: ubuntu-latest
@@ -88,8 +89,8 @@ jobs:
             jdks
           gradle-home-cache-cleanup: true
           cache-overwrite-existing: true
-    - name: Test
-      run: |
-        ./gradlew --build-cache --scan --continue -PtestLoggingEvents=started,passed,skipped,failed \
-        -PignoreFailures=true -PmaxParallelForks=2 \
-        -PmaxTestRetries=1 -PmaxTestRetryFailures=10 test
+      - name: Test
+        run: |
+          ./gradlew --build-cache --scan --continue -PtestLoggingEvents=started,passed,skipped,failed \
+          -PignoreFailures=true -PmaxParallelForks=2 \
+          -PmaxTestRetries=1 -PmaxTestRetryFailures=10 test
