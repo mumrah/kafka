@@ -62,7 +62,7 @@ jobs:
       fail-fast: false
       matrix:
         java: [ 8, 21 ]
-    name: Compile and Check Java ${{ matrix.java }}
+    name: JUnit tests Java ${{ matrix.java }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
