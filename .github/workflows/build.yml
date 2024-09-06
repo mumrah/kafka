@@ -135,7 +135,6 @@ jobs:
       - name: Finalize
         if: ${{ steps.junit-tests.outputs.junit-done == 0 }}
         run: |
-          echo "JUnit tests timed out" >> $GITHUB_STEP_SUMMARY
-          echo "${{ toJson(steps.junit-tests) }}" >> $GITHUB_STEP_SUMMARY
-          echo "Failing this workflow." >> $GITHUB_STEP_SUMMARY
+          echo "Failing this workflow since the JUnit tests timed out." >> $GITHUB_STEP_SUMMARY
+          echo "<pre>${{ toJson(steps.junit-tests) }}</pre>" >> $GITHUB_STEP_SUMMARY
           exit 1
