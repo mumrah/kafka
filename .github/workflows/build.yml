@@ -111,7 +111,7 @@ jobs:
         timeout-minutes: 5  # 3 hours
         continue-on-error: true   # Rather than fail here, fail when we process the JUnit tests below
         run: |
-          rm build/junit-xml/done
+          rm -f build/junit-xml/done
           ./gradlew --build-cache --scan --continue \
           -PtestLoggingEvents=started,passed,skipped,failed \
           -PmaxParallelForks=2 \
