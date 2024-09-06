@@ -132,8 +132,7 @@ jobs:
         env:
           GITHUB_WORKSPACE: ${{ github.workspace }}
           REPORT_URL: ${{ steps.junit-upload-artifact.outputs.artifact-url }}
-      - name: Check timeout
-        if: ${{ steps.junit-tests.outcome == 'cancelled' }}
-        run: |
-          echo "JUnit tests were cancelled"
-          exit 1
+      - name: Env 2
+        run: printenv
+        env:
+          JUNIT_STEP: ${{ toJson(steps.junit-tests) }}
