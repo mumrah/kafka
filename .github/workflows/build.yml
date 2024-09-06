@@ -111,12 +111,16 @@ jobs:
         id: junit-tests
         continue-on-error: true
         run: |
+          echo "junit=0" >> $GITHUB_OUTPUT
           ./gradlew --build-cache --scan --continue \
           -PtestLoggingEvents=started,passed,skipped,failed \
           -PmaxParallelForks=2 \
           -PmaxTestRetries=1 -PmaxTestRetryFailures=10 \
           -PcommitId=xxxxxxxxxxxxxxxx \
           test
+          echo "Finished JUnit"
+          echo "junit=1" >> $GITHUB_OUTPUT
+          echo "Wrote junit=1"
       - name: Archive JUnit reports
         if: always()
         uses: actions/upload-artifact@v4
@@ -135,4 +139,10 @@ jobs:
       - name: Env 2
         run: printenv
         env:
+          GITHUB: ${{ toJson(github) }}
           JUNIT_STEP: ${{ toJson(steps.junit-tests) }}
+      - name: Maybe fail
+        if: ${{ steps.junit-tests.outputs.junit-done == 0 }}
+        run: |
+          echo "Fail"
+          exit 1
