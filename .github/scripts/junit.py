@@ -144,7 +144,10 @@ if __name__ == "__main__":
                         required=False,
                         default="build/junit-xml/**/*.xml",
                         help="Path to XML files. Glob patterns are supported.")
-
+    parser.add_argument("--done-file",
+                        required=False,
+                        default="",
+                        help="A file that signals the test suite was completed")
     if not os.getenv("GITHUB_WORKSPACE"):
         print("This script is intended to by run by GitHub Actions.")
         exit(1)
@@ -153,7 +156,7 @@ if __name__ == "__main__":
 
     reports = glob(pathname=args.path, recursive=True)
     logger.debug(f"Found {len(reports)} JUnit results")
-    workspace_path = get_env("GITHUB_WORKSPACE") # e.g., /home/runner/work/apache/kafka
+    workspace_path = get_env("GITHUB_WORKSPACE")  # e.g., /home/runner/work/apache/kafka
 
     total_file_count = 0
     total_run = 0       # All test runs according to <testsuite tests="N"/>
@@ -255,5 +258,11 @@ if __name__ == "__main__":
     elif total_errors > 0:
         logger.debug(f"Failing this step due to {total_errors} test errors")
         exit(1)
+    elif args.done_file != "":
+        if os.path.exists(args.done_file):
+            exit(0)
+        else:
+            logger.debug(f"Failing this step because done file '{args.done_file}' was missing.")
+            exit(1)
     else:
         exit(0)

@@ -109,16 +109,16 @@ jobs:
         # -PcommitId      Prevent the Git SHA being written into the jar files (which breaks caching)
         id: junit-tests
         timeout-minutes: 5  # 3 hours
-        continue-on-error: true
+        continue-on-error: true   # Rather than fail here, fail when we process the JUnit tests below
         run: |
-          echo "junit=0" >> $GITHUB_OUTPUT
+          rm build/junit-xml/done
           ./gradlew --build-cache --scan --continue \
           -PtestLoggingEvents=started,passed,skipped,failed \
           -PmaxParallelForks=2 \
           -PmaxTestRetries=1 -PmaxTestRetryFailures=10 \
           -PcommitId=xxxxxxxxxxxxxxxx \
           test
-          echo "junit=1" >> $GITHUB_OUTPUT
+          touch build/junit-xml/done
       - name: Archive JUnit reports
         uses: actions/upload-artifact@v4
         id: junit-upload-artifact
@@ -128,13 +128,7 @@ jobs:
             **/build/reports/tests/test/*
           if-no-files-found: ignore
       - name: Parse JUnit tests
-        run: python .github/scripts/junit.py >> $GITHUB_STEP_SUMMARY
+        run: python .github/scripts/junit.py --done-file build/junit-xml/done >> $GITHUB_STEP_SUMMARY
         env:
           GITHUB_WORKSPACE: ${{ github.workspace }}
           REPORT_URL: ${{ steps.junit-upload-artifact.outputs.artifact-url }}
-      - name: Finalize
-        if: ${{ steps.junit-tests.outputs.junit-done == 0 }}
-        run: |
-          echo "Failing this workflow since the JUnit tests timed out." >> $GITHUB_STEP_SUMMARY
-          echo "<pre>${{ toJson(steps.junit-tests) }}</pre>" >> $GITHUB_STEP_SUMMARY
-          exit 1
