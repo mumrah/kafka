@@ -251,6 +251,15 @@ if __name__ == "__main__":
             print(f"| {row_joined} |")
         print("\n</details>")
 
+
+    # Print special message if these are partial results
+    if args.done_file:
+        if not os.path.exists(args.done_file):
+            logger.debug(f"Did not find done file '{args.done_file}'. These are partial results!")
+            logger.debug(summary)
+            logger.debug("Failing this step because done file was missing.")
+            exit(1)
+
     logger.debug(summary)
     if total_failures > 0:
         logger.debug(f"Failing this step due to {total_failures} test failures")
@@ -258,11 +267,5 @@ if __name__ == "__main__":
     elif total_errors > 0:
         logger.debug(f"Failing this step due to {total_errors} test errors")
         exit(1)
-    elif args.done_file != "":
-        if os.path.exists(args.done_file):
-            exit(0)
-        else:
-            logger.debug(f"Failing this step because done file '{args.done_file}' was missing.")
-            exit(1)
     else:
         exit(0)
