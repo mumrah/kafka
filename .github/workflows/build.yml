@@ -91,7 +91,7 @@ jobs:
             comment.txt
       - name: List Files
         run: |
-          find $HOME/.gradle
+          find $HOME/.gradle/build-scan-data
   test:
     needs: validate
     runs-on: ubuntu-latest
