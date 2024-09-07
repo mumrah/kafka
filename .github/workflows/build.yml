@@ -91,7 +91,7 @@ jobs:
             comment.txt
       - name: List Files
         run: |
-          find $GRADLE_HOME
+          find $HOME/.gradle
   test:
     needs: validate
     runs-on: ubuntu-latest
