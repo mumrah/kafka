@@ -35,5 +35,5 @@ jobs:
           run-id: ${{ github.payload.workflow_run.id }}
       - uses: actions/download-artifact@v4
         with:
-          name: build-scan.zip
+          name: build-scan-17.zip
           run-id: ${{ github.payload.workflow_run.id }}
