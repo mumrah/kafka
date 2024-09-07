@@ -33,3 +33,7 @@ jobs:
         with:
           name: comment-17.zip
           run-id: ${{ github.payload.workflow_run.id }}
+      - uses: actions/download-artifact@v4
+        with:
+          name: build-scan.zip
+          run-id: ${{ github.payload.workflow_run.id }}

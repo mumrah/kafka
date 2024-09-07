@@ -89,7 +89,9 @@ jobs:
           name: comment-${{ matrix.java }}
           path: |
             comment.txt
-
+      - name: List Files
+        run: |
+          find $GRADLE_HOME
   test:
     needs: validate
     runs-on: ubuntu-latest
