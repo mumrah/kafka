@@ -91,6 +91,12 @@ jobs:
       - name: List Files
         run: |
           find $HOME/.gradle/build-scan-data
+      - name: Archive scan
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-scan-${{ matrix.java }}
+          path: ~/.gradle/build-scan-data
+
   test:
     needs: validate
     runs-on: ubuntu-latest
