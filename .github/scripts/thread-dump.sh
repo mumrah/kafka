@@ -19,6 +19,8 @@ echo "Thread Dump"
 jps
 echo "Thread Dump"
 
+sleep 5;
+
 for GRADLE_WORKER_PID in `jps | grep GradleWorkerMain | awk -F" " '{print $1}'`;
 do
   echo "Before Thread Dump for GradleWorkerMain pid $GRADLE_WORKER_PID";
@@ -26,5 +28,3 @@ do
   echo "After Thread Dump for GradleWorkerMain pid $GRADLE_WORKER_PID";
   sleep 1;
 done;
-
-for pid in `ps -ef | grep your_search_term | awk '{print $2}'` ; do kill $pid ; done
