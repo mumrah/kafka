@@ -114,7 +114,8 @@ jobs:
         id: junit-test
         run: |
           set +e
-          timeout 180m ./gradlew --build-cache --continue \
+          ./.github/scripts/thread-dump.sh &
+          timeout 5m ./gradlew --build-cache --continue \
           ${{ inputs.is-public-fork == 'true' && '--no-scan' || '--scan' }} \
           -PtestLoggingEvents=started,passed,skipped,failed \
           -PmaxParallelForks=2 \
