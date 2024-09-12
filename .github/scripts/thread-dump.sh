@@ -14,17 +14,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-sleep 60;
-echo "Thread Dump"
-jps
-echo "Thread Dump"
+SLEEP_MINUTES=$(($TIMEOUT_MINUTES-5))
+echo "Dumping threads in $SLEEP_MINUTES minutes"
+sleep $(($SLEEP_MINUTES*60));
 
+echo "Dumping threads now..."
 sleep 5;
 
 for GRADLE_WORKER_PID in `jps | grep GradleWorkerMain | awk -F" " '{print $1}'`;
 do
-  echo "Before Thread Dump for GradleWorkerMain pid $GRADLE_WORKER_PID";
+  echo "Thread Dump for GradleWorkerMain pid $GRADLE_WORKER_PID";
   kill -3 $GRADLE_WORKER_PID;
-  echo "After Thread Dump for GradleWorkerMain pid $GRADLE_WORKER_PID";
-  sleep 1;
+  sleep 10;
 done;

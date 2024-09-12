@@ -111,10 +111,12 @@ jobs:
         # --continue:     Keep running even if a test fails
         # -PcommitId      Prevent the Git SHA being written into the jar files (which breaks caching)
         id: junit-test
+        env:
+          TIMEOUT_MINUTES: 10
         run: |
           set +e
           ./.github/scripts/thread-dump.sh &
-          timeout 5m ./gradlew --build-cache --continue \
+          timeout ${TIMEOUT_MINUTES}m ./gradlew --build-cache --continue \
           ${{ inputs.is-public-fork == 'true' && '--no-scan' || '--scan' }} \
           -PtestLoggingEvents=started,passed,skipped,failed \
           -PmaxParallelForks=2 \
