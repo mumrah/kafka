@@ -32,6 +32,4 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 @Tag("quarantined")
 public @interface Quarantined {
-
 }
-
