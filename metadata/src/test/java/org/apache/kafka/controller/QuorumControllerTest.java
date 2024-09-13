@@ -115,8 +115,10 @@ import org.apache.kafka.server.fault.FaultHandlerException;
 import org.apache.kafka.snapshot.FileRawSnapshotReader;
 import org.apache.kafka.snapshot.Snapshots;
 import org.apache.kafka.test.TestUtils;
+import org.apache.kafka.test.annotation.Quarantined;
 import org.apache.kafka.timeline.SnapshotRegistry;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -128,19 +130,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.OptionalInt;
-import java.util.OptionalLong;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
@@ -260,6 +250,15 @@ public class QuorumControllerTest {
                 BROKER0, Collections.emptyList())).get());
         logEnv.logManagers().forEach(m -> m.setMaxReadOffset(6L));
         assertEquals(Collections.singletonMap(BROKER0, ApiError.NONE), future1.get());
+    }
+
+    @Quarantined
+    @Test
+    public void testFlaky() {
+        Random random = new Random();
+        if (random.nextBoolean()) {
+            throw new RuntimeException();
+        }
     }
 
     @Test

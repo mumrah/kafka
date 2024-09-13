@@ -81,6 +81,7 @@ ext {
   maxScalacThreads = project.hasProperty('maxScalacThreads') ? maxScalacThreads.toInteger() :
       Math.min(Runtime.runtime.availableProcessors(), 8)
   userIgnoreFailures = project.hasProperty('ignoreFailures') ? ignoreFailures.toBoolean() : false
+  userIncludeQuarantine = project.hasProperty('includeQuarantine') ? includeQuarantine.toBoolean() : false
 
   userMaxTestRetries = project.hasProperty('maxTestRetries') ? maxTestRetries.toInteger() : 0
   userMaxTestRetryFailures = project.hasProperty('maxTestRetryFailures') ? maxTestRetryFailures.toInteger() : 0
@@ -469,6 +470,38 @@ subprojects {
   // Gradle will run each test class, so we exclude the suites to avoid redundantly running the tests twice.
   def testsToExclude = ['**/*Suite.class']
 
+  task quarantinedTests(type: Test, dependsOn: compileJava) {
+    maxParallelForks = maxTestForks
+    maxHeapSize = defaultMaxHeapSize
+    jvmArgs = defaultJvmArgs
+
+    filter {
+      excludeTestsMatching '**/*Suite.class'
+    }
+
+    testLogging {
+      events = userTestLoggingEvents ?: testLoggingEvents
+      showStandardStreams = userShowStandardStreams ?: testShowStandardStreams
+      exceptionFormat = testExceptionFormat
+      displayGranularity = 0
+    }
+
+    useJUnitPlatform {
+      includeEngines 'junit-jupiter'
+      includeTags 'quarantined'
+    }
+
+    outputs.upToDateWhen { false }
+    outputs.cacheIf { false }
+
+    develocity {
+      testRetry {
+        maxRetries = 10
+        maxFailures = userMaxTestRetryFailures
+      }
+    }
+  }
+
   test {
     ext {
       isGithubActions = System.getenv('GITHUB_ACTIONS') != null
@@ -492,10 +525,13 @@ subprojects {
     }
     logTestStdout.rehydrate(delegate, owner, this)()
 
-    exclude testsToExclude
+    filter {
+      excludeTestsMatching '**/*Suite.class'
+    }
 
     useJUnitPlatform {
       includeEngines 'junit-jupiter'
+      excludeTags 'quarantined'
     }
 
     develocity {
