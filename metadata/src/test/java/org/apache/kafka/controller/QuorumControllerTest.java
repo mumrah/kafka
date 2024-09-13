@@ -118,7 +118,6 @@ import org.apache.kafka.test.TestUtils;
 import org.apache.kafka.test.annotation.Quarantined;
 import org.apache.kafka.timeline.SnapshotRegistry;
 
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.params.ParameterizedTest;
