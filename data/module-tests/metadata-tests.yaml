@@ -1,0 +1,2904 @@
+org.apache.kafka.controller.AclControlManagerTest:
+- 'testAddAndDelete()
+
+  '
+- 'testCreateAclDeleteAcl()
+
+  '
+- 'testDeleteDedupe()
+
+  '
+- 'testLoadSnapshot()
+
+  '
+- 'testValidateFilter()
+
+  '
+- 'testValidateNewAcl()
+
+  '
+org.apache.kafka.controller.ActivationRecordsGeneratorTest:
+- 'testActivationMessageForEmptyLog()
+
+  '
+- 'testActivationMessageForNonEmptyLogNoMigrations()
+
+  '
+- 'testActivationMessageForNonEmptyLogWithMigrations()
+
+  '
+org.apache.kafka.controller.BrokerHeartbeatManagerTest:
+- 'testBrokerHeartbeatStateList()
+
+  '
+- 'testCalculateNextBrokerState()
+
+  '
+- 'testControlledShutdownOffsetIsOnlyUpdatedOnce()
+
+  '
+- 'testFindOneStaleBroker()
+
+  '
+- 'testHasValidSession()
+
+  '
+- 'testMetadataOffsetComparator()
+
+  '
+- 'testNextCheckTimeNs()
+
+  '
+- 'testTouchThrowsExceptionUnlessRegistered()
+
+  '
+- 'testUsableBrokerIterator()
+
+  '
+org.apache.kafka.controller.BrokerToElrsTest:
+- 'testIterator()
+
+  '
+org.apache.kafka.controller.BrokersToIsrsTest:
+- 'testIterator()
+
+  '
+- 'testLeadersOnlyIterator()
+
+  '
+- 'testNoLeader()
+
+  '
+org.apache.kafka.controller.ClientQuotaControlManagerTest:
+- 'testAlterAndRemove()
+
+  '
+- 'testConfigKeysForEmptyEntity()
+
+  '
+- 'testConfigKeysForEntityTypeWithClientId()
+
+  '
+- 'testConfigKeysForEntityTypeWithIp()
+
+  '
+- 'testConfigKeysForEntityTypeWithIpAndClientId()
+
+  '
+- 'testConfigKeysForEntityTypeWithIpAndUser()
+
+  '
+- 'testConfigKeysForEntityTypeWithUser()
+
+  '
+- 'testConfigKeysForEntityTypeWithUserAndClientId()
+
+  '
+- 'testConfigKeysForUnresolvableIpEntity()
+
+  '
+- 'testEntityTypes()
+
+  '
+- 'testInvalidEntityTypes()
+
+  '
+- 'testInvalidQuotaKeys()
+
+  '
+- 'testIsValidIpEntityWithLocalhost()
+
+  '
+- 'testIsValidIpEntityWithNull()
+
+  '
+- 'testIsValidIpEntityWithUnresolvableHostname()
+
+  '
+- 'testValidateQuotaKeyValueForConsumerByteRateTooLarge()
+
+  '
+- 'testValidateQuotaKeyValueForFractionalConsumerByteRate()
+
+  '
+- 'testValidateQuotaKeyValueForNegativeQuota()
+
+  '
+- 'testValidateQuotaKeyValueForUnknownQuota()
+
+  '
+- 'testValidateQuotaKeyValueForValidConsumerByteRate()
+
+  '
+- 'testValidateQuotaKeyValueForValidConsumerByteRate2()
+
+  '
+- 'testValidateQuotaKeyValueForValidRequestPercentage()
+
+  '
+- 'testValidateQuotaKeyValueForZeroQuota()
+
+  '
+org.apache.kafka.controller.ClusterControlManagerTest:
+- 'testDefaultDir()
+
+  '
+- 'testHasOnlineDir()
+
+  '
+- 'testPlaceReplicas(int)[1]
+
+  '
+- 'testPlaceReplicas(int)[2]
+
+  '
+- 'testReRegistrationAndBrokerEpoch(boolean)[1]
+
+  '
+- 'testReRegistrationAndBrokerEpoch(boolean)[2]
+
+  '
+- 'testRegisterBrokerRecordVersion(MetadataVersion)[1]
+
+  '
+- 'testRegisterBrokerRecordVersion(MetadataVersion)[2]
+
+  '
+- 'testRegisterBrokerRecordVersion(MetadataVersion)[3]
+
+  '
+- 'testRegisterBrokerRecordVersion(MetadataVersion)[4]
+
+  '
+- 'testRegisterControlWithOlderMetadataVersion()
+
+  '
+- 'testRegisterWithDuplicateDirectoryId()
+
+  '
+- 'testRegistrationWithIncorrectClusterId()
+
+  '
+- 'testRegistrationWithIncorrectInterBrokerListenerName()
+
+  '
+- 'testRegistrationWithUnsupportedFeature()
+
+  '
+- 'testRegistrationWithUnsupportedKraftVersion()
+
+  '
+- 'testRegistrationWithUnsupportedMetadataVersion()
+
+  '
+- 'testRegistrationsToRecords(MetadataVersion)[1]
+
+  '
+- 'testRegistrationsToRecords(MetadataVersion)[2]
+
+  '
+- 'testReplay(MetadataVersion)[1]
+
+  '
+- 'testReplay(MetadataVersion)[2]
+
+  '
+- 'testReplayBrokerRegistrationChangeRecord()
+
+  '
+- 'testReplayRegisterBrokerRecord()
+
+  '
+- 'testUnregister()
+
+  '
+org.apache.kafka.controller.ConfigurationControlManagerTest:
+- 'testIncrementalAlterConfig()
+
+  '
+- 'testIncrementalAlterConfigs()
+
+  '
+- 'testIncrementalAlterConfigsWithPolicy()
+
+  '
+- 'testIncrementalAlterConfigsWithoutExistence()
+
+  '
+- 'testIncrementalAlterMultipleConfigValues()
+
+  '
+- 'testLegacyAlterConfigs()
+
+  '
+- 'testReplay()
+
+  '
+org.apache.kafka.controller.FeatureControlManagerTest:
+- 'testApplyMetadataVersionChangeRecord()
+
+  '
+- 'testCanUpgradeToHigherVersion()
+
+  '
+- 'testCanUseSafeDowngradeIfMetadataDidNotChange()
+
+  '
+- 'testCanUseUnsafeDowngradeIfMetadataChanged()
+
+  '
+- 'testCannotDowngradeBefore3_3_IV0()
+
+  '
+- 'testCannotDowngradeToHigherVersion()
+
+  '
+- 'testCannotDowngradeToVersionBeforeMinimumSupportedKraftVersion()
+
+  '
+- 'testCannotUnsafeDowngradeToHigherVersion()
+
+  '
+- 'testCannotUpgradeToLowerVersion()
+
+  '
+- 'testCannotUseSafeDowngradeIfMetadataChanged()
+
+  '
+- 'testCreateFeatureLevelRecords()
+
+  '
+- 'testNoMetadataVersionChangeDuringMigration()
+
+  '
+- 'testReplay()
+
+  '
+- 'testReplayRecords()
+
+  '
+- 'testUnsafeDowngradeIsTemporarilyDisabled()
+
+  '
+- 'testUpdateFeatures()
+
+  '
+- 'testUpdateFeaturesErrorCases()
+
+  '
+org.apache.kafka.controller.LogReplayTrackerTest:
+- 'testEmpty()
+
+  '
+org.apache.kafka.controller.OffsetControlManagerTest:
+- 'testAbortTransactionRecordNotAllowedInSnapshot()
+
+  '
+- 'testActivate()
+
+  '
+- 'testActivateAndDeactivate()
+
+  '
+- 'testActivateFailsIfAlreadyActive()
+
+  '
+- 'testActivateFailsIfNewNextWriteOffsetIsNegative()
+
+  '
+- 'testBeginTransactionRecordNotAllowedInSnapshot()
+
+  '
+- 'testDeactivateFailsIfNotActive()
+
+  '
+- 'testEndLoadSnapshotFailsWhenNotInSnapshot()
+
+  '
+- 'testEndTransactionRecordNotAllowedInSnapshot()
+
+  '
+- 'testHandleCommitBatch()
+
+  '
+- 'testHandleLoadSnapshot()
+
+  '
+- 'testHandleScheduleAtomicAppend()
+
+  '
+- 'testInitialValues()
+
+  '
+- 'testLoadSnapshotClearsTransactionalState()
+
+  '
+- 'testReplayTransaction(boolean)[1]
+
+  '
+- 'testReplayTransaction(boolean)[2]
+
+  '
+org.apache.kafka.controller.PartitionChangeBuilderTest:
+- 'testAddingReplicaReassignment(short)[1]
+
+  '
+- 'testAddingReplicaReassignment(short)[2]
+
+  '
+- 'testAddingReplicaReassignment(short)[3]
+
+  '
+- 'testChangeInLeadershipDoesNotChangeRecoveryState(boolean, boolean)[1]
+
+  '
+- 'testChangeInLeadershipDoesNotChangeRecoveryState(boolean, boolean)[2]
+
+  '
+- 'testChangeInLeadershipDoesNotChangeRecoveryState(boolean, boolean)[3]
+
+  '
+- 'testChangeInLeadershipDoesNotChangeRecoveryState(boolean, boolean)[4]
+
+  '
+- 'testChangeRecordIsNoOp()
+
+  '
+- 'testElectLeader(short)[1]
+
+  '
+- 'testElectLeader(short)[2]
+
+  '
+- 'testElectLeader(short)[3]
+
+  '
+- 'testEligibleLeaderReplicas_ElectLastKnownLeader()
+
+  '
+- 'testEligibleLeaderReplicas_ElectLastKnownLeaderShouldFail()
+
+  '
+- 'testEligibleLeaderReplicas_ElrCanBeElected(boolean)[1]
+
+  '
+- 'testEligibleLeaderReplicas_ElrCanBeElected(boolean)[2]
+
+  '
+- 'testEligibleLeaderReplicas_IsrAddNewMemberNotInELR(short)[1]
+
+  '
+- 'testEligibleLeaderReplicas_IsrAddNewMemberNotInELR(short)[2]
+
+  '
+- 'testEligibleLeaderReplicas_IsrAddNewMemberNotInELR(short)[3]
+
+  '
+- 'testEligibleLeaderReplicas_IsrCanShrinkToZero(boolean)[1]
+
+  '
+- 'testEligibleLeaderReplicas_IsrCanShrinkToZero(boolean)[2]
+
+  '
+- 'testEligibleLeaderReplicas_IsrExpandAboveMinISR(short)[1]
+
+  '
+- 'testEligibleLeaderReplicas_IsrExpandAboveMinISR(short)[2]
+
+  '
+- 'testEligibleLeaderReplicas_IsrExpandAboveMinISR(short)[3]
+
+  '
+- 'testEligibleLeaderReplicas_IsrShrinkBelowMinISR(short)[1]
+
+  '
+- 'testEligibleLeaderReplicas_IsrShrinkBelowMinISR(short)[2]
+
+  '
+- 'testEligibleLeaderReplicas_IsrShrinkBelowMinISR(short)[3]
+
+  '
+- 'testEligibleLeaderReplicas_RemoveUncleanShutdownReplicasFromElr(short)[1]
+
+  '
+- 'testEligibleLeaderReplicas_RemoveUncleanShutdownReplicasFromElr(short)[2]
+
+  '
+- 'testEligibleLeaderReplicas_RemoveUncleanShutdownReplicasFromElr(short)[3]
+
+  '
+- 'testIsrChangeAndLeaderChange(short)[1]
+
+  '
+- 'testIsrChangeAndLeaderChange(short)[2]
+
+  '
+- 'testIsrChangeAndLeaderChange(short)[3]
+
+  '
+- 'testIsrChangeDoesntBumpLeaderEpoch(short)[1]
+
+  '
+- 'testIsrChangeDoesntBumpLeaderEpoch(short)[2]
+
+  '
+- 'testIsrChangeDoesntBumpLeaderEpoch(short)[3]
+
+  '
+- 'testIsrEnlargementCompletesReassignment(short)[1]
+
+  '
+- 'testIsrEnlargementCompletesReassignment(short)[2]
+
+  '
+- 'testIsrEnlargementCompletesReassignment(short)[3]
+
+  '
+- 'testKeepsDirectoriesAfterReassignment()
+
+  '
+- 'testLeaderEpochBumpOnIsrShrink(String)[1]
+
+  '
+- 'testLeaderEpochBumpOnIsrShrink(String)[2]
+
+  '
+- 'testLeaderEpochBumpOnIsrShrinkWithZkMigration(String)[1]
+
+  '
+- 'testLeaderEpochBumpOnIsrShrinkWithZkMigration(String)[2]
+
+  '
+- 'testLeaderEpochBumpOnIsrShrinkWithZkMigration(String)[3]
+
+  '
+- 'testLeaderEpochBumpOnNewReplicaSetDisjoint(String)[1]
+
+  '
+- 'testLeaderEpochBumpOnNewReplicaSetDisjoint(String)[2]
+
+  '
+- 'testLeaderEpochBumpOnNewReplicaSetDisjoint(String)[3]
+
+  '
+- 'testLeaderEpochBumpOnNewReplicaSetDisjoint(String)[4]
+
+  '
+- 'testLeaderEpochBumpOnNewReplicaSetDisjoint(String)[5]
+
+  '
+- 'testNoChange(short)[1]
+
+  '
+- 'testNoChange(short)[2]
+
+  '
+- 'testNoChange(short)[3]
+
+  '
+- 'testNoLeaderEpochBumpIfNothingChanged(short)[1]
+
+  '
+- 'testNoLeaderEpochBumpIfNothingChanged(short)[2]
+
+  '
+- 'testNoLeaderEpochBumpIfNothingChanged(short)[3]
+
+  '
+- 'testNoLeaderEpochBumpOnEmptyTargetIsr(String)[1]
+
+  '
+- 'testNoLeaderEpochBumpOnEmptyTargetIsr(String)[2]
+
+  '
+- 'testNoLeaderEpochBumpOnEmptyTargetIsr(String)[3]
+
+  '
+- 'testNoLeaderEpochBumpOnEmptyTargetIsr(String)[4]
+
+  '
+- 'testNoLeaderEpochBumpOnIsrExpansion(String)[1]
+
+  '
+- 'testNoLeaderEpochBumpOnIsrExpansion(String)[2]
+
+  '
+- 'testNoLeaderEpochBumpOnIsrExpansion(String)[3]
+
+  '
+- 'testNoLeaderEpochBumpOnIsrExpansion(String)[4]
+
+  '
+- 'testNoLeaderEpochBumpOnIsrExpansion(String)[5]
+
+  '
+- 'testNoLeaderEpochBumpOnIsrExpansionDuringMigration(String)[1]
+
+  '
+- 'testNoLeaderEpochBumpOnIsrExpansionDuringMigration(String)[2]
+
+  '
+- 'testNoLeaderEpochBumpOnIsrExpansionDuringMigration(String)[3]
+
+  '
+- 'testNoLeaderEpochBumpOnIsrExpansionDuringMigration(String)[4]
+
+  '
+- 'testNoLeaderEpochBumpOnIsrExpansionDuringMigration(String)[5]
+
+  '
+- 'testNoLeaderEpochBumpOnIsrShrink(String)[1]
+
+  '
+- 'testNoLeaderEpochBumpOnIsrShrink(String)[2]
+
+  '
+- 'testNoLeaderEpochBumpOnIsrShrink(String)[3]
+
+  '
+- 'testReassignmentRearrangesReplicas(short)[1]
+
+  '
+- 'testReassignmentRearrangesReplicas(short)[2]
+
+  '
+- 'testReassignmentRearrangesReplicas(short)[3]
+
+  '
+- 'testRemovingReplicaReassignment(short)[1]
+
+  '
+- 'testRemovingReplicaReassignment(short)[2]
+
+  '
+- 'testRemovingReplicaReassignment(short)[3]
+
+  '
+- 'testRevertReassignment(short)[1]
+
+  '
+- 'testRevertReassignment(short)[2]
+
+  '
+- 'testRevertReassignment(short)[3]
+
+  '
+- 'testStoppedLeaderIsDemotedAfterReassignmentCompletesEvenIfNoNewEligibleLeaders()
+
+  '
+- 'testUncleanLeaderElection(short)[1]
+
+  '
+- 'testUncleanLeaderElection(short)[2]
+
+  '
+- 'testUncleanLeaderElection(short)[3]
+
+  '
+- 'testUncleanSetsLeaderRecoveringState(boolean, boolean)[1]
+
+  '
+- 'testUncleanSetsLeaderRecoveringState(boolean, boolean)[2]
+
+  '
+- 'testUncleanSetsLeaderRecoveringState(boolean, boolean)[3]
+
+  '
+- 'testUncleanSetsLeaderRecoveringState(boolean, boolean)[4]
+
+  '
+- 'testUpdateDirectories()
+
+  '
+org.apache.kafka.controller.PartitionReassignmentReplicasTest:
+- 'testAdditions()
+
+  '
+- 'testAdditionsAndRemovals()
+
+  '
+- 'testDoesCompleteReassignmentAllNewReplicas()
+
+  '
+- 'testDoesCompleteReassignmentSomeNewReplicas()
+
+  '
+- 'testDoesNotCompleteReassignment()
+
+  '
+- 'testDoesNotCompleteReassignmentIfIsrDoesNotHaveAllTargetReplicas()
+
+  '
+- 'testDoesNotCompleteReassignmentIfNoneOngoing()
+
+  '
+- 'testIsReassignmentInProgress()
+
+  '
+- 'testNoneAddedOrRemoved()
+
+  '
+- 'testOriginalReplicas()
+
+  '
+- 'testRearrangement()
+
+  '
+- 'testRemovals()
+
+  '
+org.apache.kafka.controller.PartitionReassignmentRevertTest:
+- 'testIsrSpecialCase()
+
+  '
+- 'testNoneAddedOrRemoved()
+
+  '
+- 'testSomeAdding()
+
+  '
+- 'testSomeRemoving()
+
+  '
+- 'testSomeRemovingAndAdding()
+
+  '
+org.apache.kafka.controller.ProducerIdControlManagerTest:
+- 'testGenerateProducerIds()
+
+  '
+- 'testInitialResult()
+
+  '
+- 'testMaxValue()
+
+  '
+- 'testMonotonic()
+
+  '
+- 'testUnknownBrokerOrEpoch()
+
+  '
+org.apache.kafka.controller.QuorumControllerMetricsIntegrationTest:
+- 'testClosingQuorumControllerClosesMetrics()
+
+  '
+- 'testEventQueueOperationsStartedMetric()
+
+  '
+- 'testFailingOverIncrementsNewActiveControllerCount(boolean)[1]
+
+  '
+- 'testFailingOverIncrementsNewActiveControllerCount(boolean)[2]
+
+  '
+- 'testTimeoutMetrics()
+
+  '
+org.apache.kafka.controller.QuorumControllerTest:
+- 'testActivationRecords33()
+
+  '
+- 'testActivationRecords34()
+
+  '
+- 'testActivationRecordsNonEmptyLog()
+
+  '
+- 'testActivationRecordsPartialBootstrap(boolean)[1]
+
+  '
+- 'testActivationRecordsPartialBootstrap(boolean)[2]
+
+  '
+- 'testActivationRecordsPartialTransaction()
+
+  '
+- 'testActivationRecordsPartialTransactionNoSupport()
+
+  '
+- 'testAppendRecords()
+
+  '
+- 'testAppendRecordsAtomically()
+
+  '
+- 'testBalancePartitionLeaders()
+
+  '
+- 'testBootstrapZkMigrationRecord()
+
+  '
+- 'testBrokerHeartbeatDuringMigration(MetadataVersion)[1]
+
+  '
+- 'testBrokerHeartbeatDuringMigration(MetadataVersion)[2]
+
+  '
+- 'testBrokerHeartbeatDuringMigration(MetadataVersion)[3]
+
+  '
+- 'testBrokerHeartbeatDuringMigration(MetadataVersion)[4]
+
+  '
+- 'testConfigResourceExistenceChecker()
+
+  '
+- 'testConfigurationOperations()
+
+  '
+- 'testDelayedConfigurationOperations()
+
+  '
+- 'testEarlyControllerResults()
+
+  '
+- 'testFailoverDuringMigrationTransaction()
+
+  '
+- 'testFatalMetadataErrorDuringLogLoading()
+
+  '
+- 'testFatalMetadataErrorDuringSnapshotLoading()
+
+  '
+- 'testFatalMetadataReplayErrorOnActive()
+
+  '
+- 'testFenceMultipleBrokers()
+
+  '
+- 'testInsertBootstrapRecordsToEmptyLog()
+
+  '
+- 'testMigrationsEnabledForOldBootstrapMetadataVersion()
+
+  '
+- 'testNoOpRecordWriteAfterTimeout()
+
+  '
+- 'testRegisterBrokerKRaftVersions(short, short)[1]
+
+  '
+- 'testRegisterBrokerKRaftVersions(short, short)[2]
+
+  '
+- 'testRegisterBrokerKRaftVersions(short, short)[3]
+
+  '
+- 'testRegisterBrokerKRaftVersions(short, short)[4]
+
+  '
+- 'testSnapshotSaveAndLoad()
+
+  '
+- 'testTimeouts()
+
+  '
+- 'testUncleanShutdownBroker()
+
+  '
+- 'testUnregisterBroker()
+
+  '
+- 'testUpgradeFromPreProductionVersion()
+
+  '
+- 'testUpgradeMigrationStateFrom34()
+
+  '
+org.apache.kafka.controller.QuorumFeaturesTest:
+- 'ensureDefaultSupportedFeaturesRangeMaxNotZero(boolean)[1]
+
+  '
+- 'ensureDefaultSupportedFeaturesRangeMaxNotZero(boolean)[2]
+
+  '
+- 'testDefaultFeatureMap()
+
+  '
+- 'testDefaultFeatureMapWithUnstable()
+
+  '
+- 'testIsControllerId()
+
+  '
+- 'testLocalSupportedFeature()
+
+  '
+- 'testReasonNotSupported()
+
+  '
+- 'testZkMigrationNotReadyIfControllerNotReady()
+
+  '
+- 'testZkMigrationNotReadyIfMetadataVersionTooLow()
+
+  '
+- 'testZkMigrationNotReadyIfNotAllControllersRegistered()
+
+  '
+- 'testZkMigrationReadyIfAllControllersReady()
+
+  '
+- 'testZkMigrationReadyIfControllerRegistrationNotSupported()
+
+  '
+org.apache.kafka.controller.ReplicationControlManagerTest:
+- 'testAlterPartitionHandleUnknownTopicIdOrName(short)[1]
+
+  '
+- 'testAlterPartitionHandleUnknownTopicIdOrName(short)[2]
+
+  '
+- 'testAlterPartitionHandleUnknownTopicIdOrName(short)[3]
+
+  '
+- 'testAlterPartitionHandleUnknownTopicIdOrName(short)[4]
+
+  '
+- 'testAlterPartitionShouldRejectBrokersWithStaleEpoch(short)[1]
+
+  '
+- 'testAlterPartitionShouldRejectBrokersWithStaleEpoch(short)[2]
+
+  '
+- 'testAlterPartitionShouldRejectBrokersWithStaleEpoch(short)[3]
+
+  '
+- 'testAlterPartitionShouldRejectBrokersWithStaleEpoch(short)[4]
+
+  '
+- 'testAlterPartitionShouldRejectFencedBrokers(short)[1]
+
+  '
+- 'testAlterPartitionShouldRejectFencedBrokers(short)[2]
+
+  '
+- 'testAlterPartitionShouldRejectFencedBrokers(short)[3]
+
+  '
+- 'testAlterPartitionShouldRejectFencedBrokers(short)[4]
+
+  '
+- 'testAlterPartitionShouldRejectShuttingDownBrokers(short)[1]
+
+  '
+- 'testAlterPartitionShouldRejectShuttingDownBrokers(short)[2]
+
+  '
+- 'testAlterPartitionShouldRejectShuttingDownBrokers(short)[3]
+
+  '
+- 'testAlterPartitionShouldRejectShuttingDownBrokers(short)[4]
+
+  '
+- 'testBalancePartitionLeaders()
+
+  '
+- 'testCancelReassignPartitions()
+
+  '
+- 'testCreatePartitions()
+
+  '
+- 'testCreatePartitionsFailsWhenAllBrokersAreFencedOrInControlledShutdown()
+
+  '
+- 'testCreatePartitionsFailsWithManualAssignmentWithAllFenced()
+
+  '
+- 'testCreatePartitionsISRInvariants()
+
+  '
+- 'testCreatePartitionsWithMutationQuotaExceeded()
+
+  '
+- 'testCreateTopicWithCollisionChars()
+
+  '
+- 'testCreateTopics()
+
+  '
+- 'testCreateTopicsISRInvariants()
+
+  '
+- 'testCreateTopicsWithConfigs()
+
+  '
+- 'testCreateTopicsWithMutationQuotaExceeded()
+
+  '
+- 'testCreateTopicsWithPolicy()
+
+  '
+- 'testCreateTopicsWithValidateOnlyFlag(boolean)[1]
+
+  '
+- 'testCreateTopicsWithValidateOnlyFlag(boolean)[2]
+
+  '
+- 'testDeleteTopics()
+
+  '
+- 'testDeleteTopicsWithMutationQuotaExceeded()
+
+  '
+- 'testDuplicateTopicIdReplay()
+
+  '
+- 'testElectPreferredLeaders()
+
+  '
+- 'testElectUncleanLeaders_WithoutElr(boolean)[1]
+
+  '
+- 'testElectUncleanLeaders_WithoutElr(boolean)[2]
+
+  '
+- 'testEligibleLeaderReplicas_BrokerFence()
+
+  '
+- 'testEligibleLeaderReplicas_CleanElection()
+
+  '
+- 'testEligibleLeaderReplicas_DeleteTopic()
+
+  '
+- 'testEligibleLeaderReplicas_EffectiveMinIsr()
+
+  '
+- 'testEligibleLeaderReplicas_ShrinkAndExpandIsr()
+
+  '
+- 'testEligibleLeaderReplicas_UncleanShutdown()
+
+  '
+- 'testFenceMultipleBrokers()
+
+  '
+- 'testHandleAssignReplicasToDirs()
+
+  '
+- 'testHandleAssignReplicasToDirsFailsOnOlderMv()
+
+  '
+- 'testHandleDirectoriesOffline()
+
+  '
+- 'testInvalidAlterPartitionRequests()
+
+  '
+- 'testInvalidCreateTopicsWithValidateOnlyFlag()
+
+  '
+- 'testKRaftClusterDescriber()
+
+  '
+- 'testManualPartitionAssignmentOnAllFencedBrokers()
+
+  '
+- 'testMaybeTriggerUncleanLeaderElectionForLeaderlessPartitions(String)[1]
+
+  '
+- 'testMaybeTriggerUncleanLeaderElectionForLeaderlessPartitions(String)[2]
+
+  '
+- 'testMaybeTriggerUncleanLeaderElectionForLeaderlessPartitions(String)[3]
+
+  '
+- 'testMaybeTriggerUncleanLeaderElectionForLeaderlessPartitions(String)[4]
+
+  '
+- 'testMaybeTriggerUncleanLeaderElectionForLeaderlessPartitions(String)[5]
+
+  '
+- 'testPreferredElectionDoesNotTriggerUncleanElection()
+
+  '
+- 'testProcessBrokerHeartbeatInControlledShutdown(MetadataVersion)[1]
+
+  '
+- 'testProcessBrokerHeartbeatInControlledShutdown(MetadataVersion)[2]
+
+  '
+- 'testProcessExpiredBrokerHeartbeat()
+
+  '
+- 'testReassignPartitions(short)[1]
+
+  '
+- 'testReassignPartitions(short)[2]
+
+  '
+- 'testReassignPartitions(short)[3]
+
+  '
+- 'testReassignPartitions(short)[4]
+
+  '
+- 'testReassignPartitionsHandlesNewReassignmentThatRemovesPreviouslyAddingReplicas()
+
+  '
+- 'testRemoveLeaderships()
+
+  '
+- 'testShrinkAndExpandIsr()
+
+  '
+- 'testTopicNameCollision()
+
+  '
+- 'testValidateBadManualPartitionAssignments()
+
+  '
+- 'testValidateGoodManualPartitionAssignments()
+
+  '
+- 'testValidateNewTopicNames()
+
+  '
+org.apache.kafka.controller.ResultOrErrorTest:
+- 'testEquals()
+
+  '
+- 'testError()
+
+  '
+- 'testResult()
+
+  '
+org.apache.kafka.controller.ScramCredentialValueTest:
+- 'testEqualsAndHashCode()
+
+  '
+- 'testEqualsSameInstance()
+
+  '
+- 'testNotEqualsDifferentContent()
+
+  '
+org.apache.kafka.controller.errors.ControllerExceptionsTest:
+- 'testExecutionExceptionWithNullCauseIsNotTimeoutException()
+
+  '
+- 'testNewPreMigrationExceptionWithActiveController()
+
+  '
+- 'testNewPreMigrationExceptionWithNoController()
+
+  '
+- 'testNewWrongControllerExceptionWithActiveController()
+
+  '
+- 'testNewWrongControllerExceptionWithNoController()
+
+  '
+- 'testRuntimeExceptionIsNotTimeoutException()
+
+  '
+- 'testTimeoutExceptionIsTimeoutException()
+
+  '
+- 'testTopicExistsExceptionIsNotTimeoutException()
+
+  '
+- 'testWrappedRuntimeExceptionIsNotTimeoutException()
+
+  '
+- 'testWrappedTimeoutExceptionIsTimeoutException()
+
+  '
+org.apache.kafka.controller.errors.EventHandlerExceptionInfoTest:
+- 'testFaultExceptionFailureMessage()
+
+  '
+- 'testInterruptedExceptionFailureMessageWhenActive()
+
+  '
+- 'testInterruptedExceptionFailureMessageWhenInactive()
+
+  '
+- 'testInterruptedExceptionInfo()
+
+  '
+- 'testIsNotTimeoutException()
+
+  '
+- 'testIsTimeoutException()
+
+  '
+- 'testNotLeaderExceptionFailureMessage()
+
+  '
+- 'testNotLeaderExceptionInfo()
+
+  '
+- 'testNullPointerExceptionFailureMessageWhenActive()
+
+  '
+- 'testNullPointerExceptionFailureMessageWhenInactive()
+
+  '
+- 'testNullPointerExceptionInfo()
+
+  '
+- 'testRejectedExecutionExceptionFailureMessage()
+
+  '
+- 'testRejectedExecutionExceptionInfo()
+
+  '
+- 'testTopicExistsExceptionFailureMessage()
+
+  '
+- 'testTopicExistsExceptionInfo()
+
+  '
+org.apache.kafka.controller.metrics.ControllerMetadataMetricsPublisherTest:
+- 'testLoadSnapshot()
+
+  '
+- 'testMetricsBeforePublishing()
+
+  '
+- 'testPublish()
+
+  '
+org.apache.kafka.controller.metrics.ControllerMetadataMetricsTest:
+- 'testActiveBrokerCountMetric()
+
+  '
+- 'testFencedBrokerMetric()
+
+  '
+- 'testGlobalPartitionCountMetric()
+
+  '
+- 'testGlobalTopicCountMetric()
+
+  '
+- 'testMetadataErrorCount()
+
+  '
+- 'testMetricNames()
+
+  '
+- 'testOfflinePartitionCountMetric()
+
+  '
+- 'testPreferredReplicaImbalanceCountMetric()
+
+  '
+- 'testUpdateUncleanLeaderElection()
+
+  '
+org.apache.kafka.controller.metrics.ControllerMetricsChangesTest:
+- 'testDelta()
+
+  '
+- 'testHandleBrokerFencing()
+
+  '
+- 'testHandleBrokerUnfencing()
+
+  '
+- 'testHandleDeletedTopic()
+
+  '
+- 'testHandleNewFencedBroker()
+
+  '
+- 'testHandleNewTopic()
+
+  '
+- 'testHandleNewUnfencedBroker()
+
+  '
+- 'testHandleZkBroker()
+
+  '
+- 'testInitialValues()
+
+  '
+- 'testTopicChange()
+
+  '
+org.apache.kafka.controller.metrics.QuorumControllerMetricsTest:
+- 'testLastAppliedRecordMetrics()
+
+  '
+- 'testMetricNames(boolean)[1]
+
+  '
+- 'testMetricNames(boolean)[2]
+
+  '
+- 'testUpdateEventQueueProcessingTime()
+
+  '
+- 'testUpdateEventQueueTime()
+
+  '
+- 'testUpdateZKWriteBehindLag()
+
+  '
+org.apache.kafka.image.AclsDeltaTest:
+- 'testKeepsDeleteIfInImage()
+
+  '
+- 'testRemovesDeleteIfNotInImage()
+
+  '
+- 'testThrowsExceptionOnInvalidStateWhenImageHasOtherAcls()
+
+  '
+- 'testThrowsExceptionOnInvalidStateWhenImageIsEmpty()
+
+  '
+org.apache.kafka.image.AclsImageTest:
+- 'testApplyDelta1()
+
+  '
+- 'testEmptyImageRoundTrip()
+
+  '
+- 'testImage1RoundTrip()
+
+  '
+- 'testImage2RoundTrip()
+
+  '
+org.apache.kafka.image.ClientQuotasImageTest:
+- 'testApplyDelta1()
+
+  '
+- 'testEmptyImageRoundTrip()
+
+  '
+- 'testImage1RoundTrip()
+
+  '
+- 'testImage2RoundTrip()
+
+  '
+org.apache.kafka.image.ClusterImageTest:
+- 'testApplyDelta1()
+
+  '
+- 'testApplyDelta2()
+
+  '
+- 'testBrokerEpoch()
+
+  '
+- 'testBrokerEpochForNonExistentBroker()
+
+  '
+- 'testEmptyImageRoundTrip()
+
+  '
+- 'testHandleLossOfControllerRegistrations()
+
+  '
+- 'testImage1RoundTrip()
+
+  '
+- 'testImage2RoundTrip()
+
+  '
+- 'testImage3RoundTrip()
+
+  '
+org.apache.kafka.image.ConfigurationsImageTest:
+- 'testApplyDelta1()
+
+  '
+- 'testEmptyImageRoundTrip()
+
+  '
+- 'testImage1RoundTrip()
+
+  '
+- 'testImage2RoundTrip()
+
+  '
+org.apache.kafka.image.DelegationTokenImageTest:
+- 'testApplyDelta1()
+
+  '
+- 'testEmptyImageRoundTrip()
+
+  '
+- 'testEmptyWithInvalidIBP()
+
+  '
+- 'testImage1RoundTrip()
+
+  '
+- 'testImage1withInvalidIBP()
+
+  '
+- 'testImage2RoundTrip()
+
+  '
+org.apache.kafka.image.FeaturesImageTest:
+- 'testApplyDelta1()
+
+  '
+- 'testApplyDelta2()
+
+  '
+- 'testEmpty()
+
+  '
+- 'testEmptyImageRoundTrip()
+
+  '
+- 'testImage1RoundTrip()
+
+  '
+- 'testImage2RoundTrip()
+
+  '
+- 'testImage3RoundTrip()
+
+  '
+org.apache.kafka.image.ImageDowngradeTest:
+- 'testDirectoryAssignmentState()
+
+  '
+- 'testPreControlledShutdownStateVersion()
+
+  '
+- 'testPreZkMigrationSupportVersion()
+
+  '
+- 'testPremodernVersion()
+
+  '
+org.apache.kafka.image.MetadataImageTest:
+- 'testApplyDelta1()
+
+  '
+- 'testEmptyImageRoundTrip()
+
+  '
+- 'testImage1RoundTrip()
+
+  '
+- 'testImage2RoundTrip()
+
+  '
+org.apache.kafka.image.MetadataVersionChangeTest:
+- 'testIsDowngrade()
+
+  '
+- 'testIsUpgrade()
+
+  '
+- 'testMetadataVersionChangeExceptionToString()
+
+  '
+org.apache.kafka.image.ProducerIdsImageTest:
+- 'testApplyDelta1()
+
+  '
+- 'testEmptyImageRoundTrip()
+
+  '
+- 'testImage1RoundTrip()
+
+  '
+- 'testImage2RoundTrip()
+
+  '
+org.apache.kafka.image.ScramImageTest:
+- 'testApplyDelta1()
+
+  '
+- 'testEmptyImageRoundTrip()
+
+  '
+- 'testEmptyWithInvalidIBP()
+
+  '
+- 'testImage1RoundTrip()
+
+  '
+- 'testImage1withInvalidIBP()
+
+  '
+- 'testImage2RoundTrip()
+
+  '
+org.apache.kafka.image.TopicsImageTest:
+- 'testApplyDelta1()
+
+  '
+- 'testBasicLocalChanges()
+
+  '
+- 'testDeleteAfterChanges()
+
+  '
+- 'testEmptyImageRoundTrip()
+
+  '
+- 'testImage1RoundTrip()
+
+  '
+- 'testImage2RoundTrip()
+
+  '
+- 'testLocalReassignmentChanges()
+
+  '
+- 'testTopicIdToNameView()
+
+  '
+- 'testTopicNameToIdView()
+
+  '
+- 'testUpdatedLeaders()
+
+  '
+org.apache.kafka.image.loader.MetadataBatchLoaderTest:
+- 'testAlignedTransactionBatches()
+
+  '
+- 'testMultipleTransactionsInOneBatch()
+
+  '
+- 'testMultipleTransactionsInOneBatchesWithNoOp()
+
+  '
+- 'testOneTransactionInMultipleBatches(boolean)[1]
+
+  '
+- 'testOneTransactionInMultipleBatches(boolean)[2]
+
+  '
+- 'testSingletonBeginAndEnd()
+
+  '
+- 'testUnexpectedAbortTransaction()
+
+  '
+- 'testUnexpectedBeginTransaction()
+
+  '
+- 'testUnexpectedEndTransaction()
+
+  '
+org.apache.kafka.image.loader.MetadataLoaderTest:
+- 'testCatchingUpState()
+
+  '
+- 'testCreateAndClose()
+
+  '
+- 'testInstallPublishers()
+
+  '
+- 'testLastAppliedOffset()
+
+  '
+- 'testLoadEmptyBatch()
+
+  '
+- 'testLoadEmptySnapshot()
+
+  '
+- 'testNoPublishEmptyImage()
+
+  '
+- 'testPublishTransaction(boolean)[1]
+
+  '
+- 'testPublishTransaction(boolean)[2]
+
+  '
+- 'testPublishTransactionWithinBatch()
+
+  '
+- 'testPublisherCannotBeInstalledMoreThanOnce(boolean, boolean)[1]
+
+  '
+- 'testPublisherCannotBeInstalledMoreThanOnce(boolean, boolean)[2]
+
+  '
+- 'testPublisherCannotBeInstalledMoreThanOnce(boolean, boolean)[3]
+
+  '
+- 'testPublisherCannotBeInstalledMoreThanOnce(boolean, boolean)[4]
+
+  '
+- 'testReloadSnapshot()
+
+  '
+- 'testRemovePublisher()
+
+  '
+- 'testSnapshotDuringTransaction()
+
+  '
+org.apache.kafka.image.loader.metrics.MetadataLoaderMetricsTest:
+- 'testInitialValueOfCurrentControllerId()
+
+  '
+- 'testManagedMetrics()
+
+  '
+- 'testMetricNames()
+
+  '
+- 'testSetValueOfCurrentControllerId()
+
+  '
+- 'testUpdateBatchProcessingTimeNs()
+
+  '
+- 'testUpdateBatchSize()
+
+  '
+- 'testUpdateLastAppliedImageProvenance()
+
+  '
+org.apache.kafka.image.node.ClientQuotasImageNodeTest:
+- 'clientIdAndUserEntityRoundTrip()
+
+  '
+- 'clientIdEntityRoundTrip()
+
+  '
+- 'defaultClientIdEntityRoundTrip()
+
+  '
+- 'defaultIpEntityRoundTrip()
+
+  '
+- 'defaultUserEntityRoundTrip()
+
+  '
+- 'ipEntityRoundTrip()
+
+  '
+- 'testClientIdEntityWithParentheses()
+
+  '
+- 'testErrorOnInvalidEmptyEntityName()
+
+  '
+- 'testErrorOnInvalidEntityType()
+
+  '
+- 'testEscapeBackslashes()
+
+  '
+- 'testEscapeEmptyString()
+
+  '
+- 'testEscapeNormalString()
+
+  '
+- 'testEscapeParentheses()
+
+  '
+- 'testUserEntityWithBackslashesInNameRoundTrip()
+
+  '
+- 'userEntityRoundTrip()
+
+  '
+org.apache.kafka.image.node.ClusterImageBrokersNodeTest:
+- 'testChildNames()
+
+  '
+- 'testNode1Child()
+
+  '
+- 'testUnknownChild()
+
+  '
+org.apache.kafka.image.node.ClusterImageControllersNodeTest:
+- 'testChildNames()
+
+  '
+- 'testNode1Child()
+
+  '
+- 'testUnknownChild()
+
+  '
+org.apache.kafka.image.node.ClusterImageNodeTest:
+- 'testBrokersChild()
+
+  '
+- 'testChildNames()
+
+  '
+- 'testControllersChild()
+
+  '
+- 'testUnknownChild()
+
+  '
+org.apache.kafka.image.node.ConfigurationImageNodeTest:
+- 'testNonSecretChild()
+
+  '
+- 'testSecretChild()
+
+  '
+- 'testUnknownChild()
+
+  '
+org.apache.kafka.image.node.ConfigurationsImageNodeTest:
+- 'testNodeChildNameParsing()
+
+  '
+- 'testNodeChildNames()
+
+  '
+org.apache.kafka.image.node.ScramCredentialDataNodeTest:
+- 'testPrintRedacted()
+
+  '
+- 'testPrintUnredacted()
+
+  '
+org.apache.kafka.image.node.TopicImageNodeTest:
+- 'testChildNames()
+
+  '
+- 'testChildPartitionId()
+
+  '
+- 'testChildPartitionIdNull()
+
+  '
+- 'testIdChild()
+
+  '
+- 'testNameChild()
+
+  '
+- 'testUnknownChild()
+
+  '
+org.apache.kafka.image.node.printer.MetadataNodeRedactionCriteriaTest:
+- 'testDisabledDoesNotRedactDelegationToken()
+
+  '
+- 'testDisabledDoesNotRedactNonSensitiveConfig()
+
+  '
+- 'testDisabledDoesNotRedactScram()
+
+  '
+- 'testDisabledDoesNotRedactSensitiveConfig()
+
+  '
+- 'testDisabledDoesNotRedactUnknownConfig()
+
+  '
+- 'testNormalDoesNotRedactNonSensitiveConfig()
+
+  '
+- 'testNormalDoesRedactsSensitiveConfig()
+
+  '
+- 'testNormalDoesRedactsUnknownConfig()
+
+  '
+- 'testNormalRedactsDelegationToken()
+
+  '
+- 'testNormalRedactsScram()
+
+  '
+- 'testStrictRedactsDelegationToken()
+
+  '
+- 'testStrictRedactsNonSensitiveConfig()
+
+  '
+- 'testStrictRedactsScram()
+
+  '
+- 'testStrictRedactsSensitiveConfig()
+
+  '
+- 'testStrictRedactsUnknownConfig()
+
+  '
+org.apache.kafka.image.node.printer.NodeStringifierTest:
+- 'testEnterNode()
+
+  '
+- 'testNesting()
+
+  '
+- 'testOutput()
+
+  '
+org.apache.kafka.image.publisher.BrokerRegistrationTrackerTest:
+- 'testBrokerUpdateWithNewMv(boolean)[1]
+
+  '
+- 'testBrokerUpdateWithNewMv(boolean)[2]
+
+  '
+- 'testBrokerUpdateWithNewMvWithTwoDeltas(boolean)[1]
+
+  '
+- 'testBrokerUpdateWithNewMvWithTwoDeltas(boolean)[2]
+
+  '
+- 'testBrokerUpdateWithoutNewMvDoesNothing()
+
+  '
+- 'testMetadataVersionUpdateWithoutRegistrationDoesNothing()
+
+  '
+- 'testTrackerName()
+
+  '
+org.apache.kafka.image.publisher.ControllerRegistrationsPublisherTest:
+- 'testInitialControllers()
+
+  '
+- 'testName()
+
+  '
+- 'testOnMetadataUpdate(boolean)[1]
+
+  '
+- 'testOnMetadataUpdate(boolean)[2]
+
+  '
+org.apache.kafka.image.publisher.SnapshotEmitterTest:
+- 'testEmit()
+
+  '
+org.apache.kafka.image.publisher.SnapshotGeneratorTest:
+- 'testCreateSnapshot()
+
+  '
+- 'testEmitterProblem()
+
+  '
+- 'testSnapshotsDisabled()
+
+  '
+- 'testTimeBasedSnapshots()
+
+  '
+org.apache.kafka.image.publisher.metrics.SnapshotEmitterMetricsTest:
+- 'testLatestSnapshotGeneratedAgeMsMetric()
+
+  '
+- 'testLatestSnapshotGeneratedBytesMetric()
+
+  '
+- 'testMetricNames()
+
+  '
+org.apache.kafka.image.writer.ImageReWriterTest:
+- 'testCloseInvokesFinishSnapshot()
+
+  '
+- 'testCloseWithoutFreeze()
+
+  '
+- 'testWrite()
+
+  '
+- 'testWriteAfterClose()
+
+  '
+org.apache.kafka.image.writer.ImageWriterOptionsTest:
+- 'testDefaultLossHandler()
+
+  '
+- 'testHandleLoss()
+
+  '
+- 'testSetMetadataVersion()
+
+  '
+org.apache.kafka.image.writer.RaftSnapshotWriterTest:
+- 'testCloseWithoutFreeze()
+
+  '
+- 'testFreezeAndClose()
+
+  '
+org.apache.kafka.image.writer.RecordListWriterTest:
+- 'testCloseWithoutFreeze()
+
+  '
+- 'testWrite()
+
+  '
+- 'testWriteAfterClose()
+
+  '
+org.apache.kafka.metadata.BrokerRegistrationFencingChangeTest:
+- 'testAsBoolean()
+
+  '
+- 'testValueRoundTrip()
+
+  '
+- 'testValues()
+
+  '
+org.apache.kafka.metadata.BrokerRegistrationInControlledShutdownChangeTest:
+- 'testAsBoolean()
+
+  '
+- 'testValueRoundTrip()
+
+  '
+- 'testValues()
+
+  '
+org.apache.kafka.metadata.BrokerRegistrationTest:
+- 'testDirectoriesAreSorted()
+
+  '
+- 'testEquals()
+
+  '
+- 'testFromRecordAndToRecord()
+
+  '
+- 'testHasOnlineDir()
+
+  '
+- 'testToNode()
+
+  '
+- 'testToString()
+
+  '
+- 'testValues()
+
+  '
+org.apache.kafka.metadata.BrokerStateTest:
+- 'testFromValue()
+
+  '
+- 'testUnknownValues()
+
+  '
+org.apache.kafka.metadata.ConfigSynonymTest:
+- 'testHoursToMilliseconds()
+
+  '
+- 'testMinutesToMilliseconds()
+
+  '
+org.apache.kafka.metadata.ControllerRegistrationTest:
+- 'testEquals()
+
+  '
+- 'testFromRecordAndToRecord()
+
+  '
+- 'testToNode()
+
+  '
+- 'testToString()
+
+  '
+- 'testValues()
+
+  '
+org.apache.kafka.metadata.DelegationTokenDataTest:
+- 'testEquals()
+
+  '
+- 'testFromRecordAndToRecord()
+
+  '
+- 'testToString()
+
+  '
+- 'testValues()
+
+  '
+org.apache.kafka.metadata.KafkaConfigSchemaTest:
+- 'testGetConfigValueDefault()
+
+  '
+- 'testIsSensitive()
+
+  '
+- 'testIsSplittable()
+
+  '
+- 'testResolveEffectiveTopicConfig()
+
+  '
+- 'testTranslateConfigSources()
+
+  '
+- 'testTranslateConfigTypes()
+
+  '
+org.apache.kafka.metadata.LeaderAndIsrTest:
+- 'testLeaderOpt()
+
+  '
+- 'testNewEpoch()
+
+  '
+- 'testNewLeader()
+
+  '
+- 'testNewLeaderAndIsr()
+
+  '
+- 'testRecoveringLeaderAndIsr()
+
+  '
+org.apache.kafka.metadata.LeaderRecoveryStateTest:
+- 'testByteToLeaderRecoveryState()
+
+  '
+- 'testChangeTo()
+
+  '
+- 'testDoesNotContainNoChange()
+
+  '
+- 'testInvalidValue()
+
+  '
+- 'testLeaderRecoveryStateValue()
+
+  '
+- 'testOptionalInvalidValue()
+
+  '
+- 'testUniqueValues()
+
+  '
+org.apache.kafka.metadata.ListenerInfoTest:
+- 'testCreatePreservesOrdering(int)[1]
+
+  '
+- 'testCreatePreservesOrdering(int)[2]
+
+  '
+- 'testCreatePreservesOrdering(int)[3]
+
+  '
+- 'testCreatePreservesOrdering(int)[4]
+
+  '
+- 'testCreateWithExplicitFirstListener(int)[1]
+
+  '
+- 'testCreateWithExplicitFirstListener(int)[2]
+
+  '
+- 'testCreateWithExplicitFirstListener(int)[3]
+
+  '
+- 'testCreateWithExplicitFirstListener(int)[4]
+
+  '
+- 'testEmptyHostname()
+
+  '
+- 'testEmptyHostnameGetsResolved()
+
+  '
+- 'testNullHostname()
+
+  '
+- 'testNullHostnameGetsResolved()
+
+  '
+- 'testRoundTripToBrokerRegistrationRecord()
+
+  '
+- 'testRoundTripToBrokerRegistrationRequest()
+
+  '
+- 'testRoundTripToControllerRegistrationRecord()
+
+  '
+- 'testRoundTripToControllerRegistrationRequest()
+
+  '
+- 'testToBrokerRegistrationRecordFailsOnNullHost()
+
+  '
+- 'testToBrokerRegistrationRecordFailsOnZeroPort()
+
+  '
+- 'testToBrokerRegistrationRequestFailsOnNullHost()
+
+  '
+- 'testToBrokerRegistrationRequestFailsOnZeroPort()
+
+  '
+- 'testToControllerRegistrationRecordFailsOnNullHost()
+
+  '
+- 'testToControllerRegistrationRecordFailsOnZeroPort()
+
+  '
+- 'testToControllerRegistrationRequestFailsOnNullHost()
+
+  '
+- 'testToControllerRegistrationRequestFailsOnZeroPort()
+
+  '
+- 'testToString()
+
+  '
+org.apache.kafka.metadata.MetadataRecordSerdeTest:
+- 'testDeserializeWithUnhandledFrameVersion()
+
+  '
+- 'testParsingMalformedFrameVersionVarint()
+
+  '
+- 'testParsingMalformedMessage()
+
+  '
+- 'testParsingMalformedMessageTypeVarint()
+
+  '
+- 'testParsingMalformedMessageVersionVarint()
+
+  '
+- 'testParsingRecordWithGarbageAtEnd()
+
+  '
+- 'testParsingUnsupportedApiKey()
+
+  '
+- 'testParsingVersionTooLarge()
+
+  '
+- 'testSerde()
+
+  '
+org.apache.kafka.metadata.OptionalStringComparatorTest:
+- 'testComparisons()
+
+  '
+org.apache.kafka.metadata.PartitionRegistrationTest:
+- 'testBuilderSetsDefaultAddingAndRemovingReplicas()
+
+  '
+- 'testBuilderSuccess()
+
+  '
+- 'testBuilderThrowsIllegalStateExceptionWhenMissingIsr()
+
+  '
+- 'testBuilderThrowsIllegalStateExceptionWhenMissingLeader()
+
+  '
+- 'testBuilderThrowsIllegalStateExceptionWhenMissingLeaderEpoch()
+
+  '
+- 'testBuilderThrowsIllegalStateExceptionWhenMissingLeaderRecoveryState()
+
+  '
+- 'testBuilderThrowsIllegalStateExceptionWhenMissingPartitionEpoch()
+
+  '
+- 'testBuilderThrowsIllegalStateExceptionWhenMissingReplicas()
+
+  '
+- 'testDirectories()
+
+  '
+- 'testElectionWasClean()
+
+  '
+- 'testMergePartitionChangeRecordWithReassignmentData()
+
+  '
+- 'testMigratingRecordDirectories()
+
+  '
+- 'testPartitionControlInfoMergeAndDiff()
+
+  '
+- 'testPartitionRegistrationToRecord(MetadataVersion)[1]
+
+  '
+- 'testPartitionRegistrationToRecord(MetadataVersion)[2]
+
+  '
+- 'testPartitionRegistrationToRecord(MetadataVersion)[3]
+
+  '
+- 'testPartitionRegistrationToRecord_ElrShouldBeNullIfEmpty()
+
+  '
+- 'testRecordRoundTrip()
+
+  '
+- 'testToLeaderAndIsrPartitionState()
+
+  '
+org.apache.kafka.metadata.ReplicasTest:
+- 'testClone()
+
+  '
+- 'testContains()
+
+  '
+- 'testContains2()
+
+  '
+- 'testCopyWith()
+
+  '
+- 'testCopyWithout()
+
+  '
+- 'testCopyWithout2()
+
+  '
+- 'testToArray()
+
+  '
+- 'testToList()
+
+  '
+- 'testToSet()
+
+  '
+- 'testValidate()
+
+  '
+- 'testValidateIsr()
+
+  '
+org.apache.kafka.metadata.ScramCredentialDataTest:
+- 'testEquals()
+
+  '
+- 'testEqualsAndHashCode()
+
+  '
+- 'testEqualsSameInstance()
+
+  '
+- 'testFromRecordAndToRecord()
+
+  '
+- 'testNotEqualsDifferentContent()
+
+  '
+- 'testToString()
+
+  '
+- 'testValues()
+
+  '
+org.apache.kafka.metadata.VersionRangeTest:
+- 'testContains()
+
+  '
+- 'testEquality()
+
+  '
+- 'testToString()
+
+  '
+org.apache.kafka.metadata.authorizer.ClusterMetadataAuthorizerTest:
+- 'testCreateAcls()
+
+  '
+- 'testCreateAclsError()
+
+  '
+- 'testDeleteAcls()
+
+  '
+- 'testDeleteAclsError()
+
+  '
+org.apache.kafka.metadata.authorizer.StandardAclRecordIteratorTest:
+- 'testIteration()
+
+  '
+- 'testNoSuchElementException()
+
+  '
+org.apache.kafka.metadata.authorizer.StandardAclTest:
+- 'testCompareTo()
+
+  '
+- 'testEquals()
+
+  '
+- 'testToBindingRoundTrips()
+
+  '
+org.apache.kafka.metadata.authorizer.StandardAclWithIdTest:
+- 'testEquals()
+
+  '
+- 'testToRecordRoundTrips()
+
+  '
+org.apache.kafka.metadata.authorizer.StandardAuthorizerTest:
+- 'testAllowAuditLogging(boolean)[1]
+
+  '
+- 'testAllowAuditLogging(boolean)[2]
+
+  '
+- 'testAllowEveryoneIfNoAclFoundConfigDisabled()
+
+  '
+- 'testAllowEveryoneIfNoAclFoundConfigEnabled()
+
+  '
+- 'testAuthorizationPriorToCompleteInitialLoad()
+
+  '
+- 'testAuthorizationWithManyAcls()
+
+  '
+- 'testCompleteInitialLoad()
+
+  '
+- 'testCompleteInitialLoadWithException()
+
+  '
+- 'testConfigure()
+
+  '
+- 'testDenyAuditLogging(boolean)[1]
+
+  '
+- 'testDenyAuditLogging(boolean)[2]
+
+  '
+- 'testDenyPrecedenceWithOperationAll()
+
+  '
+- 'testFindResultImplication()
+
+  '
+- 'testFindResultPrincipalMatching()
+
+  '
+- 'testGetConfiguredSuperUsers()
+
+  '
+- 'testGetDefaultResult()
+
+  '
+- 'testHostAddressAclValidation()
+
+  '
+- 'testListAcls()
+
+  '
+- 'testPrefixAcls()
+
+  '
+- 'testSimpleAuthorizations()
+
+  '
+- 'testStartWithEarlyStartListeners()
+
+  '
+- 'testTopicAclWithOperationAll()
+
+  '
+org.apache.kafka.metadata.bootstrap.BootstrapDirectoryTest:
+- 'testMissingDirectory()
+
+  '
+- 'testReadFromConfiguration()
+
+  '
+- 'testReadFromConfigurationFile()
+
+  '
+- 'testReadFromConfigurationWithAncientVersion()
+
+  '
+- 'testReadFromEmptyConfiguration()
+
+  '
+org.apache.kafka.metadata.bootstrap.BootstrapMetadataTest:
+- 'testCopyWithOnlyVersion()
+
+  '
+- 'testFromRecordsList()
+
+  '
+- 'testFromRecordsListWithOldMetadataVersion()
+
+  '
+- 'testFromRecordsListWithoutMetadataVersion()
+
+  '
+- 'testFromVersion()
+
+  '
+org.apache.kafka.metadata.migration.BufferingBatchConsumerTest:
+- 'testEmptyBatches()
+
+  '
+- 'testMultiBatchLargerThanMinSize()
+
+  '
+- 'testMultiBatchSameAsMinSize()
+
+  '
+- 'testMultiBatchSmallerThanMinSize()
+
+  '
+- 'testOneBatchLargerThanMinSize()
+
+  '
+- 'testOneBatchSameAsMinSize()
+
+  '
+- 'testOneBatchSmallerThanMinSize()
+
+  '
+org.apache.kafka.metadata.migration.KRaftMigrationDriverTest:
+- 'testBeginMigrationOnce()
+
+  '
+- 'testCoalesceMigrationRecords(Optional, List, int, int)[10]
+
+  '
+- 'testCoalesceMigrationRecords(Optional, List, int, int)[11]
+
+  '
+- 'testCoalesceMigrationRecords(Optional, List, int, int)[12]
+
+  '
+- 'testCoalesceMigrationRecords(Optional, List, int, int)[13]
+
+  '
+- 'testCoalesceMigrationRecords(Optional, List, int, int)[1]
+
+  '
+- 'testCoalesceMigrationRecords(Optional, List, int, int)[2]
+
+  '
+- 'testCoalesceMigrationRecords(Optional, List, int, int)[3]
+
+  '
+- 'testCoalesceMigrationRecords(Optional, List, int, int)[4]
+
+  '
+- 'testCoalesceMigrationRecords(Optional, List, int, int)[5]
+
+  '
+- 'testCoalesceMigrationRecords(Optional, List, int, int)[6]
+
+  '
+- 'testCoalesceMigrationRecords(Optional, List, int, int)[7]
+
+  '
+- 'testCoalesceMigrationRecords(Optional, List, int, int)[8]
+
+  '
+- 'testCoalesceMigrationRecords(Optional, List, int, int)[9]
+
+  '
+- 'testControllerFailover()
+
+  '
+- 'testMigrationWithClientException(boolean)[1]
+
+  '
+- 'testMigrationWithClientException(boolean)[2]
+
+  '
+- 'testMigrationWithClientExceptionWhileMigratingZnodeCreation()
+
+  '
+- 'testNoDualWriteBeforeMigration()
+
+  '
+- 'testOnControllerChangeWhenUninitialized()
+
+  '
+- 'testOnlySendNeededRPCsToBrokers(boolean)[1]
+
+  '
+- 'testOnlySendNeededRPCsToBrokers(boolean)[2]
+
+  '
+- 'testShouldNotMoveToNextStateIfControllerNodesAreNotReadyToMigrate(boolean)[1]
+
+  '
+- 'testShouldNotMoveToNextStateIfControllerNodesAreNotReadyToMigrate(boolean)[2]
+
+  '
+- 'testSkipWaitForBrokersInDualWrite()
+
+  '
+- 'testTopicDualWriteDelta()
+
+  '
+- 'testTopicDualWriteSnapshot()
+
+  '
+org.apache.kafka.metadata.migration.KRaftMigrationZkWriterTest:
+- 'testExtraneousZkPartitions()
+
+  '
+- 'testReconcileSnapshotEmptyZk()
+
+  '
+- 'testReconcileSnapshotTopics()
+
+  '
+org.apache.kafka.metadata.migration.MigrationManifestTest:
+- 'testEmpty()
+
+  '
+- 'testManyBatch()
+
+  '
+- 'testOneBatch()
+
+  '
+org.apache.kafka.metadata.placement.PartitionAssignmentTest:
+- 'testConsistentEqualsAndHashCode()
+
+  '
+- 'testPartitionAssignmentReplicas()
+
+  '
+- 'testToString()
+
+  '
+org.apache.kafka.metadata.placement.StripedReplicaPlacerTest:
+- 'testAllBrokersFenced()
+
+  '
+- 'testAvoidFencedReplicaIfPossibleOnSingleRack()
+
+  '
+- 'testBrokerList()
+
+  '
+- 'testEvenDistribution()
+
+  '
+- 'testMultiPartitionTopicPlacementOnSingleUnfencedBroker()
+
+  '
+- 'testNonPositiveReplicationFactor()
+
+  '
+- 'testNotEnoughBrokers()
+
+  '
+- 'testPlacementOnFencedReplicaOnSingleRack()
+
+  '
+- 'testRackListAllBrokersFenced()
+
+  '
+- 'testRackListNonPositiveReplicationFactor()
+
+  '
+- 'testRackListNotEnoughBrokers()
+
+  '
+- 'testRackListWithInvalidRacks()
+
+  '
+- 'testRackListWithMultipleRacks()
+
+  '
+- 'testSuccessfulPlacement()
+
+  '
+org.apache.kafka.metadata.placement.TopicAssignmentTest:
+- 'testConsistentEqualsAndHashCode()
+
+  '
+- 'testToString()
+
+  '
+- 'testTopicAssignmentReplicas()
+
+  '
+org.apache.kafka.metadata.properties.MetaPropertiesEnsembleTest:
+- 'testClusterIdForEmpty()
+
+  '
+- 'testClusterIdForFoo()
+
+  '
+- 'testCopierGenerateValidDirectoryId()
+
+  '
+- 'testCopierVerificationFailsOnEmptyAndErrorOverlap()
+
+  '
+- 'testCopierVerificationFailsOnEmptyAndLogDirsOverlap()
+
+  '
+- 'testCopierVerificationFailsOnErrorAndLogDirsOverlap()
+
+  '
+- 'testCopierWithoutModifications()
+
+  '
+- 'testCopierWriteChanged()
+
+  '
+- 'testCopierWriteLogDirChanges()
+
+  '
+- 'testCopyFooItemByItem()
+
+  '
+- 'testEmptyLogDirsForEmpty()
+
+  '
+- 'testEmptyLogDirsForFoo()
+
+  '
+- 'testErrorLogDirsForEmpty()
+
+  '
+- 'testErrorLogDirsForFoo()
+
+  '
+- 'testLogDirPropsForEmpty()
+
+  '
+- 'testLogDirPropsForFoo()
+
+  '
+- 'testMetaPropertiesEnsembleLoad()
+
+  '
+- 'testMetaPropertiesEnsembleLoadEmpty()
+
+  '
+- 'testMetaPropertiesEnsembleLoadError()
+
+  '
+- 'testMetadataLogDirForEmpty()
+
+  '
+- 'testMetadataLogDirForFoo()
+
+  '
+- 'testNodeIdForEmpty()
+
+  '
+- 'testNodeIdForFoo()
+
+  '
+- 'testNonFailedDirectoryPropsForEmpty()
+
+  '
+- 'testNonFailedDirectoryPropsForFoo()
+
+  '
+- 'testSuccessfulVerification()
+
+  '
+- 'testSuccessfulVerificationWithClusterId()
+
+  '
+- 'testSuccessfulVerificationWithClusterIdAndNodeId()
+
+  '
+- 'testVerificationFailureOnLackOfMetadataLogDir()
+
+  '
+- 'testVerificationFailureOnMetadataLogDirWithError()
+
+  '
+- 'testVerificationFailureOnRequireAtLeastOneValid()
+
+  '
+- 'testVerificationFailureOnRequireV0()
+
+  '
+org.apache.kafka.metadata.properties.MetaPropertiesTest:
+- 'testClusterIdRequiredInV1()
+
+  '
+- 'testNodeIdRequiredInV1()
+
+  '
+- 'testV0SerializationWithAll()
+
+  '
+- 'testV0SerializationWithJustClusterId()
+
+  '
+- 'testV0SerializationWithJustClusterIdAndNodeId()
+
+  '
+- 'testV0SerializationWithJustNodeId()
+
+  '
+- 'testV0SerializationWithNothing()
+
+  '
+- 'testV1SerializationWithDirectoryId()
+
+  '
+- 'testV1SerializationWithNonUuidClusterId()
+
+  '
+- 'testV1SerializationWithoutDirectoryId()
+
+  '
+org.apache.kafka.metadata.properties.MetaPropertiesVersionTest:
+- 'testAlwaysHasClusterId()
+
+  '
+- 'testAlwaysHasNodeId()
+
+  '
+- 'testFromInvalidNumber()
+
+  '
+- 'testFromInvalidString()
+
+  '
+- 'testHasBrokerId()
+
+  '
+- 'testV0FromNumber()
+
+  '
+- 'testV0FromNumberString()
+
+  '
+- 'testV0ToNumber()
+
+  '
+- 'testV0ToNumberString()
+
+  '
+- 'testV1FromNumber()
+
+  '
+- 'testV1FromNumberString()
+
+  '
+- 'testV1ToNumber()
+
+  '
+- 'testV1ToNumberString()
+
+  '
+org.apache.kafka.metadata.properties.PropertiesUtilsTest:
+- 'loadMissingRequiredIntProp()
+
+  '
+- 'loadNonIntegerRequiredIntProp()
+
+  '
+- 'loadRequiredIntProp()
+
+  '
+- 'testReadPropertiesFile()
+
+  '
+- 'testWritePropertiesFile(boolean)[1]
+
+  '
+- 'testWritePropertiesFile(boolean)[2]
+
+  '
+org.apache.kafka.metadata.storage.FormatterTest:
+- 'testDirectories(int)[1]
+
+  '
+- 'testDirectories(int)[2]
+
+  '
+- 'testDirectories(int)[3]
+
+  '
+- 'testFeatureFlag(short)[1]
+
+  '
+- 'testFeatureFlag(short)[2]
+
+  '
+- 'testFormatWithInitialVoters(boolean)[1]
+
+  '
+- 'testFormatWithInitialVoters(boolean)[2]
+
+  '
+- 'testFormatWithInitialVotersFailsWithOlderKraftVersion()
+
+  '
+- 'testFormatWithInitialVotersFailsWithOlderMetadataVersion()
+
+  '
+- 'testFormatWithOlderReleaseVersion()
+
+  '
+- 'testFormatWithScram()
+
+  '
+- 'testFormatWithScramFailsOnUnsupportedReleaseVersions()
+
+  '
+- 'testFormatWithUnstableReleaseVersion()
+
+  '
+- 'testFormatWithUnstableReleaseVersionFailsWithoutEnableUnstable()
+
+  '
+- 'testFormatWithoutInitialVotersFailsWithNewerKraftVersion()
+
+  '
+- 'testFormatterFailsOnAlreadyFormatted()
+
+  '
+- 'testFormatterFailsOnUnwritableDirectory()
+
+  '
+- 'testFormattingCreatesLogDirId()
+
+  '
+- 'testIgnoreFormatted()
+
+  '
+- 'testInvalidFeatureFlag()
+
+  '
+- 'testOneDirectoryFormattedAndOthersNotFormatted()
+
+  '
+- 'testOneDirectoryFormattedAndOthersNotFormattedWithIgnoreFormatted()
+
+  '
+org.apache.kafka.metadata.storage.ScramParserTest:
+- 'testConfiguredIterations()
+
+  '
+- 'testConfiguredSalt()
+
+  '
+- 'testDefaultIterations()
+
+  '
+- 'testParsePerMechanismArgument()
+
+  '
+- 'testParsePerMechanismArgumentWithConfigStringWithoutBraces()
+
+  '
+- 'testParsePerMechanismArgumentWithConfigStringWithoutEndBrace()
+
+  '
+- 'testParsePerMechanismArgumentWithUnsupportedScramMethod()
+
+  '
+- 'testParsePerMechanismArgumentWithoutEqualsSign()
+
+  '
+- 'testParsePerMechanismData()
+
+  '
+- 'testParsePerMechanismDataFailsWithExtraArguments()
+
+  '
+- 'testParsePerMechanismDataFailsWithoutName()
+
+  '
+- 'testParsePerMechanismDataFailsWithoutPassword()
+
+  '
+- 'testParsePerMechanismDataWithConfiguredSalt()
+
+  '
+- 'testParsePerMechanismDataWithConfiguredSaltedPassword()
+
+  '
+- 'testParsePerMechanismDataWithConfiguredSaltedPasswordFailsWithoutSalt()
+
+  '
+- 'testParsePerMechanismDataWithIterations()
+
+  '
+- 'testParsePerMechanismDataWithIterationsAndConfiguredSalt()
+
+  '
+- 'testPerMechanismDataToRecord()
+
+  '
+- 'testRandomSalt()
+
+  '
+- 'testSplitTrimmedConfigStringComponentOnNameEqualsEmpty()
+
+  '
+- 'testSplitTrimmedConfigStringComponentOnNameEqualsFoo()
+
+  '
+- 'testSplitTrimmedConfigStringComponentOnNameEqualsQuotedEmpty()
+
+  '
+- 'testSplitTrimmedConfigStringComponentOnNameEqualsQuotedFoo()
+
+  '
+- 'testSplitTrimmedConfigStringComponentWithNoEquals()
+
+  '
+org.apache.kafka.metadata.util.BatchFileWriterReaderTest:
+- 'testHeaderFooter()
+
+  '
+org.apache.kafka.metadata.util.RecordRedactorTest:
+- 'testNonSensitiveConfigRecordToString()
+
+  '
+- 'testSensitiveConfigRecordToString()
+
+  '
+- 'testTopicRecordToString()
+
+  '
+- 'testUserScramCredentialRecordToString()
+
+  '
+- 'testUserScramCredentialRecordToStringWithNullName()
+
+  '
+org.apache.kafka.metalog.LocalLogManagerTest:
+- 'testClaimsLeadership()
+
+  '
+- 'testCommits()
+
+  '
+- 'testCreateAndClose()
+
+  '
+- 'testPassLeadership()
+
+  '

@@ -1,0 +1,2755 @@
+org.apache.kafka.raft.CandidateStateTest:
+- 'testCannotChangeVoteGrantedToRejected(boolean)[1]
+
+  '
+- 'testCannotChangeVoteGrantedToRejected(boolean)[2]
+
+  '
+- 'testCannotChangeVoteRejectedToGranted(boolean)[1]
+
+  '
+- 'testCannotChangeVoteRejectedToGranted(boolean)[2]
+
+  '
+- 'testCannotGrantOrRejectNonVoters(boolean)[1]
+
+  '
+- 'testCannotGrantOrRejectNonVoters(boolean)[2]
+
+  '
+- 'testCannotRejectVoteFromLocalId(boolean)[1]
+
+  '
+- 'testCannotRejectVoteFromLocalId(boolean)[2]
+
+  '
+- 'testElectionState(boolean)[1]
+
+  '
+- 'testElectionState(boolean)[2]
+
+  '
+- 'testGrantVote(boolean, boolean)[1]
+
+  '
+- 'testGrantVote(boolean, boolean)[2]
+
+  '
+- 'testGrantVote(boolean, boolean)[3]
+
+  '
+- 'testGrantVote(boolean, boolean)[4]
+
+  '
+- 'testIdempotentGrant(boolean)[1]
+
+  '
+- 'testIdempotentGrant(boolean)[2]
+
+  '
+- 'testIdempotentReject(boolean)[1]
+
+  '
+- 'testIdempotentReject(boolean)[2]
+
+  '
+- 'testInvalidVoterSet(boolean)[1]
+
+  '
+- 'testInvalidVoterSet(boolean)[2]
+
+  '
+- 'testLeaderEndpoints()
+
+  '
+- 'testSingleNodeQuorum(boolean)[1]
+
+  '
+- 'testSingleNodeQuorum(boolean)[2]
+
+  '
+- 'testThreeNodeQuorumVoteGranted(boolean)[1]
+
+  '
+- 'testThreeNodeQuorumVoteGranted(boolean)[2]
+
+  '
+- 'testThreeNodeQuorumVoteRejected(boolean)[1]
+
+  '
+- 'testThreeNodeQuorumVoteRejected(boolean)[2]
+
+  '
+- 'testTwoNodeQuorumVoteGranted(boolean)[1]
+
+  '
+- 'testTwoNodeQuorumVoteGranted(boolean)[2]
+
+  '
+- 'testTwoNodeQuorumVoteRejected(boolean)[1]
+
+  '
+- 'testTwoNodeQuorumVoteRejected(boolean)[2]
+
+  '
+org.apache.kafka.raft.ControlRecordTest:
+- 'testControlRecordTypeValues()
+
+  '
+- 'testCtr()
+
+  '
+org.apache.kafka.raft.DynamicVoterTest:
+- 'testFailedToParseDirectoryId()
+
+  '
+- 'testFailedToParseDirectoryId2()
+
+  '
+- 'testFailedToParseNodeId()
+
+  '
+- 'testFailedToParsePort()
+
+  '
+- 'testInvalidNegativePort()
+
+  '
+- 'testInvalidPositivePort()
+
+  '
+- 'testNoColonFollowingHostname()
+
+  '
+- 'testParseDynamicVoter()
+
+  '
+- 'testParseDynamicVoter2()
+
+  '
+- 'testParseDynamicVoterWithBrackets()
+
+  '
+- 'testParseDynamicVoterWithInvalidNegativeId()
+
+  '
+- 'testParseDynamicVoterWithNoColonFollowingPort()
+
+  '
+- 'testParseDynamicVoterWithUnbalancedBrackets()
+
+  '
+- 'testParseDynamicVoterWithoutHostname()
+
+  '
+- 'testParseDynamicVoterWithoutId()
+
+  '
+- 'testParseDynamicVoterWithoutId2()
+
+  '
+- 'testPortSectionMustStartWithAColon()
+
+  '
+- 'testToVoterNode()
+
+  '
+org.apache.kafka.raft.DynamicVotersTest:
+- 'testParsingEmptyStringFails()
+
+  '
+- 'testParsingInvalidStringWithDuplicateNodeIds()
+
+  '
+- 'testParsingSingleDynamicVoter()
+
+  '
+- 'testParsingThreeDynamicVoters()
+
+  '
+- 'testRoundTripSingleVoter()
+
+  '
+- 'testRoundTripThreeVoters()
+
+  '
+- 'testToVoterSet()
+
+  '
+org.apache.kafka.raft.ElectionStateTest:
+- 'testQuorumStateDataRoundTrip(short)[1]
+
+  '
+- 'testQuorumStateDataRoundTrip(short)[2]
+
+  '
+- 'testVotedCandidateWithVotedDirectoryId()
+
+  '
+- 'testVotedCandidateWithoutVotedDirectoryId()
+
+  '
+- 'testVotedCandidateWithoutVotedId()
+
+  '
+org.apache.kafka.raft.EndpointsTest:
+- 'testAddressWithEmptyEndpoint()
+
+  '
+- 'testAddressWithValidEndpoint()
+
+  '
+- 'testEqualsAndHashCodeWithDifferentEndpoints()
+
+  '
+- 'testEqualsAndHashCodeWithSameEndpoint()
+
+  '
+- 'testFromBeginQuorumEpochRequestWithEmptyEndpoint()
+
+  '
+- 'testFromBeginQuorumEpochRequestWithEndpoint()
+
+  '
+- 'testFromBeginQuorumEpochResponseWithEmptyEndpoint()
+
+  '
+- 'testFromBeginQuorumEpochResponseWithEndpoint()
+
+  '
+- 'testFromEndQuorumEpochRequestWithEmptyEndpoint()
+
+  '
+- 'testFromEndQuorumEpochRequestWithEndpoint()
+
+  '
+- 'testFromEndQuorumEpochResponseWithEmptyEndpoint()
+
+  '
+- 'testFromEndQuorumEpochResponseWithEndpoint()
+
+  '
+- 'testFromFetchResponseWithEmptyEndpoint()
+
+  '
+- 'testFromFetchResponseWithEndpoint()
+
+  '
+- 'testFromFetchSnapshotResponseWithEmptyEndpoint()
+
+  '
+- 'testFromFetchSnapshotResponseWithEndpoint()
+
+  '
+- 'testFromInetSocketAddressesWithEndpoint()
+
+  '
+- 'testFromVoteResponseWithEmptyEndpoint()
+
+  '
+- 'testFromVoteResponseWithEndpoint()
+
+  '
+- 'testFromVotersRecordEndpointsWithEmptyEndpoint()
+
+  '
+- 'testFromVotersRecordEndpointsWithEndpoint()
+
+  '
+- 'testIsEmptyWithEndpoint()
+
+  '
+- 'testSize()
+
+  '
+- 'testToBeginQuorumEpochRequestWithEmptyEndpoint()
+
+  '
+- 'testToBeginQuorumEpochRequestWithEndpoint()
+
+  '
+- 'testVotersRecordEndpointsWithEmptyEndpoint()
+
+  '
+- 'testVotersRecordEndpointsWithEndpoint()
+
+  '
+org.apache.kafka.raft.FileQuorumStateStoreTest:
+- 'testCantReadVersionQuorumState()
+
+  '
+- 'testCreateAndClear()
+
+  '
+- 'testReload()
+
+  '
+- 'testSupportedVersion()
+
+  '
+- 'testWriteReadElectedLeader(KRaftVersion)[1]
+
+  '
+- 'testWriteReadElectedLeader(KRaftVersion)[2]
+
+  '
+- 'testWriteReadUnknownLeader(KRaftVersion)[1]
+
+  '
+- 'testWriteReadUnknownLeader(KRaftVersion)[2]
+
+  '
+- 'testWriteReadVotedCandidate(KRaftVersion)[1]
+
+  '
+- 'testWriteReadVotedCandidate(KRaftVersion)[2]
+
+  '
+org.apache.kafka.raft.FollowerStateTest:
+- 'testFetchTimeoutExpiration()
+
+  '
+- 'testGrantVote(boolean)[1]
+
+  '
+- 'testGrantVote(boolean)[2]
+
+  '
+- 'testLeaderIdAndEndpoint()
+
+  '
+- 'testMonotonicHighWatermark()
+
+  '
+org.apache.kafka.raft.KafkaNetworkChannelTest:
+- 'testFetchRequestDowngrade(short)[10]
+
+  '
+- 'testFetchRequestDowngrade(short)[11]
+
+  '
+- 'testFetchRequestDowngrade(short)[12]
+
+  '
+- 'testFetchRequestDowngrade(short)[13]
+
+  '
+- 'testFetchRequestDowngrade(short)[14]
+
+  '
+- 'testFetchRequestDowngrade(short)[15]
+
+  '
+- 'testFetchRequestDowngrade(short)[16]
+
+  '
+- 'testFetchRequestDowngrade(short)[17]
+
+  '
+- 'testFetchRequestDowngrade(short)[18]
+
+  '
+- 'testFetchRequestDowngrade(short)[1]
+
+  '
+- 'testFetchRequestDowngrade(short)[2]
+
+  '
+- 'testFetchRequestDowngrade(short)[3]
+
+  '
+- 'testFetchRequestDowngrade(short)[4]
+
+  '
+- 'testFetchRequestDowngrade(short)[5]
+
+  '
+- 'testFetchRequestDowngrade(short)[6]
+
+  '
+- 'testFetchRequestDowngrade(short)[7]
+
+  '
+- 'testFetchRequestDowngrade(short)[8]
+
+  '
+- 'testFetchRequestDowngrade(short)[9]
+
+  '
+- 'testSendAndDisconnect()
+
+  '
+- 'testSendAndFailAuthentication()
+
+  '
+- 'testSendAndReceiveOutboundRequest(boolean)[1]
+
+  '
+- 'testSendAndReceiveOutboundRequest(boolean)[2]
+
+  '
+- 'testSendToBlackedOutDestination(boolean)[1]
+
+  '
+- 'testSendToBlackedOutDestination(boolean)[2]
+
+  '
+- 'testUnsupportedVersionError()
+
+  '
+- 'testWakeupClientOnSend()
+
+  '
+org.apache.kafka.raft.KafkaRaftClientDriverTest:
+- 'testShutdown()
+
+  '
+- 'testUncaughtException()
+
+  '
+org.apache.kafka.raft.KafkaRaftClientReconfigTest:
+- 'testAddVoter()
+
+  '
+- 'testAddVoterFailsWhenLosingLeadership()
+
+  '
+- 'testAddVoterInvalidClusterId()
+
+  '
+- 'testAddVoterInvalidFeatureVersion()
+
+  '
+- 'testAddVoterTimeout()
+
+  '
+- 'testAddVoterToNotLeader()
+
+  '
+- 'testAddVoterWithApiVersionsFromIncorrectNode()
+
+  '
+- 'testAddVoterWithExistingVoter()
+
+  '
+- 'testAddVoterWithKraftVersion0()
+
+  '
+- 'testAddVoterWithLaggingNewVoter()
+
+  '
+- 'testAddVoterWithMissingDefaultListener()
+
+  '
+- 'testAddVoterWithMissingDirectoryId()
+
+  '
+- 'testAddVoterWithPendingAddVoter()
+
+  '
+- 'testAddVoterWithPendingRemoveVoter()
+
+  '
+- 'testAddVoterWithoutFencedPreviousLeaders()
+
+  '
+- 'testBootstrapCheckpointIsNotReturnedOnFetch()
+
+  '
+- 'testFollowerDoesNotRequestLeaderBootstrapSnapshot()
+
+  '
+- 'testFollowerReadsKRaftBootstrapRecords()
+
+  '
+- 'testFollowerSendsUpdateVoter()
+
+  '
+- 'testFollowerSendsUpdateVoterWhenDifferent()
+
+  '
+- 'testLeaderDoesNotBootstrapRecordsWithKraftVersion0()
+
+  '
+- 'testLeaderUpdatesVoter()
+
+  '
+- 'testLeaderWritesBootstrapRecords()
+
+  '
+- 'testObserverDiscoversLeaderWithUnknownVoters()
+
+  '
+- 'testRemoveVoter()
+
+  '
+- 'testRemoveVoterFailsWhenLosingLeadership()
+
+  '
+- 'testRemoveVoterInvalidClusterId()
+
+  '
+- 'testRemoveVoterIsLeader()
+
+  '
+- 'testRemoveVoterTimedOut()
+
+  '
+- 'testRemoveVoterToEmptyVoterSet()
+
+  '
+- 'testRemoveVoterToNotLeader()
+
+  '
+- 'testRemoveVoterWithKraftVersion0()
+
+  '
+- 'testRemoveVoterWithNoneVoter()
+
+  '
+- 'testRemoveVoterWithNoneVoterId()
+
+  '
+- 'testRemoveVoterWithPendingAddVoter()
+
+  '
+- 'testRemoveVoterWithPendingRemoveVoter()
+
+  '
+- 'testRemoveVoterWithoutFencedPreviousLeaders()
+
+  '
+- 'testUpdateVoter()
+
+  '
+- 'testUpdateVoterInvalidClusterId()
+
+  '
+- 'testUpdateVoterNewEpoch()
+
+  '
+- 'testUpdateVoterOldEpoch()
+
+  '
+- 'testUpdateVoterResponseCausesEpochChange()
+
+  '
+- 'testUpdateVoterToNotLeader()
+
+  '
+- 'testUpdateVoterWithKraftVersion0()
+
+  '
+- 'testUpdateVoterWithNoneVoter()
+
+  '
+- 'testUpdateVoterWithNoneVoterId()
+
+  '
+- 'testUpdateVoterWithPendingAddVoter()
+
+  '
+- 'testUpdateVoterWithoutFencedPreviousLeaders()
+
+  '
+org.apache.kafka.raft.KafkaRaftClientSnapshotTest:
+- 'testCreateSnapshotAsFollowerWithInvalidSnapshotId(boolean)[1]
+
+  '
+- 'testCreateSnapshotAsFollowerWithInvalidSnapshotId(boolean)[2]
+
+  '
+- 'testCreateSnapshotAsLeaderWithInvalidSnapshotId(boolean)[1]
+
+  '
+- 'testCreateSnapshotAsLeaderWithInvalidSnapshotId(boolean)[2]
+
+  '
+- 'testFetchRequestAtLogStartOffsetWithInvalidEpoch(boolean)[1]
+
+  '
+- 'testFetchRequestAtLogStartOffsetWithInvalidEpoch(boolean)[2]
+
+  '
+- 'testFetchRequestAtLogStartOffsetWithValidEpoch(boolean)[1]
+
+  '
+- 'testFetchRequestAtLogStartOffsetWithValidEpoch(boolean)[2]
+
+  '
+- 'testFetchRequestOffsetAtZero(boolean)[1]
+
+  '
+- 'testFetchRequestOffsetAtZero(boolean)[2]
+
+  '
+- 'testFetchRequestOffsetLessThanLogStart(boolean)[1]
+
+  '
+- 'testFetchRequestOffsetLessThanLogStart(boolean)[2]
+
+  '
+- 'testFetchRequestTruncateToLogStart(boolean)[1]
+
+  '
+- 'testFetchRequestTruncateToLogStart(boolean)[2]
+
+  '
+- 'testFetchRequestWithLargerLastFetchedEpoch(boolean)[1]
+
+  '
+- 'testFetchRequestWithLargerLastFetchedEpoch(boolean)[2]
+
+  '
+- 'testFetchRequestWithLastFetchedEpochLessThanOldestSnapshot(boolean)[1]
+
+  '
+- 'testFetchRequestWithLastFetchedEpochLessThanOldestSnapshot(boolean)[2]
+
+  '
+- 'testFetchResponseWithInvalidSnapshotId(boolean)[1]
+
+  '
+- 'testFetchResponseWithInvalidSnapshotId(boolean)[2]
+
+  '
+- 'testFetchResponseWithSnapshotId(boolean)[1]
+
+  '
+- 'testFetchResponseWithSnapshotId(boolean)[2]
+
+  '
+- 'testFetchSnapshotRequestAsFollower(boolean)[1]
+
+  '
+- 'testFetchSnapshotRequestAsFollower(boolean)[2]
+
+  '
+- 'testFetchSnapshotRequestAsLeader(boolean)[1]
+
+  '
+- 'testFetchSnapshotRequestAsLeader(boolean)[2]
+
+  '
+- 'testFetchSnapshotRequestBootstrapSnapshot()
+
+  '
+- 'testFetchSnapshotRequestClusterIdValidation(boolean)[1]
+
+  '
+- 'testFetchSnapshotRequestClusterIdValidation(boolean)[2]
+
+  '
+- 'testFetchSnapshotRequestMissingSnapshot(boolean)[1]
+
+  '
+- 'testFetchSnapshotRequestMissingSnapshot(boolean)[2]
+
+  '
+- 'testFetchSnapshotRequestUnknownPartition(boolean)[1]
+
+  '
+- 'testFetchSnapshotRequestUnknownPartition(boolean)[2]
+
+  '
+- 'testFetchSnapshotRequestWithInvalidPosition(boolean)[1]
+
+  '
+- 'testFetchSnapshotRequestWithInvalidPosition(boolean)[2]
+
+  '
+- 'testFetchSnapshotRequestWithNewerEpoch(boolean)[1]
+
+  '
+- 'testFetchSnapshotRequestWithNewerEpoch(boolean)[2]
+
+  '
+- 'testFetchSnapshotRequestWithOlderEpoch(boolean)[1]
+
+  '
+- 'testFetchSnapshotRequestWithOlderEpoch(boolean)[2]
+
+  '
+- 'testFetchSnapshotResponseFromNewerEpochLeader(boolean)[1]
+
+  '
+- 'testFetchSnapshotResponseFromNewerEpochLeader(boolean)[2]
+
+  '
+- 'testFetchSnapshotResponseFromNewerEpochNotLeader(boolean)[1]
+
+  '
+- 'testFetchSnapshotResponseFromNewerEpochNotLeader(boolean)[2]
+
+  '
+- 'testFetchSnapshotResponseFromOlderEpoch(boolean)[1]
+
+  '
+- 'testFetchSnapshotResponseFromOlderEpoch(boolean)[2]
+
+  '
+- 'testFetchSnapshotResponseMissingSnapshot(boolean)[1]
+
+  '
+- 'testFetchSnapshotResponseMissingSnapshot(boolean)[2]
+
+  '
+- 'testFetchSnapshotResponsePartialData(boolean)[1]
+
+  '
+- 'testFetchSnapshotResponsePartialData(boolean)[2]
+
+  '
+- 'testFetchSnapshotResponseToNotFollower(boolean)[1]
+
+  '
+- 'testFetchSnapshotResponseToNotFollower(boolean)[2]
+
+  '
+- 'testFetchSnapshotResponseWithInvalidId(boolean)[1]
+
+  '
+- 'testFetchSnapshotResponseWithInvalidId(boolean)[2]
+
+  '
+- 'testFollowerListenerNotified(boolean)[1]
+
+  '
+- 'testFollowerListenerNotified(boolean)[2]
+
+  '
+- 'testLatestSnapshotId()
+
+  '
+- 'testLatestSnapshotIdMissing()
+
+  '
+- 'testLeaderImmediatelySendsSnapshotId(boolean)[1]
+
+  '
+- 'testLeaderImmediatelySendsSnapshotId(boolean)[2]
+
+  '
+- 'testLeaderListenerNotified(boolean, boolean)[1]
+
+  '
+- 'testLeaderListenerNotified(boolean, boolean)[2]
+
+  '
+- 'testLeaderListenerNotified(boolean, boolean)[3]
+
+  '
+- 'testLeaderListenerNotified(boolean, boolean)[4]
+
+  '
+- 'testLeaderShouldResignLeadershipIfNotGetFetchSnapshotRequestFromMajorityVoters(boolean)[1]
+
+  '
+- 'testLeaderShouldResignLeadershipIfNotGetFetchSnapshotRequestFromMajorityVoters(boolean)[2]
+
+  '
+- 'testListenerRenotified(boolean)[1]
+
+  '
+- 'testListenerRenotified(boolean)[2]
+
+  '
+- 'testPartialFetchSnapshotRequestAsLeader(boolean)[1]
+
+  '
+- 'testPartialFetchSnapshotRequestAsLeader(boolean)[2]
+
+  '
+- 'testSecondListenerNotified(boolean)[1]
+
+  '
+- 'testSecondListenerNotified(boolean)[2]
+
+  '
+org.apache.kafka.raft.KafkaRaftClientTest:
+- 'testAccumulatorClearedAfterBecomingFollower(boolean)[1]
+
+  '
+- 'testAccumulatorClearedAfterBecomingFollower(boolean)[2]
+
+  '
+- 'testAccumulatorClearedAfterBecomingUnattached(boolean)[1]
+
+  '
+- 'testAccumulatorClearedAfterBecomingUnattached(boolean)[2]
+
+  '
+- 'testAccumulatorClearedAfterBecomingVoted(boolean)[1]
+
+  '
+- 'testAccumulatorClearedAfterBecomingVoted(boolean)[2]
+
+  '
+- 'testAppendFailedWithBufferAllocationException(boolean)[1]
+
+  '
+- 'testAppendFailedWithBufferAllocationException(boolean)[2]
+
+  '
+- 'testAppendFailedWithFencedEpoch(boolean)[1]
+
+  '
+- 'testAppendFailedWithFencedEpoch(boolean)[2]
+
+  '
+- 'testAppendFailedWithNotLeaderException(boolean)[1]
+
+  '
+- 'testAppendFailedWithNotLeaderException(boolean)[2]
+
+  '
+- 'testAppendFailedWithRecordBatchTooLargeException(boolean)[1]
+
+  '
+- 'testAppendFailedWithRecordBatchTooLargeException(boolean)[2]
+
+  '
+- 'testBeginQuorumEpochHeartbeat(boolean)[1]
+
+  '
+- 'testBeginQuorumEpochHeartbeat(boolean)[2]
+
+  '
+- 'testBeginQuorumEpochRequestClusterIdValidation(boolean)[1]
+
+  '
+- 'testBeginQuorumEpochRequestClusterIdValidation(boolean)[2]
+
+  '
+- 'testCandidateIgnoreVoteRequestOnSameEpoch(boolean)[1]
+
+  '
+- 'testCandidateIgnoreVoteRequestOnSameEpoch(boolean)[2]
+
+  '
+- 'testCannotResignIfNotLeader(boolean)[1]
+
+  '
+- 'testCannotResignIfNotLeader(boolean)[2]
+
+  '
+- 'testCannotResignIfObserver(boolean)[1]
+
+  '
+- 'testCannotResignIfObserver(boolean)[2]
+
+  '
+- 'testCannotResignWithLargerEpochThanCurrentEpoch(boolean)[1]
+
+  '
+- 'testCannotResignWithLargerEpochThanCurrentEpoch(boolean)[2]
+
+  '
+- 'testChannelWokenUpIfLingerTimeoutReachedDuringAppend(boolean)[1]
+
+  '
+- 'testChannelWokenUpIfLingerTimeoutReachedDuringAppend(boolean)[2]
+
+  '
+- 'testChannelWokenUpIfLingerTimeoutReachedWithoutAppend(boolean)[1]
+
+  '
+- 'testChannelWokenUpIfLingerTimeoutReachedWithoutAppend(boolean)[2]
+
+  '
+- 'testClusterAuthorizationFailedInBeginQuorumEpoch(boolean)[1]
+
+  '
+- 'testClusterAuthorizationFailedInBeginQuorumEpoch(boolean)[2]
+
+  '
+- 'testClusterAuthorizationFailedInEndQuorumEpoch(boolean)[1]
+
+  '
+- 'testClusterAuthorizationFailedInEndQuorumEpoch(boolean)[2]
+
+  '
+- 'testClusterAuthorizationFailedInFetch(boolean)[1]
+
+  '
+- 'testClusterAuthorizationFailedInFetch(boolean)[2]
+
+  '
+- 'testClusterAuthorizationFailedInVote(boolean)[1]
+
+  '
+- 'testClusterAuthorizationFailedInVote(boolean)[2]
+
+  '
+- 'testDescribeQuorumNonLeader(boolean)[1]
+
+  '
+- 'testDescribeQuorumNonLeader(boolean)[2]
+
+  '
+- 'testDescribeQuorumNonMonotonicFollowerFetch(boolean, boolean)[1]
+
+  '
+- 'testDescribeQuorumNonMonotonicFollowerFetch(boolean, boolean)[2]
+
+  '
+- 'testDescribeQuorumNonMonotonicFollowerFetch(boolean, boolean)[3]
+
+  '
+- 'testDescribeQuorumWithFollowers(boolean, boolean)[1]
+
+  '
+- 'testDescribeQuorumWithFollowers(boolean, boolean)[2]
+
+  '
+- 'testDescribeQuorumWithFollowers(boolean, boolean)[3]
+
+  '
+- 'testDescribeQuorumWithObserver(boolean, boolean)[1]
+
+  '
+- 'testDescribeQuorumWithObserver(boolean, boolean)[2]
+
+  '
+- 'testDescribeQuorumWithObserver(boolean, boolean)[3]
+
+  '
+- 'testDescribeQuorumWithOnlyStaticVoters(boolean)[1]
+
+  '
+- 'testDescribeQuorumWithOnlyStaticVoters(boolean)[2]
+
+  '
+- 'testElectionTimeoutAfterUserInitiatedResign(boolean)[1]
+
+  '
+- 'testElectionTimeoutAfterUserInitiatedResign(boolean)[2]
+
+  '
+- 'testEmptyRecordSetInFetchResponse(boolean)[1]
+
+  '
+- 'testEmptyRecordSetInFetchResponse(boolean)[2]
+
+  '
+- 'testEndQuorumEpochRequestClusterIdValidation(boolean)[1]
+
+  '
+- 'testEndQuorumEpochRequestClusterIdValidation(boolean)[2]
+
+  '
+- 'testEndQuorumEpochRetriesWhileResigned(boolean)[1]
+
+  '
+- 'testEndQuorumEpochRetriesWhileResigned(boolean)[2]
+
+  '
+- 'testEndQuorumEpochSentBasedOnFetchOffset(boolean)[1]
+
+  '
+- 'testEndQuorumEpochSentBasedOnFetchOffset(boolean)[2]
+
+  '
+- 'testEndQuorumIgnoredAsCandidateIfOlderEpoch(boolean)[1]
+
+  '
+- 'testEndQuorumIgnoredAsCandidateIfOlderEpoch(boolean)[2]
+
+  '
+- 'testEndQuorumIgnoredAsLeaderIfOlderEpoch(boolean)[1]
+
+  '
+- 'testEndQuorumIgnoredAsLeaderIfOlderEpoch(boolean)[2]
+
+  '
+- 'testEndQuorumStartsNewElectionImmediatelyIfFollowerUnattached(boolean)[1]
+
+  '
+- 'testEndQuorumStartsNewElectionImmediatelyIfFollowerUnattached(boolean)[2]
+
+  '
+- 'testFetchRequestClusterIdValidation(boolean)[1]
+
+  '
+- 'testFetchRequestClusterIdValidation(boolean)[2]
+
+  '
+- 'testFetchResponseIgnoredAfterBecomingCandidate(boolean)[1]
+
+  '
+- 'testFetchResponseIgnoredAfterBecomingCandidate(boolean)[2]
+
+  '
+- 'testFetchResponseIgnoredAfterBecomingFollowerOfDifferentLeader(boolean)[1]
+
+  '
+- 'testFetchResponseIgnoredAfterBecomingFollowerOfDifferentLeader(boolean)[2]
+
+  '
+- 'testFetchShouldBeTreatedAsLeaderAcknowledgement(boolean)[1]
+
+  '
+- 'testFetchShouldBeTreatedAsLeaderAcknowledgement(boolean)[2]
+
+  '
+- 'testFollowerAsObserverDoesNotBecomeCandidateAfterFetchTimeout(boolean)[1]
+
+  '
+- 'testFollowerAsObserverDoesNotBecomeCandidateAfterFetchTimeout(boolean)[2]
+
+  '
+- 'testFollowerGracefulShutdown(boolean)[1]
+
+  '
+- 'testFollowerGracefulShutdown(boolean)[2]
+
+  '
+- 'testFollowerLogReconciliation(boolean)[1]
+
+  '
+- 'testFollowerLogReconciliation(boolean)[2]
+
+  '
+- 'testFollowerReplication(boolean)[1]
+
+  '
+- 'testFollowerReplication(boolean)[2]
+
+  '
+- 'testGracefulShutdownSingleMemberQuorum(boolean)[1]
+
+  '
+- 'testGracefulShutdownSingleMemberQuorum(boolean)[2]
+
+  '
+- 'testGrantVotesFromHigherEpochAfterResigningCandidacy(boolean)[1]
+
+  '
+- 'testGrantVotesFromHigherEpochAfterResigningCandidacy(boolean)[2]
+
+  '
+- 'testGrantVotesFromHigherEpochAfterResigningLeadership(boolean)[1]
+
+  '
+- 'testGrantVotesFromHigherEpochAfterResigningLeadership(boolean)[2]
+
+  '
+- 'testGrantVotesWhenShuttingDown(boolean)[1]
+
+  '
+- 'testGrantVotesWhenShuttingDown(boolean)[2]
+
+  '
+- 'testHandleBeginQuorumEpochAfterUserInitiatedResign(boolean)[1]
+
+  '
+- 'testHandleBeginQuorumEpochAfterUserInitiatedResign(boolean)[2]
+
+  '
+- 'testHandleBeginQuorumRequest(boolean)[1]
+
+  '
+- 'testHandleBeginQuorumRequest(boolean)[2]
+
+  '
+- 'testHandleBeginQuorumResponse(boolean)[1]
+
+  '
+- 'testHandleBeginQuorumResponse(boolean)[2]
+
+  '
+- 'testHandleCommitCallbackFiresAfterFollowerHighWatermarkAdvances(boolean)[1]
+
+  '
+- 'testHandleCommitCallbackFiresAfterFollowerHighWatermarkAdvances(boolean)[2]
+
+  '
+- 'testHandleCommitCallbackFiresInCandidateState(boolean)[1]
+
+  '
+- 'testHandleCommitCallbackFiresInCandidateState(boolean)[2]
+
+  '
+- 'testHandleCommitCallbackFiresInVotedState(boolean)[1]
+
+  '
+- 'testHandleCommitCallbackFiresInVotedState(boolean)[2]
+
+  '
+- 'testHandleEndQuorumRequest(boolean)[1]
+
+  '
+- 'testHandleEndQuorumRequest(boolean)[2]
+
+  '
+- 'testHandleEndQuorumRequestWithLowerPriorityToBecomeLeader(boolean)[1]
+
+  '
+- 'testHandleEndQuorumRequestWithLowerPriorityToBecomeLeader(boolean)[2]
+
+  '
+- 'testHandleInvalidVoteRequestWithOlderEpoch(boolean)[1]
+
+  '
+- 'testHandleInvalidVoteRequestWithOlderEpoch(boolean)[2]
+
+  '
+- 'testHandleLeaderChangeFiresAfterFollowerRegistration(boolean)[1]
+
+  '
+- 'testHandleLeaderChangeFiresAfterFollowerRegistration(boolean)[2]
+
+  '
+- 'testHandleLeaderChangeFiresAfterListenerReachesEpochStartOffset(boolean)[1]
+
+  '
+- 'testHandleLeaderChangeFiresAfterListenerReachesEpochStartOffset(boolean)[2]
+
+  '
+- 'testHandleLeaderChangeFiresAfterListenerReachesEpochStartOffsetOnEmptyLog(boolean)[1]
+
+  '
+- 'testHandleLeaderChangeFiresAfterListenerReachesEpochStartOffsetOnEmptyLog(boolean)[2]
+
+  '
+- 'testHandleLeaderChangeFiresAfterResignRegistration(boolean)[1]
+
+  '
+- 'testHandleLeaderChangeFiresAfterResignRegistration(boolean)[2]
+
+  '
+- 'testHandleLeaderChangeFiresAfterUnattachedRegistration(boolean)[1]
+
+  '
+- 'testHandleLeaderChangeFiresAfterUnattachedRegistration(boolean)[2]
+
+  '
+- 'testHandleValidVoteRequestAsFollower(boolean)[1]
+
+  '
+- 'testHandleValidVoteRequestAsFollower(boolean)[2]
+
+  '
+- 'testHandleVoteRequestAsFollowerWithElectedLeader(boolean)[1]
+
+  '
+- 'testHandleVoteRequestAsFollowerWithElectedLeader(boolean)[2]
+
+  '
+- 'testHandleVoteRequestAsFollowerWithVotedCandidate(boolean)[1]
+
+  '
+- 'testHandleVoteRequestAsFollowerWithVotedCandidate(boolean)[2]
+
+  '
+- 'testHandleVoteRequestAsObserver(boolean)[1]
+
+  '
+- 'testHandleVoteRequestAsObserver(boolean)[2]
+
+  '
+- 'testInitializeAsCandidateAndBecomeLeader(boolean)[1]
+
+  '
+- 'testInitializeAsCandidateAndBecomeLeader(boolean)[2]
+
+  '
+- 'testInitializeAsCandidateAndBecomeLeaderQuorumOfThree(boolean)[1]
+
+  '
+- 'testInitializeAsCandidateAndBecomeLeaderQuorumOfThree(boolean)[2]
+
+  '
+- 'testInitializeAsCandidateFromStateStore(boolean)[1]
+
+  '
+- 'testInitializeAsCandidateFromStateStore(boolean)[2]
+
+  '
+- 'testInitializeAsFollowerEmptyLog(boolean)[1]
+
+  '
+- 'testInitializeAsFollowerEmptyLog(boolean)[2]
+
+  '
+- 'testInitializeAsFollowerNonEmptyLog(boolean)[1]
+
+  '
+- 'testInitializeAsFollowerNonEmptyLog(boolean)[2]
+
+  '
+- 'testInitializeAsLeaderFromStateStoreSingleMemberQuorum(boolean)[1]
+
+  '
+- 'testInitializeAsLeaderFromStateStoreSingleMemberQuorum(boolean)[2]
+
+  '
+- 'testInitializeAsResignedAndBecomeCandidate(boolean)[1]
+
+  '
+- 'testInitializeAsResignedAndBecomeCandidate(boolean)[2]
+
+  '
+- 'testInitializeAsResignedLeaderFromStateStore(boolean)[1]
+
+  '
+- 'testInitializeAsResignedLeaderFromStateStore(boolean)[2]
+
+  '
+- 'testInitializeObserverNoPreviousState(boolean)[1]
+
+  '
+- 'testInitializeObserverNoPreviousState(boolean)[2]
+
+  '
+- 'testInitializeSingleMemberQuorum(boolean)[1]
+
+  '
+- 'testInitializeSingleMemberQuorum(boolean)[2]
+
+  '
+- 'testInvalidFetchRequest(boolean)[1]
+
+  '
+- 'testInvalidFetchRequest(boolean)[2]
+
+  '
+- 'testInvalidVoteRequest(boolean)[1]
+
+  '
+- 'testInvalidVoteRequest(boolean)[2]
+
+  '
+- 'testInvalidVoterReplicaBeginQuorumEpochRequest()
+
+  '
+- 'testInvalidVoterReplicaVoteRequest()
+
+  '
+- 'testLateRegisteredListenerCatchesUp(boolean)[1]
+
+  '
+- 'testLateRegisteredListenerCatchesUp(boolean)[2]
+
+  '
+- 'testLeaderAcceptVoteFromObserver(boolean)[1]
+
+  '
+- 'testLeaderAcceptVoteFromObserver(boolean)[2]
+
+  '
+- 'testLeaderAppendSingleMemberQuorum(boolean)[1]
+
+  '
+- 'testLeaderAppendSingleMemberQuorum(boolean)[2]
+
+  '
+- 'testLeaderGracefulShutdown(boolean)[1]
+
+  '
+- 'testLeaderGracefulShutdown(boolean)[2]
+
+  '
+- 'testLeaderGracefulShutdownTimeout(boolean)[1]
+
+  '
+- 'testLeaderGracefulShutdownTimeout(boolean)[2]
+
+  '
+- 'testLeaderIgnoreVoteRequestOnSameEpoch(boolean)[1]
+
+  '
+- 'testLeaderIgnoreVoteRequestOnSameEpoch(boolean)[2]
+
+  '
+- 'testLeaderImmediatelySendsDivergingEpoch(boolean)[1]
+
+  '
+- 'testLeaderImmediatelySendsDivergingEpoch(boolean)[2]
+
+  '
+- 'testLeaderShouldNotResignLeadershipIfOnlyOneVoters(boolean)[1]
+
+  '
+- 'testLeaderShouldNotResignLeadershipIfOnlyOneVoters(boolean)[2]
+
+  '
+- 'testLeaderShouldResignLeadershipIfNotGetFetchRequestFromMajorityVoters(boolean)[1]
+
+  '
+- 'testLeaderShouldResignLeadershipIfNotGetFetchRequestFromMajorityVoters(boolean)[2]
+
+  '
+- 'testLeaderStateUpdateWithDifferentFetchRequestVersions(short)[1]
+
+  '
+- 'testLeaderStateUpdateWithDifferentFetchRequestVersions(short)[2]
+
+  '
+- 'testLeaderStateUpdateWithDifferentFetchRequestVersions(short)[3]
+
+  '
+- 'testLeaderStateUpdateWithDifferentFetchRequestVersions(short)[4]
+
+  '
+- 'testLeaderStateUpdateWithDifferentFetchRequestVersions(short)[5]
+
+  '
+- 'testListenerCommitCallbackAfterLeaderWrite(boolean)[1]
+
+  '
+- 'testListenerCommitCallbackAfterLeaderWrite(boolean)[2]
+
+  '
+- 'testMetrics(boolean)[1]
+
+  '
+- 'testMetrics(boolean)[2]
+
+  '
+- 'testNodeDirectoryId()
+
+  '
+- 'testObserverFetchWithNoLocalId(boolean)[1]
+
+  '
+- 'testObserverFetchWithNoLocalId(boolean)[2]
+
+  '
+- 'testObserverGracefulShutdown(boolean)[1]
+
+  '
+- 'testObserverGracefulShutdown(boolean)[2]
+
+  '
+- 'testObserverHandleRetryFetchToLeader(boolean)[1]
+
+  '
+- 'testObserverHandleRetryFetchToLeader(boolean)[2]
+
+  '
+- 'testObserverHandleRetryFetchtToBootstrapServer(boolean)[1]
+
+  '
+- 'testObserverHandleRetryFetchtToBootstrapServer(boolean)[2]
+
+  '
+- 'testObserverLeaderRediscoveryAfterBrokerNotAvailableError(boolean)[1]
+
+  '
+- 'testObserverLeaderRediscoveryAfterBrokerNotAvailableError(boolean)[2]
+
+  '
+- 'testObserverLeaderRediscoveryAfterRequestTimeout(boolean)[1]
+
+  '
+- 'testObserverLeaderRediscoveryAfterRequestTimeout(boolean)[2]
+
+  '
+- 'testObserverQuorumDiscoveryFailure(boolean)[1]
+
+  '
+- 'testObserverQuorumDiscoveryFailure(boolean)[2]
+
+  '
+- 'testObserverReplication(boolean, boolean)[1]
+
+  '
+- 'testObserverReplication(boolean, boolean)[2]
+
+  '
+- 'testObserverReplication(boolean, boolean)[3]
+
+  '
+- 'testObserverReplication(boolean, boolean)[4]
+
+  '
+- 'testObserverSendDiscoveryFetchAfterFetchTimeout(boolean)[1]
+
+  '
+- 'testObserverSendDiscoveryFetchAfterFetchTimeout(boolean)[2]
+
+  '
+- 'testPurgatoryFetchCompletedByFollowerTransition(boolean)[1]
+
+  '
+- 'testPurgatoryFetchCompletedByFollowerTransition(boolean)[2]
+
+  '
+- 'testPurgatoryFetchSatisfiedByWrite(boolean)[1]
+
+  '
+- 'testPurgatoryFetchSatisfiedByWrite(boolean)[2]
+
+  '
+- 'testPurgatoryFetchTimeout(boolean)[1]
+
+  '
+- 'testPurgatoryFetchTimeout(boolean)[2]
+
+  '
+- 'testRejectVotesFromSameEpochAfterResigningCandidacy(boolean)[1]
+
+  '
+- 'testRejectVotesFromSameEpochAfterResigningCandidacy(boolean)[2]
+
+  '
+- 'testRejectVotesFromSameEpochAfterResigningLeadership(boolean)[1]
+
+  '
+- 'testRejectVotesFromSameEpochAfterResigningLeadership(boolean)[2]
+
+  '
+- 'testReregistrationChangesListenerContext(boolean)[1]
+
+  '
+- 'testReregistrationChangesListenerContext(boolean)[2]
+
+  '
+- 'testResignInOlderEpochIgnored(boolean)[1]
+
+  '
+- 'testResignInOlderEpochIgnored(boolean)[2]
+
+  '
+- 'testResignWillCompleteFetchPurgatory(boolean)[1]
+
+  '
+- 'testResignWillCompleteFetchPurgatory(boolean)[2]
+
+  '
+- 'testRetryElection(boolean)[1]
+
+  '
+- 'testRetryElection(boolean)[2]
+
+  '
+- 'testStaticVotersIgnoredWithBootstrapSnapshot(boolean)[1]
+
+  '
+- 'testStaticVotersIgnoredWithBootstrapSnapshot(boolean)[2]
+
+  '
+- 'testUnattachedAsObserverDoesNotBecomeCandidateAfterElectionTimeout(boolean)[1]
+
+  '
+- 'testUnattachedAsObserverDoesNotBecomeCandidateAfterElectionTimeout(boolean)[2]
+
+  '
+- 'testVoteRequestClusterIdValidation(boolean)[1]
+
+  '
+- 'testVoteRequestClusterIdValidation(boolean)[2]
+
+  '
+- 'testVoteRequestTimeout(boolean)[1]
+
+  '
+- 'testVoteRequestTimeout(boolean)[2]
+
+  '
+- 'testVoteResponseIgnoredAfterBecomingFollower(boolean)[1]
+
+  '
+- 'testVoteResponseIgnoredAfterBecomingFollower(boolean)[2]
+
+  '
+- 'testVoterBecomeCandidateAfterFetchTimeout(boolean)[1]
+
+  '
+- 'testVoterBecomeCandidateAfterFetchTimeout(boolean)[2]
+
+  '
+org.apache.kafka.raft.LeaderStateTest:
+- 'testBeginQuorumEpochTimer(boolean)[1]
+
+  '
+- 'testBeginQuorumEpochTimer(boolean)[2]
+
+  '
+- 'testCheckQuorum(boolean)[1]
+
+  '
+- 'testCheckQuorum(boolean)[2]
+
+  '
+- 'testCheckQuorumAfterVoterSetChanges()
+
+  '
+- 'testCheckQuorumWithOneVoter()
+
+  '
+- 'testFollowerAcknowledgement(boolean)[1]
+
+  '
+- 'testFollowerAcknowledgement(boolean)[2]
+
+  '
+- 'testGetNonLeaderFollowersByFetchOffsetDescending(boolean)[1]
+
+  '
+- 'testGetNonLeaderFollowersByFetchOffsetDescending(boolean)[2]
+
+  '
+- 'testGrantVote(boolean)[1]
+
+  '
+- 'testGrantVote(boolean)[2]
+
+  '
+- 'testHighWatermarkDoesIncreaseFromNewVoter()
+
+  '
+- 'testHighWatermarkDoesNotDecreaseFromNewVoter()
+
+  '
+- 'testIdempotentEndOffsetUpdate()
+
+  '
+- 'testLeaderEndpoints()
+
+  '
+- 'testNonFollowerAcknowledgement()
+
+  '
+- 'testNonMonotonicHighWatermarkUpdate(boolean)[1]
+
+  '
+- 'testNonMonotonicHighWatermarkUpdate(boolean)[2]
+
+  '
+- 'testNonMonotonicLocalEndOffsetUpdate()
+
+  '
+- 'testRequireNonNullAccumulator()
+
+  '
+- 'testUpdateHighWatermarkMetadata()
+
+  '
+- 'testUpdateHighWatermarkQuorumRemovingLeaderFromVoterStates()
+
+  '
+- 'testUpdateHighWatermarkQuorumSizeOne()
+
+  '
+- 'testUpdateHighWatermarkQuorumSizeThree(boolean)[1]
+
+  '
+- 'testUpdateHighWatermarkQuorumSizeThree(boolean)[2]
+
+  '
+- 'testUpdateHighWatermarkQuorumSizeTwo(boolean)[1]
+
+  '
+- 'testUpdateHighWatermarkQuorumSizeTwo(boolean)[2]
+
+  '
+- 'testUpdateHighWatermarkRemovingFollowerFromVoterStates()
+
+  '
+- 'testUpdateVotersFromNoDirectoryIdToDirectoryId()
+
+  '
+org.apache.kafka.raft.MockExpirationServiceTest:
+- 'testFailAfter()
+
+  '
+org.apache.kafka.raft.MockLogTest:
+- 'testAppendAsFollower()
+
+  '
+- 'testAppendAsLeader()
+
+  '
+- 'testAppendControlRecord()
+
+  '
+- 'testAssignEpochStartOffset()
+
+  '
+- 'testCreateExistingSnapshot()
+
+  '
+- 'testCreateSnapshot()
+
+  '
+- 'testCreateSnapshotBeforeLogStartOffset()
+
+  '
+- 'testCreateSnapshotLaterThanHighWatermark()
+
+  '
+- 'testCreateSnapshotMuchEarlierEpoch()
+
+  '
+- 'testCreateSnapshotMuchLaterEpoch()
+
+  '
+- 'testCreateSnapshotValidation()
+
+  '
+- 'testCreateSnapshotWithMissingEpoch()
+
+  '
+- 'testDecrementHighWatermark()
+
+  '
+- 'testDoesntTruncateFully()
+
+  '
+- 'testEmptyAppendNotAllowed()
+
+  '
+- 'testEndOffsetForEpoch()
+
+  '
+- 'testFailToIncreaseLogStartPastHighWatermark()
+
+  '
+- 'testMetadataValidation()
+
+  '
+- 'testMonotonicEpochStartOffset()
+
+  '
+- 'testReadMissingSnapshot()
+
+  '
+- 'testReadOutOfRangeOffset()
+
+  '
+- 'testReadRecords()
+
+  '
+- 'testReadUpToHighWatermark()
+
+  '
+- 'testReadUpToLogEnd()
+
+  '
+- 'testTopicId()
+
+  '
+- 'testTopicPartition()
+
+  '
+- 'testTruncateBelowHighWatermark()
+
+  '
+- 'testTruncateFullyToLatestSnapshot()
+
+  '
+- 'testTruncateTo()
+
+  '
+- 'testTruncateWillRemoveOlderSnapshot()
+
+  '
+- 'testUnexpectedAppendOffset()
+
+  '
+- 'testUnflushedRecordsLostAfterReopen()
+
+  '
+- 'testUpdateHighWatermark()
+
+  '
+- 'testUpdateLogStartOffset()
+
+  '
+- 'testUpdateLogStartOffsetWillRemoveOlderSnapshot()
+
+  '
+- 'testUpdateLogStartOffsetWithMissingSnapshot()
+
+  '
+- 'testValidateEpochGreaterThanLastKnownEpoch()
+
+  '
+- 'testValidateEpochLessThanFirstEpochInLog()
+
+  '
+- 'testValidateEpochLessThanOldestSnapshotEpoch()
+
+  '
+- 'testValidateOffsetEqualToOldestSnapshotOffset()
+
+  '
+- 'testValidateOffsetGreatThanEndOffset()
+
+  '
+- 'testValidateOffsetLessThanLEO()
+
+  '
+- 'testValidateOffsetLessThanOldestSnapshotOffset()
+
+  '
+- 'testValidateUnknownEpochLessThanLastKnownGreaterThanOldestSnapshot()
+
+  '
+- 'testValidateValidEpochAndOffset()
+
+  '
+org.apache.kafka.raft.QuorumStateTest:
+- 'testAllStatesToUnattachedFailInSameEpoch(KRaftVersion)[1]
+
+  '
+- 'testAllStatesToUnattachedFailInSameEpoch(KRaftVersion)[2]
+
+  '
+- 'testCanBecomeFollowerOfNonVoter(KRaftVersion)[1]
+
+  '
+- 'testCanBecomeFollowerOfNonVoter(KRaftVersion)[2]
+
+  '
+- 'testCandidateToAnyStateLowerEpoch(KRaftVersion)[1]
+
+  '
+- 'testCandidateToAnyStateLowerEpoch(KRaftVersion)[2]
+
+  '
+- 'testCandidateToCandidate(KRaftVersion)[1]
+
+  '
+- 'testCandidateToCandidate(KRaftVersion)[2]
+
+  '
+- 'testCandidateToFollower(KRaftVersion)[1]
+
+  '
+- 'testCandidateToFollower(KRaftVersion)[2]
+
+  '
+- 'testCandidateToLeader(KRaftVersion)[1]
+
+  '
+- 'testCandidateToLeader(KRaftVersion)[2]
+
+  '
+- 'testCandidateToLeaderWithoutGrantedVote(KRaftVersion)[1]
+
+  '
+- 'testCandidateToLeaderWithoutGrantedVote(KRaftVersion)[2]
+
+  '
+- 'testCandidateToResigned(KRaftVersion)[1]
+
+  '
+- 'testCandidateToResigned(KRaftVersion)[2]
+
+  '
+- 'testCandidateToUnattached(KRaftVersion)[1]
+
+  '
+- 'testCandidateToUnattached(KRaftVersion)[2]
+
+  '
+- 'testCandidateToUnattachedVoted(KRaftVersion)[1]
+
+  '
+- 'testCandidateToUnattachedVoted(KRaftVersion)[2]
+
+  '
+- 'testCannotFollowOrVoteForSelf(KRaftVersion)[1]
+
+  '
+- 'testCannotFollowOrVoteForSelf(KRaftVersion)[2]
+
+  '
+- 'testFollowerToAnyStateLowerEpoch(KRaftVersion)[1]
+
+  '
+- 'testFollowerToAnyStateLowerEpoch(KRaftVersion)[2]
+
+  '
+- 'testFollowerToCandidate(KRaftVersion)[1]
+
+  '
+- 'testFollowerToCandidate(KRaftVersion)[2]
+
+  '
+- 'testFollowerToFollowerHigherEpoch(KRaftVersion)[1]
+
+  '
+- 'testFollowerToFollowerHigherEpoch(KRaftVersion)[2]
+
+  '
+- 'testFollowerToFollowerSameEpoch(KRaftVersion)[1]
+
+  '
+- 'testFollowerToFollowerSameEpoch(KRaftVersion)[2]
+
+  '
+- 'testFollowerToLeaderOrResigned(KRaftVersion)[1]
+
+  '
+- 'testFollowerToLeaderOrResigned(KRaftVersion)[2]
+
+  '
+- 'testFollowerToUnattachedHigherEpoch(KRaftVersion)[1]
+
+  '
+- 'testFollowerToUnattachedHigherEpoch(KRaftVersion)[2]
+
+  '
+- 'testFollowerToUnattachedSameEpoch(KRaftVersion)[1]
+
+  '
+- 'testFollowerToUnattachedSameEpoch(KRaftVersion)[2]
+
+  '
+- 'testFollowerToUnattachedVotedHigherEpoch(KRaftVersion)[1]
+
+  '
+- 'testFollowerToUnattachedVotedHigherEpoch(KRaftVersion)[2]
+
+  '
+- 'testFollowerToUnattachedVotedSameEpoch(KRaftVersion)[1]
+
+  '
+- 'testFollowerToUnattachedVotedSameEpoch(KRaftVersion)[2]
+
+  '
+- 'testHasRemoteLeader(KRaftVersion)[1]
+
+  '
+- 'testHasRemoteLeader(KRaftVersion)[2]
+
+  '
+- 'testHighWatermarkRetained(KRaftVersion)[1]
+
+  '
+- 'testHighWatermarkRetained(KRaftVersion)[2]
+
+  '
+- 'testInitializeAsFollower(KRaftVersion)[1]
+
+  '
+- 'testInitializeAsFollower(KRaftVersion)[2]
+
+  '
+- 'testInitializeAsResignedCandidate(KRaftVersion)[1]
+
+  '
+- 'testInitializeAsResignedCandidate(KRaftVersion)[2]
+
+  '
+- 'testInitializeAsResignedLeader(KRaftVersion)[1]
+
+  '
+- 'testInitializeAsResignedLeader(KRaftVersion)[2]
+
+  '
+- 'testInitializeAsUnattached(KRaftVersion)[1]
+
+  '
+- 'testInitializeAsUnattached(KRaftVersion)[2]
+
+  '
+- 'testInitializeAsUnattachedWhenMissingEndpoints(KRaftVersion)[1]
+
+  '
+- 'testInitializeAsUnattachedWhenMissingEndpoints(KRaftVersion)[2]
+
+  '
+- 'testInitializeAsVoted(KRaftVersion)[1]
+
+  '
+- 'testInitializeAsVoted(KRaftVersion)[2]
+
+  '
+- 'testInitializePrimordialEpoch(KRaftVersion)[1]
+
+  '
+- 'testInitializePrimordialEpoch(KRaftVersion)[2]
+
+  '
+- 'testInitializeWithCorruptedStore(KRaftVersion)[1]
+
+  '
+- 'testInitializeWithCorruptedStore(KRaftVersion)[2]
+
+  '
+- 'testInitializeWithEmptyLocalId(KRaftVersion)[1]
+
+  '
+- 'testInitializeWithEmptyLocalId(KRaftVersion)[2]
+
+  '
+- 'testLeaderToAnyStateLowerEpoch(KRaftVersion)[1]
+
+  '
+- 'testLeaderToAnyStateLowerEpoch(KRaftVersion)[2]
+
+  '
+- 'testLeaderToCandidate(KRaftVersion)[1]
+
+  '
+- 'testLeaderToCandidate(KRaftVersion)[2]
+
+  '
+- 'testLeaderToFollower(KRaftVersion)[1]
+
+  '
+- 'testLeaderToFollower(KRaftVersion)[2]
+
+  '
+- 'testLeaderToLeader(KRaftVersion)[1]
+
+  '
+- 'testLeaderToLeader(KRaftVersion)[2]
+
+  '
+- 'testLeaderToResigned(KRaftVersion)[1]
+
+  '
+- 'testLeaderToResigned(KRaftVersion)[2]
+
+  '
+- 'testLeaderToUnattached(KRaftVersion)[1]
+
+  '
+- 'testLeaderToUnattached(KRaftVersion)[2]
+
+  '
+- 'testLeaderToUnattachedVoted(KRaftVersion)[1]
+
+  '
+- 'testLeaderToUnattachedVoted(KRaftVersion)[2]
+
+  '
+- 'testNoLocalIdInitializationFailsIfElectionStateHasVotedCandidate(KRaftVersion)[1]
+
+  '
+- 'testNoLocalIdInitializationFailsIfElectionStateHasVotedCandidate(KRaftVersion)[2]
+
+  '
+- 'testObserverCannotBecomeCandidateOrLeader(KRaftVersion)[1]
+
+  '
+- 'testObserverCannotBecomeCandidateOrLeader(KRaftVersion)[2]
+
+  '
+- 'testObserverFollowerToUnattached(KRaftVersion)[1]
+
+  '
+- 'testObserverFollowerToUnattached(KRaftVersion)[2]
+
+  '
+- 'testObserverFromUnattachedVotedToCandidate(KRaftVersion)[1]
+
+  '
+- 'testObserverFromUnattachedVotedToCandidate(KRaftVersion)[2]
+
+  '
+- 'testObserverUnattachedToFollower(KRaftVersion)[1]
+
+  '
+- 'testObserverUnattachedToFollower(KRaftVersion)[2]
+
+  '
+- 'testObserverWithIdCanVote(KRaftVersion)[1]
+
+  '
+- 'testObserverWithIdCanVote(KRaftVersion)[2]
+
+  '
+- 'testUnattachedToAnyStateLowerEpoch(KRaftVersion)[1]
+
+  '
+- 'testUnattachedToAnyStateLowerEpoch(KRaftVersion)[2]
+
+  '
+- 'testUnattachedToCandidate(KRaftVersion)[1]
+
+  '
+- 'testUnattachedToCandidate(KRaftVersion)[2]
+
+  '
+- 'testUnattachedToFollowerHigherEpoch(KRaftVersion)[1]
+
+  '
+- 'testUnattachedToFollowerHigherEpoch(KRaftVersion)[2]
+
+  '
+- 'testUnattachedToFollowerSameEpoch(KRaftVersion)[1]
+
+  '
+- 'testUnattachedToFollowerSameEpoch(KRaftVersion)[2]
+
+  '
+- 'testUnattachedToLeaderOrResigned(KRaftVersion)[1]
+
+  '
+- 'testUnattachedToLeaderOrResigned(KRaftVersion)[2]
+
+  '
+- 'testUnattachedToUnattached(KRaftVersion)[1]
+
+  '
+- 'testUnattachedToUnattached(KRaftVersion)[2]
+
+  '
+- 'testUnattachedVotedHigherEpoch(KRaftVersion)[1]
+
+  '
+- 'testUnattachedVotedHigherEpoch(KRaftVersion)[2]
+
+  '
+- 'testUnattachedVotedSameEpoch(KRaftVersion)[1]
+
+  '
+- 'testUnattachedVotedSameEpoch(KRaftVersion)[2]
+
+  '
+- 'testUnattachedVotedToAnyStateLowerEpoch(KRaftVersion)[1]
+
+  '
+- 'testUnattachedVotedToAnyStateLowerEpoch(KRaftVersion)[2]
+
+  '
+- 'testUnattachedVotedToCandidate(KRaftVersion)[1]
+
+  '
+- 'testUnattachedVotedToCandidate(KRaftVersion)[2]
+
+  '
+- 'testUnattachedVotedToFollowerHigherEpoch(KRaftVersion)[1]
+
+  '
+- 'testUnattachedVotedToFollowerHigherEpoch(KRaftVersion)[2]
+
+  '
+- 'testUnattachedVotedToFollowerSameEpoch(KRaftVersion)[1]
+
+  '
+- 'testUnattachedVotedToFollowerSameEpoch(KRaftVersion)[2]
+
+  '
+- 'testUnattachedVotedToInvalidLeaderOrResigned(KRaftVersion)[1]
+
+  '
+- 'testUnattachedVotedToInvalidLeaderOrResigned(KRaftVersion)[2]
+
+  '
+- 'testUnattachedVotedToUnattachedHigherEpoch(KRaftVersion)[1]
+
+  '
+- 'testUnattachedVotedToUnattachedHigherEpoch(KRaftVersion)[2]
+
+  '
+- 'testUnattachedVotedToUnattachedSameEpoch(KRaftVersion)[1]
+
+  '
+- 'testUnattachedVotedToUnattachedSameEpoch(KRaftVersion)[2]
+
+  '
+- 'testUnattachedVotedToUnattachedVotedSameEpoch(KRaftVersion)[1]
+
+  '
+- 'testUnattachedVotedToUnattachedVotedSameEpoch(KRaftVersion)[2]
+
+  '
+org.apache.kafka.raft.RaftEventSimulationTest:
+- 'canElectInitialLeader
+
+  '
+- 'canElectNewLeaderAfterOldLeaderFailure
+
+  '
+- 'canElectNewLeaderAfterOldLeaderPartitionedAway
+
+  '
+- 'canMakeProgressAfterBackToBackLeaderFailures
+
+  '
+- 'canMakeProgressIfMajorityIsReachable
+
+  '
+- 'canRecoverAfterAllNodesKilled
+
+  '
+- 'canRecoverFromSingleNodeCommittedDataLoss
+
+  '
+org.apache.kafka.raft.RaftUtilTest:
+- 'testErrorResponse()
+
+  '
+- 'testSingletonBeginQuorumEpochRequestForAllVersion(short, String)[1]
+
+  '
+- 'testSingletonBeginQuorumEpochRequestForAllVersion(short, String)[2]
+
+  '
+- 'testSingletonBeginQuorumEpochResponseForAllVersion(short, String)[1]
+
+  '
+- 'testSingletonBeginQuorumEpochResponseForAllVersion(short, String)[2]
+
+  '
+- 'testSingletonDescribeQuorumRequestForAllVersion(short, String)[1]
+
+  '
+- 'testSingletonDescribeQuorumRequestForAllVersion(short, String)[2]
+
+  '
+- 'testSingletonDescribeQuorumRequestForAllVersion(short, String)[3]
+
+  '
+- 'testSingletonDescribeQuorumResponseForAllVersion(short, String)[1]
+
+  '
+- 'testSingletonDescribeQuorumResponseForAllVersion(short, String)[2]
+
+  '
+- 'testSingletonDescribeQuorumResponseForAllVersion(short, String)[3]
+
+  '
+- 'testSingletonEndQuorumEpochRequestForAllVersion(short, String)[1]
+
+  '
+- 'testSingletonEndQuorumEpochRequestForAllVersion(short, String)[2]
+
+  '
+- 'testSingletonEndQuorumEpochResponseForAllVersion(short, String)[1]
+
+  '
+- 'testSingletonEndQuorumEpochResponseForAllVersion(short, String)[2]
+
+  '
+- 'testSingletonFetchRequestForAllVersion(FetchRequestTestCase)[1]
+
+  '
+- 'testSingletonFetchRequestForAllVersion(FetchRequestTestCase)[2]
+
+  '
+- 'testSingletonFetchRequestForAllVersion(FetchRequestTestCase)[3]
+
+  '
+- 'testSingletonFetchRequestForAllVersion(FetchRequestTestCase)[4]
+
+  '
+- 'testSingletonFetchRequestForAllVersion(FetchRequestTestCase)[5]
+
+  '
+- 'testSingletonFetchRequestForAllVersion(FetchRequestTestCase)[6]
+
+  '
+- 'testSingletonFetchRequestForAllVersion(FetchRequestTestCase)[7]
+
+  '
+- 'testSingletonFetchRequestForAllVersion(FetchRequestTestCase)[8]
+
+  '
+- 'testSingletonFetchRequestForAllVersion(FetchRequestTestCase)[9]
+
+  '
+- 'testSingletonFetchResponseForAllVersion(FetchResponseTestCase)[1]
+
+  '
+- 'testSingletonFetchResponseForAllVersion(FetchResponseTestCase)[2]
+
+  '
+- 'testSingletonFetchResponseForAllVersion(FetchResponseTestCase)[3]
+
+  '
+- 'testSingletonFetchResponseForAllVersion(FetchResponseTestCase)[4]
+
+  '
+- 'testSingletonFetchResponseForAllVersion(FetchResponseTestCase)[5]
+
+  '
+- 'testSingletonFetchResponseForAllVersion(FetchResponseTestCase)[6]
+
+  '
+- 'testSingletonFetchResponseForAllVersion(FetchResponseTestCase)[7]
+
+  '
+- 'testSingletonFetchResponseForAllVersion(FetchResponseTestCase)[8]
+
+  '
+- 'testSingletonFetchResponseForAllVersion(FetchResponseTestCase)[9]
+
+  '
+- 'testSingletonFetchSnapshotRequestForAllVersion(short, Uuid, String)[1]
+
+  '
+- 'testSingletonFetchSnapshotRequestForAllVersion(short, Uuid, String)[2]
+
+  '
+- 'testSingletonFetchSnapshotResponseForAllVersion(short, String)[1]
+
+  '
+- 'testSingletonFetchSnapshotResponseForAllVersion(short, String)[2]
+
+  '
+- 'testSingletonVoteRequestForAllVersion(short, String)[1]
+
+  '
+- 'testSingletonVoteRequestForAllVersion(short, String)[2]
+
+  '
+- 'testSingletonVoteResponseForAllVersion(short, String)[1]
+
+  '
+- 'testSingletonVoteResponseForAllVersion(short, String)[2]
+
+  '
+org.apache.kafka.raft.RequestManagerTest:
+- 'testAnyInflightRequestWithAnyRequest()
+
+  '
+- 'testBackoffAfterFailure()
+
+  '
+- 'testFindReadyWithInflightRequest()
+
+  '
+- 'testFindReadyWithRequestTimedout()
+
+  '
+- 'testIgnoreUnexpectedResponse()
+
+  '
+- 'testRequestTimeout()
+
+  '
+- 'testRequestToBootstrapList()
+
+  '
+- 'testResetAllConnections()
+
+  '
+- 'testSuccessfulResponse()
+
+  '
+org.apache.kafka.raft.ResignedStateTest:
+- 'testGrantVote(boolean)[1]
+
+  '
+- 'testGrantVote(boolean)[2]
+
+  '
+- 'testLeaderEndpoints()
+
+  '
+- 'testNegativeScenarioAcknowledgeResignation()
+
+  '
+- 'testResignedState()
+
+  '
+org.apache.kafka.raft.UnattachedStateTest:
+- 'testElectionTimeout()
+
+  '
+- 'testGrantVote(boolean)[1]
+
+  '
+- 'testGrantVote(boolean)[2]
+
+  '
+- 'testLeaderEndpoints()
+
+  '
+- 'testUnattachedWithLeader(boolean)[1]
+
+  '
+- 'testUnattachedWithLeader(boolean)[2]
+
+  '
+org.apache.kafka.raft.ValidOffsetAndEpochTest:
+- 'diverging()
+
+  '
+- 'snapshot()
+
+  '
+- 'testValidWithoutSpecifyingOffsetAndEpoch()
+
+  '
+- 'valid()
+
+  '
+org.apache.kafka.raft.VotedStateTest:
+- 'testCanGrantVoteWithDirectoryId()
+
+  '
+- 'testCanGrantVoteWithoutDirectoryId(boolean)[1]
+
+  '
+- 'testCanGrantVoteWithoutDirectoryId(boolean)[2]
+
+  '
+- 'testElectionTimeout()
+
+  '
+- 'testLeaderEndpoints()
+
+  '
+org.apache.kafka.raft.VoterSetTest:
+- 'testAddVoter()
+
+  '
+- 'testCannotRemoveToEmptyVoterSet()
+
+  '
+- 'testEmptyVoterSet()
+
+  '
+- 'testEndpoints(boolean)[1]
+
+  '
+- 'testEndpoints(boolean)[2]
+
+  '
+- 'testIsOnlyVoterInNotStandalone()
+
+  '
+- 'testIsOnlyVoterInStandalone()
+
+  '
+- 'testIsVoterWithDirectoryId()
+
+  '
+- 'testIsVoterWithoutDirectoryId()
+
+  '
+- 'testNonoverlappingMajority()
+
+  '
+- 'testOverlappingMajority()
+
+  '
+- 'testRecordRoundTrip()
+
+  '
+- 'testRemoveVoter()
+
+  '
+- 'testUpdateVoter()
+
+  '
+- 'testVoterIds()
+
+  '
+- 'testVoterNode()
+
+  '
+- 'testVoterNodeIsVoterWithDirectoryId()
+
+  '
+- 'testVoterNodeIsVoterWithoutDirectoryId()
+
+  '
+- 'testVoterNodes()
+
+  '
+org.apache.kafka.raft.internals.BatchAccumulatorTest:
+- 'testCloseWhenEmpty()
+
+  '
+- 'testCompletedBatchReleaseBuffer()
+
+  '
+- 'testDelayedDrain()
+
+  '
+- 'testDelayedDrainAreReleased()
+
+  '
+- 'testDrainDoesNotBlockWithConcurrentAppend()
+
+  '
+- 'testEmptyControlBatch()
+
+  '
+- 'testForceDrain()
+
+  '
+- 'testForceDrainBeforeAppendLeaderChangeMessage()
+
+  '
+- 'testInvalidControlRecordEpoch()
+
+  '
+- 'testInvalidControlRecordOffset()
+
+  '
+- 'testLeaderChangeMessageWritten()
+
+  '
+- 'testLingerBeginsOnFirstWrite()
+
+  '
+- 'testLingerIgnoredIfAccumulatorEmpty()
+
+  '
+- 'testMaxNumberOfBatches()
+
+  '
+- 'testMultipleBatchAccumulation()
+
+  '
+- 'testMultipleControlRecords()
+
+  '
+- 'testSingleBatchAccumulation()
+
+  '
+- 'testUnflushedBuffersReleasedByClose()
+
+  '
+org.apache.kafka.raft.internals.BatchBuilderTest:
+- 'testBuildBatch(CompressionType)[1]
+
+  '
+- 'testBuildBatch(CompressionType)[2]
+
+  '
+- 'testBuildBatch(CompressionType)[3]
+
+  '
+- 'testBuildBatch(CompressionType)[4]
+
+  '
+- 'testBuildBatch(CompressionType)[5]
+
+  '
+- 'testHasRoomForUncompressed(int)[1]
+
+  '
+- 'testHasRoomForUncompressed(int)[2]
+
+  '
+- 'testHasRoomForUncompressed(int)[3]
+
+  '
+- 'testHasRoomForUncompressed(int)[4]
+
+  '
+- 'testHasRoomForUncompressed(int)[5]
+
+  '
+- 'testHasRoomForUncompressed(int)[6]
+
+  '
+- 'testHasRoomForUncompressed(int)[7]
+
+  '
+org.apache.kafka.raft.internals.BatchMemoryPoolTest:
+- 'testAllocateAndRelease()
+
+  '
+- 'testMultipleAllocations()
+
+  '
+- 'testOversizeAllocation()
+
+  '
+- 'testReleaseBufferNotMatchingBatchSize()
+
+  '
+org.apache.kafka.raft.internals.BlockingMessageQueueTest:
+- 'testOfferAndPoll()
+
+  '
+- 'testWakeupFromPoll()
+
+  '
+org.apache.kafka.raft.internals.KRaftControlRecordStateMachineTest:
+- 'testEmptyPartition()
+
+  '
+- 'testEmptyPartitionWithNoStaticVoters()
+
+  '
+- 'testTrimPrefixTo()
+
+  '
+- 'testTruncateTo()
+
+  '
+- 'testUpdateWithEmptySnapshot()
+
+  '
+- 'testUpdateWithSnapshot()
+
+  '
+- 'testUpdateWithSnapshotAndLogOverride()
+
+  '
+- 'testUpdateWithoutSnapshot()
+
+  '
+org.apache.kafka.raft.internals.KafkaRaftMetricsTest:
+- 'shouldRecordLatency(KRaftVersion)[1]
+
+  '
+- 'shouldRecordLatency(KRaftVersion)[2]
+
+  '
+- 'shouldRecordLogEnd(KRaftVersion)[1]
+
+  '
+- 'shouldRecordLogEnd(KRaftVersion)[2]
+
+  '
+- 'shouldRecordNonVoterQuorumState(KRaftVersion)[1]
+
+  '
+- 'shouldRecordNonVoterQuorumState(KRaftVersion)[2]
+
+  '
+- 'shouldRecordNumUnknownVoterConnections(KRaftVersion)[1]
+
+  '
+- 'shouldRecordNumUnknownVoterConnections(KRaftVersion)[2]
+
+  '
+- 'shouldRecordPollIdleRatio(KRaftVersion)[1]
+
+  '
+- 'shouldRecordPollIdleRatio(KRaftVersion)[2]
+
+  '
+- 'shouldRecordRate(KRaftVersion)[1]
+
+  '
+- 'shouldRecordRate(KRaftVersion)[2]
+
+  '
+- 'shouldRecordVoterQuorumState(KRaftVersion)[1]
+
+  '
+- 'shouldRecordVoterQuorumState(KRaftVersion)[2]
+
+  '
+org.apache.kafka.raft.internals.MemoryBatchReaderTest:
+- 'testIteration()
+
+  '
+org.apache.kafka.raft.internals.RecordsBatchReaderTest:
+- 'testLeaderChangeControlBatch()
+
+  '
+- 'testReadFromFileRecords(CompressionType)[1]
+
+  '
+- 'testReadFromFileRecords(CompressionType)[2]
+
+  '
+- 'testReadFromFileRecords(CompressionType)[3]
+
+  '
+- 'testReadFromFileRecords(CompressionType)[4]
+
+  '
+- 'testReadFromFileRecords(CompressionType)[5]
+
+  '
+- 'testReadFromMemoryRecords(CompressionType)[1]
+
+  '
+- 'testReadFromMemoryRecords(CompressionType)[2]
+
+  '
+- 'testReadFromMemoryRecords(CompressionType)[3]
+
+  '
+- 'testReadFromMemoryRecords(CompressionType)[4]
+
+  '
+- 'testReadFromMemoryRecords(CompressionType)[5]
+
+  '
+org.apache.kafka.raft.internals.RecordsIteratorTest:
+- 'testControlRecordIterationWithKraftVersion0()
+
+  '
+- 'testControlRecordIterationWithKraftVersion1()
+
+  '
+- 'testControlRecordTypeValues()
+
+  '
+- 'testCrcValidation
+
+  '
+- 'testEmptyRecords(Records)[1]
+
+  '
+- 'testEmptyRecords(Records)[2]
+
+  '
+- 'testFileRecords
+
+  '
+- 'testMemoryRecords
+
+  '
+- 'testWithAllSupportedControlRecords(ControlRecordType)[1]
+
+  '
+- 'testWithAllSupportedControlRecords(ControlRecordType)[2]
+
+  '
+- 'testWithAllSupportedControlRecords(ControlRecordType)[3]
+
+  '
+- 'testWithAllSupportedControlRecords(ControlRecordType)[4]
+
+  '
+- 'testWithAllSupportedControlRecords(ControlRecordType)[5]
+
+  '
+org.apache.kafka.raft.internals.ThresholdPurgatoryTest:
+- 'testCompleteAll()
+
+  '
+- 'testCompleteAllExceptionally()
+
+  '
+- 'testExpiration()
+
+  '
+- 'testExternalCompletion()
+
+  '
+- 'testThresholdCompletion()
+
+  '
+org.apache.kafka.raft.internals.TimeRatioTest:
+- 'testRatio()
+
+  '
+- 'testRatioMisalignedWindow()
+
+  '
+org.apache.kafka.raft.internals.TreeMapLogHistoryTest:
+- 'testAddAt()
+
+  '
+- 'testClear()
+
+  '
+- 'testEmpty()
+
+  '
+- 'testTrimPrefixTo()
+
+  '
+- 'testTruncateTo()
+
+  '
+org.apache.kafka.raft.internals.VoterSetHistoryTest:
+- 'TestNoStaticVoterSet()
+
+  '
+- 'testAddAt()
+
+  '
+- 'testAddAtNonOverlapping()
+
+  '
+- 'testBootstrapAddAt()
+
+  '
+- 'testClear()
+
+  '
+- 'testNonoverlappingFromStaticVoterSet()
+
+  '
+- 'testStaticVoterSet()
+
+  '
+- 'testTrimPrefixTo()
+
+  '
+- 'testTruncateTo()
+
+  '
+org.apache.kafka.snapshot.FileRawSnapshotTest:
+- 'testAbortedSnapshot()
+
+  '
+- 'testAppendToFrozenSnapshot()
+
+  '
+- 'testBatchWriteReadSnapshot()
+
+  '
+- 'testBufferWriteReadSnapshot()
+
+  '
+- 'testCreateSnapshotWithSameId()
+
+  '
+- 'testPartialWriteReadSnapshot()
+
+  '
+- 'testWriteReadSnapshot()
+
+  '
+- 'testWritingSnapshot()
+
+  '
+org.apache.kafka.snapshot.NotifyingRawSnapshotWriterTest:
+- 'testCloseWithoutFreeze()
+
+  '
+- 'testFailingFreeze()
+
+  '
+- 'testFreezeClose()
+
+  '
+org.apache.kafka.snapshot.RecordsSnapshotWriterTest:
+- 'testBuilderKRaftVersion0()
+
+  '
+- 'testBuilderKRaftVersion0WithVoterSet()
+
+  '
+- 'testBuilderKRaftVersion1WithoutVoterSet()
+
+  '
+- 'testKBuilderRaftVersion1WithVoterSet()
+
+  '
+org.apache.kafka.snapshot.SnapshotWriterReaderTest:
+- 'testAbortedSnapshot()
+
+  '
+- 'testAppendToFrozenSnapshot()
+
+  '
+- 'testSnapshotDelimiters()
+
+  '
+- 'testWritingSnapshot()
+
+  '
+org.apache.kafka.snapshot.SnapshotsTest:
+- 'testDeleteSnapshot(boolean)[1]
+
+  '
+- 'testDeleteSnapshot(boolean)[2]
+
+  '
+- 'testInvalidSnapshotFilenames()
+
+  '
+- 'testValidDeletedSnapshotFilename()
+
+  '
+- 'testValidPartialSnapshotFilename()
+
+  '
+- 'testValidSnapshotFilename()
+
+  '
