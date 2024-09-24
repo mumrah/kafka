@@ -193,6 +193,7 @@ org.apache.kafka.controller.QuorumControllerTest:
 - testNoOpRecordWriteAfterTimeout
 - testRegisterBrokerKRaftVersions
 - testSnapshotSaveAndLoad
+- testSomethingNew
 - testTimeouts
 - testUncleanShutdownBroker
 - testUnregisterBroker
