@@ -1,5 +1,9 @@
-[committers]
-	mumrah.name = "David Arthur"
-	mumrah.email = "mumrah@gmail.com"
-	dajac.name = "David Jacot"
-	dajac.email = "djacot@confluent.io"
+[committer "mumrah"]
+	name = David Arthur
+	email = mumrah@gmail.com
+[committer "dajac"]
+	name = David Jacot
+	email = djacot@confluent.io
+[committer "jscanio"]
+	name = José Armando García Sancio
+	email = jsancio@apache.org
