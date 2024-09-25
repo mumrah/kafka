@@ -21,7 +21,7 @@ on:
 
 jobs:
   approved:
-    if: github.event.review.state == 'approved'
+    #if: github.event.review.state == 'approved'
     runs-on: ubuntu-latest
     steps:
       - name: Env
