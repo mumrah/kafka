@@ -50,7 +50,7 @@ if __name__ == "__main__":
         state = review.get("state")
         if state == "APPROVED":
             approvers.append(login)
-        elif state == "COMMENT":
+        elif state == "COMMENTED":
             commenters.append(login)
         elif state == "REQUEST_CHANGES":
             exit(1)
