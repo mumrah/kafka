@@ -60,4 +60,10 @@ if __name__ == "__main__":
         if name:
             reviewers.append(f"{name} <{email}>")
 
+    for commenter in commenters:
+        name = read_commiter_info(commenter, "name")
+        email = read_commiter_info(commenter, "email")
+        if name:
+            reviewers.append(f"{name} <{email}>")
+
     print("Reviewers: " + ",".join(reviewers))

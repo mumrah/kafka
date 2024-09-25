@@ -28,5 +28,12 @@ jobs:
         run: printenv
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
       - name: Create Reviewers String
         run: python .github/scripts/add-reviewers.py ${{ github.event.pull_request.number }}
