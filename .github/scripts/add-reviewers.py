@@ -39,7 +39,9 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     reviews_json = run_gh_command(f"gh pr view {args.pull_request} --json reviews")
+    print(reviews_json)
     reviews = json.loads(reviews_json)
+
 
     approvers = []
     commenters = []
