@@ -25,4 +25,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Create Reviewers String
-        run: python .github/scripts/add-reviewers.py ${{ event.pull_request.number }}
+        run: python .github/scripts/add-reviewers.py ${{ github.event.pull_request.number }}
