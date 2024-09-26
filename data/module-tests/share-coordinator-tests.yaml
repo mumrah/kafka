@@ -1,0 +1,41 @@
+org.apache.kafka.coordinator.share.ShareCoordinatorRecordHelpersTest:
+- testNewShareSnapshotRecord
+- testNewShareUpdateRecord
+org.apache.kafka.coordinator.share.ShareCoordinatorRecordSerdeTest:
+- testDeserialize
+- testDeserializeAllRecordTypes
+- testDeserializeWithInvalidKeyBytes
+- testDeserializeWithInvalidRecordType
+- testDeserializeWithInvalidValueBytes
+- testDeserializeWithKeyEmptyBuffer
+- testDeserializeWithTombstoneForValue
+- testDeserializeWithValueEmptyBuffer
+- testSerializeKey
+- testSerializeNullValue
+- testSerializeValue
+org.apache.kafka.coordinator.share.ShareCoordinatorServiceTest:
+- testReadFutureReturnsError
+- testReadStateSuccess
+- testReadStateValidationsError
+- testReadStateWhenNotStarted
+- testStartupShutdown
+- testWriteFutureReturnsError
+- testWriteStateSuccess
+- testWriteStateValidationsError
+- testWriteStateWhenNotStarted
+org.apache.kafka.coordinator.share.ShareCoordinatorShardTest:
+- testNonSequentialBatchUpdates
+- testReadNullMetadataImage
+- testReadStateFencedLeaderEpochError
+- testReadStateInvalidRequestData
+- testReadStateSuccess
+- testReplayWithShareSnapshot
+- testSubsequentWriteStateSnapshotEpochUpdatesSuccessfully
+- testWriteNullMetadataImage
+- testWriteStateFencedLeaderEpochError
+- testWriteStateFencedStateEpochError
+- testWriteStateInvalidRequestData
+- testWriteStateSuccess
+org.apache.kafka.coordinator.share.metrics.ShareCoordinatorMetricsTest:
+- testGlobalSensors
+- testMetricNames

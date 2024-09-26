@@ -1,0 +1,82 @@
+org.apache.kafka.streams.scala.StreamToTableJoinScalaIntegrationTestImplicitSerdes:
+- testShouldCountClicksPerRegion
+- testShouldCountClicksPerRegionJava
+- testShouldCountClicksPerRegionWithNamedRepartitionTopic
+org.apache.kafka.streams.scala.TopologyTest:
+- shouldBuildIdenticalTopologyInJavaNScalaAggregate
+- shouldBuildIdenticalTopologyInJavaNScalaCogroup
+- shouldBuildIdenticalTopologyInJavaNScalaCogroupSimple
+- shouldBuildIdenticalTopologyInJavaNScalaJoin
+- shouldBuildIdenticalTopologyInJavaNScalaProperties
+- shouldBuildIdenticalTopologyInJavaNScalaSimple
+- shouldBuildIdenticalTopologyInJavaNScalaTransform
+org.apache.kafka.streams.scala.WordCountTest:
+- testShouldCountWords
+- testShouldCountWordsJava
+- testShouldCountWordsMaterialized
+org.apache.kafka.streams.scala.kstream.ConsumedTest:
+- testCreateConsumed
+- testCreateConsumedWithResetPolicy
+- testCreateConsumedWithTimestampExtractor
+- testCreateConsumedWithTimestampExtractorAndResetPolicy
+org.apache.kafka.streams.scala.kstream.GroupedTest:
+- testCreateGrouped
+- testCreateGroupedWithRepartitionTopicName
+org.apache.kafka.streams.scala.kstream.JoinedTest:
+- testCreateJoined
+- testCreateJoinedWithSerdesAndRepartitionTopicName
+org.apache.kafka.streams.scala.kstream.KStreamSplitTest:
+- testRouteMessagesAccordingToPredicates
+- testRouteMessagesToAnonymousConsumers
+- testRouteMessagesToConsumers
+org.apache.kafka.streams.scala.kstream.KStreamTest:
+- testCorrectlyFlatTransformValuesInRecords
+- testCorrectlyFlatTransformValuesInRecordsWithKey
+- testFilterRecordsNotSatisfyingPredicate
+- testFilterRecordsSatisfyingPredicate
+- testFlatTransformCorrectlyRecords
+- testForeachActionsOnRecords
+- testJoinCorrectlyRecords
+- testJoinTwoKStreamToTables
+- testPeekActionsOnRecords
+- testRepartitionKStream
+- testSelectNewKey
+- testSettingNameOnFilter
+- testSettingNameOnJoin
+- testSettingNameOnOutputTable
+- testSettingNameOnTransform
+- testTransformCorrectlyRecords
+org.apache.kafka.streams.scala.kstream.KTableTest:
+- testCorrectlyGroupByKeyWindowedBySlidingWindow
+- testCorrectlySuppressResultsUsingSuppressedUntilTimeLimit
+- testCorrectlySuppressResultsUsingSuppressedUntilTimeLimtByNonWindowed
+- testCorrectlySuppressResultsUsingSuppressedUntilWindowClosesBySession
+- testCorrectlySuppressResultsUsingSuppressedUntilWindowClosesByWindowed
+- testFilterRecordsNotSatisfyingPredicate
+- testFilterRecordsSatisfyingPredicate
+- testJoinCorrectlyRecords
+- testJoinCorrectlyRecordsAndStateStore
+- testMapValuesWithValueMapperWithKeyAndWithMaterialized
+- testMapValuesWithValueMapperWithMaterialized
+- testSettingNameOnCountProcessor
+- testSettingNameOnFilterProcessor
+- testSettingNameOnJoinProcessor
+org.apache.kafka.streams.scala.kstream.MaterializedTest:
+- testCreateMaterializedWithSerdes
+- testCreateMaterializedWithSerdesAndKeyValueStoreSupplier
+- testCreateMaterializedWithSerdesAndSessionStoreSupplier
+- testCreateMaterializedWithSerdesAndStoreName
+- testCreateMaterializedWithSerdesAndWindowStoreSupplier
+org.apache.kafka.streams.scala.kstream.ProducedTest:
+- testCreateProducedWithSerdes
+- testCreateProducedWithSerdesAndStreamPartitioner
+org.apache.kafka.streams.scala.kstream.RepartitionedTest:
+- testCreateRepartitionedWithSerdes
+- testCreateRepartitionedWithSerdesAndNumPartitions
+- testCreateRepartitionedWithSerdesAndTopicName
+- testCreateRepartitionedWithSerdesAndTopicNameAndNumPartitionsAndStreamPartitioner
+- testCreateRepartitionedWithTopicNameAndNumPartitionsAndStreamPartitioner
+org.apache.kafka.streams.scala.kstream.StreamJoinedTest:
+- testCreateStreamJoinedWithSerdes
+- testCreateStreamJoinedWithSerdesAndStateStoreName
+- testCreateStreamJoinedWithSerdesAndStoreSuppliers

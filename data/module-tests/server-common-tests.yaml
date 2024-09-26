@@ -1,0 +1,361 @@
+org.apache.kafka.common.DirectoryIdTest:
+- testCreateAssignmentMap
+- testIsOnline
+- testLostIsReserved
+- testMigratingIsReserved
+- testUnassignedIsReserved
+org.apache.kafka.deferred.DeferredEventQueueTest:
+- testCompleteEvents
+- testFailEvents
+- testFailOnIncorrectOrdering
+org.apache.kafka.metadata.AssignmentsHelperTest:
+- testBuildRequestData
+org.apache.kafka.queue.KafkaEventQueueTest:
+- testCreateAndClose
+- testDeferredIsQueuedAfterTriggering
+- testHandleEvents
+- testHandleExceptionThrowingAnException
+- testInterruptedExceptionHandling
+- testInterruptedWithDeferredEvents
+- testInterruptedWithEmptyQueue
+- testRejectedExecutionException
+- testScheduleDeferred
+- testScheduleDeferredWithTagReplacement
+- testShutdownBeforeDeferred
+- testSize
+- testTimeouts
+org.apache.kafka.security.PasswordEncoderTest:
+- testEncodeDecode
+- testEncodeDecodeAlgorithms
+- testEncoderConfigChange
+org.apache.kafka.server.common.FeaturesTest:
+- testDefaultTestVersion
+- testDefaultValueAllFeatures
+- testFromFeatureLevelAllFeatures
+- testInvalidValidateVersion
+- testLatestProductionMapsToLatestMetadataVersion
+- testUnstableTestVersion
+- testV0SupportedInEarliestMV
+- testValidateVersionAllFeatures
+org.apache.kafka.server.common.FinalizedFeaturesTest:
+- testKRaftModeFeatures
+- testZkModeFeatures
+org.apache.kafka.server.common.KRaftVersionTest:
+- tesVotersRecordVersion
+- testBootstrapMetadataVersion
+- testFeatureLevel
+- testFromFeatureLevel
+- testKraftVersionRecordVersion
+- testQuorumStateVersion
+org.apache.kafka.server.common.MetadataVersionTest:
+- assertLatestIsNotProduction
+- assertLatestProductionIsLessThanLatest
+- assertLatestProductionIsProduction
+- testDirectoryAssignmentSupported
+- testFromVersionString
+- testGroupMetadataValueVersion
+- testIsDelegationTokenSupported
+- testIsElrSupported
+- testIsInControlledShutdownStateSupported
+- testKRaftFeatureLevelsAtAndAfter3
+- testKRaftFeatureLevelsBefore3
+- testKRaftVersions
+- testMetadataChanged
+- testMinSupportedVersionFor
+- testOffsetCommitValueVersion
+- testOffsetCommitValueVersionWithExpiredTimestamp
+- testPartitionChangeRecordVersion
+- testPartitionRecordVersion
+- testPrevious
+- testProductionMetadataDontUseUnstableApiVersion
+- testRegisterBrokerRecordVersion
+- testShortVersion
+- testVersion
+org.apache.kafka.server.common.MetadataVersionValidatorTest:
+- testMetadataVersionValidator
+org.apache.kafka.server.common.ProducerIdsBlockTest:
+- testClaimNextId
+- testDynamicBlock
+- testEmptyBlock
+org.apache.kafka.server.fault.LoggingFaultHandlerTest:
+- testHandleExceptionInAction
+- testHandleFault
+org.apache.kafka.server.fault.ProcessTerminatingFaultHandlerTest:
+- testExitIsCalled
+- testHaltIsCalled
+org.apache.kafka.server.immutable.pcollections.PCollectionsImmutableMapTest:
+- testDelegationOfContainsKey
+- testDelegationOfContainsValue
+- testDelegationOfEntrySet
+- testDelegationOfForEach
+- testDelegationOfGet
+- testDelegationOfGetOrDefault
+- testDelegationOfIsEmpty
+- testDelegationOfKeySet
+- testDelegationOfRemoved
+- testDelegationOfSize
+- testDelegationOfToString
+- testDelegationOfUnsupportedFunctionClear
+- testDelegationOfUnsupportedFunctionCompute
+- testDelegationOfUnsupportedFunctionComputeIfAbsent
+- testDelegationOfUnsupportedFunctionComputeIfPresent
+- testDelegationOfUnsupportedFunctionMerge
+- testDelegationOfUnsupportedFunctionPut
+- testDelegationOfUnsupportedFunctionPutAll
+- testDelegationOfUnsupportedFunctionPutIfAbsent
+- testDelegationOfUnsupportedFunctionRemoveByKey
+- testDelegationOfUnsupportedFunctionRemoveByKeyAndValue
+- testDelegationOfUnsupportedFunctionReplaceAll
+- testDelegationOfUnsupportedFunctionReplaceWhenMappedToAnyValue
+- testDelegationOfUnsupportedFunctionReplaceWhenMappedToSpecificValue
+- testDelegationOfUpdated
+- testDelegationOfValues
+- testEmptyMap
+- testEquals
+- testHashCode
+- testSingletonMap
+- testUnderlying
+org.apache.kafka.server.immutable.pcollections.PCollectionsImmutableNavigableSetTest:
+- testDelegationOfAdded
+- testDelegationOfCeiling
+- testDelegationOfComparator
+- testDelegationOfContains
+- testDelegationOfContainsAll
+- testDelegationOfDescendingIterator
+- testDelegationOfDescendingSet
+- testDelegationOfFirst
+- testDelegationOfFloor
+- testDelegationOfForEach
+- testDelegationOfHeadSet
+- testDelegationOfHeadSetInclusive
+- testDelegationOfHigher
+- testDelegationOfIsEmpty
+- testDelegationOfIterator
+- testDelegationOfLast
+- testDelegationOfLower
+- testDelegationOfParallelStream
+- testDelegationOfRemoved
+- testDelegationOfSize
+- testDelegationOfSpliterator
+- testDelegationOfStream
+- testDelegationOfSubSetWithFromAndToElements
+- testDelegationOfSubSetWithFromElement
+- testDelegationOfTailSet
+- testDelegationOfTailSetInclusive
+- testDelegationOfToArray
+- testDelegationOfToArrayIntoGivenDestination
+- testDelegationOfToString
+- testDelegationOfUnsupportedFunctionAdd
+- testDelegationOfUnsupportedFunctionAddAll
+- testDelegationOfUnsupportedFunctionClear
+- testDelegationOfUnsupportedFunctionPollFirst
+- testDelegationOfUnsupportedFunctionPollLast
+- testDelegationOfUnsupportedFunctionRemove
+- testDelegationOfUnsupportedFunctionRemoveAll
+- testDelegationOfUnsupportedFunctionRemoveIf
+- testDelegationOfUnsupportedFunctionRetainAll
+- testEmptySet
+- testEquals
+- testHashCode
+- testSingletonSet
+- testUnderlying
+org.apache.kafka.server.immutable.pcollections.PCollectionsImmutableSetTest:
+- testDelegationOfAdded
+- testDelegationOfContains
+- testDelegationOfContainsAll
+- testDelegationOfForEach
+- testDelegationOfIsEmpty
+- testDelegationOfIterator
+- testDelegationOfParallelStream
+- testDelegationOfRemoved
+- testDelegationOfSize
+- testDelegationOfSpliterator
+- testDelegationOfStream
+- testDelegationOfToArray
+- testDelegationOfToArrayIntoGivenDestination
+- testDelegationOfToString
+- testDelegationOfUnsupportedFunctionAdd
+- testDelegationOfUnsupportedFunctionAddAll
+- testDelegationOfUnsupportedFunctionClear
+- testDelegationOfUnsupportedFunctionRemove
+- testDelegationOfUnsupportedFunctionRemoveAll
+- testDelegationOfUnsupportedFunctionRemoveIf
+- testDelegationOfUnsupportedFunctionRetainAll
+- testEmptySet
+- testEquals
+- testHashCode
+- testSingletonSet
+- testUnderlying
+org.apache.kafka.server.metrics.KafkaMetricsGroupTest:
+- testConstructorWithPackageAndSimpleName
+org.apache.kafka.server.metrics.KafkaYammerMetricsTest:
+- testTaggedMetricName
+- testTaggedMetricNameWithEmptyValue
+- testUntaggedMetric
+org.apache.kafka.server.mutable.BoundedListTest:
+- testAddAll
+- testAddingToBoundedList
+- testClear
+- testGet
+- testHashCodeAndEqualsForNonEmptyList
+- testInitialCapacityMustNotBeNegative
+- testInitialCapacityMustNotBeZero
+- testIterator
+- testIteratorIsImmutable
+- testMaxLengthMustNotBeNegative
+- testMaxLengthMustNotBeZero
+- testRemove
+- testSet
+- testSubList
+- testToArray
+org.apache.kafka.server.network.EndpointReadyFuturesTest:
+- testAddMultipleReadinessFutures
+- testAddReadinessFuture
+- testAddReadinessFutures
+- testFailedReadinessFuture
+- testImmediateCompletion
+org.apache.kafka.server.quota.QuotaUtilsTest:
+- testBoundedThrottleTimeObservedRateAboveQuotaAboveLimit
+- testBoundedThrottleTimeObservedRateAboveQuotaBelowLimit
+- testBoundedThrottleTimeObservedRateBelowQuota
+- testBoundedThrottleTimeObservedRateEqualsQuota
+- testBoundedThrottleTimeThrowsExceptionIfProvidedNonRateMetric
+- testThrottleTimeObservedRateAboveQuota
+- testThrottleTimeObservedRateBelowQuota
+- testThrottleTimeObservedRateEqualsQuota
+- testThrottleTimeThrowsExceptionIfProvidedNonRateMetric
+org.apache.kafka.server.record.BrokerCompressionTypeTest:
+- testTargetCompressionType
+org.apache.kafka.server.util.CommandLineUtilsTest:
+- testInitializeBootstrapPropertiesWithBothBootstraps
+- testInitializeBootstrapPropertiesWithBrokerBootstrap
+- testInitializeBootstrapPropertiesWithControllerBootstrap
+- testInitializeBootstrapPropertiesWithNoBootstraps
+- testMaybeMergeOptionsDefaultOverwriteExisting
+- testMaybeMergeOptionsDefaultValueIfNotExist
+- testMaybeMergeOptionsNotOverwriteExisting
+- testMaybeMergeOptionsOverwriteExisting
+- testParseArgs
+- testParseArgsWithMultipleDelimiters
+- testParseEmptyArg
+- testParseEmptyArgAsValid
+- testParseEmptyArgWithNoDelimiter
+- testParseSingleArg
+org.apache.kafka.server.util.CsvTest:
+- testCsvList
+- testCsvMap
+org.apache.kafka.server.util.DeadlineTest:
+- testMaximumDelay
+- testNegativeDelayFails
+- testOneMillisecondDeadline
+- testOneMillisecondDeadlineWithBase
+org.apache.kafka.server.util.FileLockTest:
+- testDestroy
+- testLock
+- testTryLock
+- testUnlock
+org.apache.kafka.server.util.FutureUtilsTest:
+- testChainFuture
+- testChainFutureExceptionally
+- testWaitWithLogging
+- testWaitWithLoggingError
+- testWaitWithLoggingTimeout
+org.apache.kafka.server.util.InterBrokerSendThreadTest:
+- testDisconnectWithoutShutdownShouldCauseException
+- testFailingExpiredRequests
+- testInterruption
+- testShouldCallCompletionHandlerWithDisconnectedResponseWhenNodeNotReady
+- testShouldCreateClientRequestAndSendWhenNodeIsReady
+- testShouldNotSendAnythingWhenNoRequests
+- testShutdownThreadShouldNotCauseException
+org.apache.kafka.server.util.JsonTest:
+- testAsJsonArray
+- testAsJsonArrayOption
+- testAsJsonObject
+- testAsJsonObjectOption
+- testDecodeBoolean
+- testDecodeDouble
+- testDecodeInt
+- testDecodeLong
+- testDecodeMap
+- testDecodeOptional
+- testDecodeSeq
+- testDecodeString
+- testJsonArrayIterator
+- testJsonObjectApply
+- testJsonObjectGet
+- testJsonObjectIterator
+- testJsonValueEquals
+- testJsonValueHashCode
+- testJsonValueToString
+org.apache.kafka.server.util.ShutdownableThreadTest:
+- testIsThreadStarted
+- testShutdownWhenCalledAfterThreadStart
+- testShutdownWhenTestTimesOut
+org.apache.kafka.server.util.TopicFilterTest:
+- testIncludeLists
+org.apache.kafka.server.util.TranslatedValueMapViewTest:
+- testContains
+- testEntrySet
+- testEntrySetIterator
+- testGet
+- testIsEmptyAndSize
+org.apache.kafka.server.util.timer.SystemTimerReaperTest:
+- testReaper
+- testReaperClose
+org.apache.kafka.server.util.timer.TimerTaskListTest:
+- testAll
+- testGetDelay
+org.apache.kafka.server.util.timer.TimerTest:
+- testAlreadyExpiredTask
+- testTaskExpiration
+org.apache.kafka.timeline.BaseHashTableTest:
+- testEmptyTable
+- testExpansion
+- testExpectedSizeToCapacity
+- testFindSlot
+- testHashCollisions
+- testInsertAndRemove
+org.apache.kafka.timeline.SnapshotRegistryTest:
+- testCreateAndDeleteSnapshots
+- testCreateSnapshotOfLatest
+- testCreateSnapshots
+- testDeleteSnapshotUpTo
+- testEmptyRegistry
+org.apache.kafka.timeline.SnapshottableHashTableTest:
+- testAddAndRemove
+- testDeleteOnEmptyDeltaTable
+- testEmptyTable
+- testIterateOverSnapshot
+- testIterateOverSnapshotWhileDeletingAndReplacing
+- testIterateOverSnapshotWhileExpandingTable
+- testIteratorAtOlderEpoch
+- testReset
+- testRevert
+org.apache.kafka.timeline.TimelineHashMapTest:
+- testEmptyMap
+- testIteration
+- testMapEquals
+- testMapMethods
+- testNullsForbidden
+org.apache.kafka.timeline.TimelineHashSetTest:
+- testEmptySet
+- testIteration
+- testNullsForbidden
+- testSetMethods
+- testToArray
+org.apache.kafka.timeline.TimelineIntegerTest:
+- testModifyValue
+- testReset
+- testSnapshot
+- testToStringAndEquals
+org.apache.kafka.timeline.TimelineLongTest:
+- testModifyValue
+- testReset
+- testSnapshot
+- testToStringAndEquals
+org.apache.kafka.timeline.TimelineObjectTest:
+- testModifyValue
+- testReset
+- testSnapshot
+- testToStringAndEquals

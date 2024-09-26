@@ -1,0 +1,15 @@
+org.apache.kafka.streams.examples.docs.DeveloperGuideTesting:
+- shouldFlushStoreForFirstInput
+- shouldNotUpdateStoreForLargerValue
+- shouldNotUpdateStoreForSmallerValue
+- shouldPunctuateIfEvenTimeAdvances
+- shouldPunctuateIfWallClockTimeAdvances
+- shouldUpdateStoreForNewKey
+org.apache.kafka.streams.examples.wordcount.WordCountDemoTest:
+- testCountListOfWords
+- testOneWord
+- testStreamsConfig
+org.apache.kafka.streams.examples.wordcount.WordCountProcessorTest:
+- test
+org.apache.kafka.streams.examples.wordcount.WordCountTransformerTest:
+- test

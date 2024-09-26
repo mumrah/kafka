@@ -1,0 +1,27 @@
+org.apache.kafka.shell.MetadataShellIntegrationTest:
+- testLock
+- testParentParent
+- testParentParentOfRoot
+org.apache.kafka.shell.command.CommandTest:
+- testEmptyCommandLine
+- testParseCommands
+- testParseInvalidCommand
+org.apache.kafka.shell.command.CommandUtilsTest:
+- testSplitPath
+- testStripDotPathComponents
+org.apache.kafka.shell.command.LsCommandHandlerTest:
+- testCalculateColumnSchema
+- testPrintEntries
+- testPrintTargets
+org.apache.kafka.shell.glob.GlobComponentTest:
+- testGlobMatch
+- testLiteralComponent
+- testToRegularExpression
+org.apache.kafka.shell.glob.GlobVisitorTest:
+- testAbsoluteGlob
+- testBetaOrThetaGlob
+- testDotDot
+- testDoubleDotDot
+- testNotFoundGlob
+- testStarGlob
+- testZGlob

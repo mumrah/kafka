@@ -1,0 +1,251 @@
+org.apache.kafka.connect.mirror.CheckpointStoreTest:
+- testReadCheckpointsTopic
+- testReadCheckpointsTopicError
+org.apache.kafka.connect.mirror.CheckpointTest:
+- testSerde
+org.apache.kafka.connect.mirror.HeartbeatTest:
+- testSerde
+org.apache.kafka.connect.mirror.MirrorCheckpointConfigTest:
+- testConsumerConfigsForOffsetSyncsTopic
+- testGroupMatching
+- testNonMutationOfConfigDef
+- testSkipValidationIfConnectorDisabled
+- testTaskConfigConsumerGroups
+- testValidateIfConnectorEnabled
+org.apache.kafka.connect.mirror.MirrorCheckpointConnectorTest:
+- testAlterOffsetsIncorrectOffsetKey
+- testAlterOffsetsIncorrectPartitionKey
+- testAlterOffsetsInvalidPartitionPartition
+- testAlterOffsetsMissingPartitionKey
+- testAlterOffsetsMultiplePartitions
+- testAlterOffsetsOffsetValues
+- testAlterOffsetsTombstones
+- testConsumerGroupInitializeTimeout
+- testFindConsumerGroups
+- testFindConsumerGroupsInCommonScenarios
+- testMirrorCheckpointConnectorDisabled
+- testMirrorCheckpointConnectorEnabled
+- testNoConsumerGroup
+- testReplicationDisabled
+- testReplicationEnabled
+- testSuccessfulAlterOffsets
+org.apache.kafka.connect.mirror.MirrorCheckpointTaskTest:
+- testCheckpoint
+- testCheckpointRecordsMonotonicIfStoreRewinds
+- testCheckpointStoreInitialized
+- testCheckpointsTaskRestartUsesExistingCheckpoints
+- testDownstreamTopicRenaming
+- testNoCheckpointForTopicWithNullOffsetAndMetadata
+- testNoCheckpointForTopicWithoutOffsetSyncs
+- testSyncOffset
+- testSyncOffsetForTargetGroupWithNullOffsetAndMetadata
+org.apache.kafka.connect.mirror.MirrorConnectorConfigTest:
+- testCaseInsensitiveSecurityProtocol
+- testExplicitlyEnableJmxReporter
+- testInvalidSecurityProtocol
+- testMetricsReporters
+- testReplicationPolicy
+- testSourceAdminConfig
+- testSourceAdminConfigWithSourcePrefix
+- testSourceConsumerConfig
+- testSourceConsumerConfigWithSourcePrefix
+- testSourceProducerConfig
+- testSourceProducerConfigWithSourcePrefix
+- testTargetAdminConfig
+- testTargetAdminConfigWithSourcePrefix
+org.apache.kafka.connect.mirror.MirrorHeartBeatConnectorTest:
+- testAlterOffsetsIncorrectOffsetKey
+- testAlterOffsetsIncorrectPartitionKey
+- testAlterOffsetsMissingPartitionKey
+- testAlterOffsetsMultiplePartitions
+- testAlterOffsetsOffsetValues
+- testAlterOffsetsTombstones
+- testMirrorHeartbeatConnectorDisabled
+- testReplicationDisabled
+- testSuccessfulAlterOffsets
+org.apache.kafka.connect.mirror.MirrorHeartbeatTaskTest:
+- testPollCreatesRecords
+org.apache.kafka.connect.mirror.MirrorMakerConfigTest:
+- testAllConfigNames
+- testCaseInsensitiveSecurityProtocol
+- testClientConfigProperties
+- testClientInvalidSecurityProtocol
+- testClusterConfigProperties
+- testClusterPairsWithDefaultSettings
+- testClusterPairsWithGloballyDisabledHeartbeats
+- testClusterPairsWithGloballyDisabledHeartbeatsCentralLocal
+- testClusterPairsWithTwoDisabledHeartbeats
+- testConfigBackwardsCompatibility
+- testConfigBackwardsCompatibilitySourceTarget
+- testEmptyClusterPairsWithGloballyDisabledHeartbeats
+- testIncludesConnectorConfigProperties
+- testIncludesTopicFilterProperties
+- testInvalidSecurityProtocol
+- testLazyConfigResolution
+- testReplicationConfigProperties
+- testWorkerConfigs
+org.apache.kafka.connect.mirror.MirrorSourceConfigTest:
+- testAdminConfigsForOffsetSyncsTopic
+- testAllTopics
+- testConfigBackwardsCompatibility
+- testConfigPropertyMatching
+- testListOfTopics
+- testNoTopics
+- testNonMutationOfConfigDef
+- testOffsetSyncsTopic
+- testProducerConfigsForOffsetSyncsTopic
+- testTaskConfigTopicPartitions
+- testTopicMatching
+org.apache.kafka.connect.mirror.MirrorSourceConnectorTest:
+- testAclFiltering
+- testAclTransformation
+- testAlterOffsetsIncorrectOffsetKey
+- testAlterOffsetsIncorrectPartitionKey
+- testAlterOffsetsInvalidPartitionPartition
+- testAlterOffsetsMissingPartitionKey
+- testAlterOffsetsMultiplePartitions
+- testAlterOffsetsOffsetValues
+- testAlterOffsetsTombstones
+- testConfigPropertyFiltering
+- testConfigPropertyFilteringWithAlterConfigs
+- testConfigPropertyFilteringWithAlterConfigsAndSourceDefault
+- testExactlyOnceSupport
+- testExactlyOnceSupportValidation
+- testIdentityReplication
+- testIsCycleWithNullUpstreamTopic
+- testMirrorSourceConnectorTaskConfig
+- testMissingDescribeConfigsAcl
+- testNewTopicConfigs
+- testNoBrokerAclAuthorizer
+- testNoCycles
+- testRefreshTopicPartitions
+- testRefreshTopicPartitionsTopicOnTargetFirst
+- testReplicatesHeartbeatsByDefault
+- testReplicatesHeartbeatsDespiteFilter
+- testSuccessfulAlterOffsets
+org.apache.kafka.connect.mirror.MirrorSourceMetricsTest:
+- testTags
+- testTagsWithSourceAlias
+org.apache.kafka.connect.mirror.MirrorSourceTaskTest:
+- testCommitRecordWithNullMetadata
+- testOffsetSync
+- testPoll
+- testSeekBehaviorDuringStart
+- testSendSyncEvent
+- testSerde
+- testZeroOffsetSync
+org.apache.kafka.connect.mirror.MirrorUtilsTest:
+- testCreateCompactedTopic
+- testCreateCompactedTopicAlreadyExists
+- testCreateCompactedTopicAssumeTopicAlreadyExistsWithClusterAuthorizationException
+- testCreateCompactedTopicAssumeTopicAlreadyExistsWithTopicAuthorizationException
+- testCreateCompactedTopicAssumeTopicAlreadyExistsWithUnsupportedVersionException
+- testCreateCompactedTopicFailsWithInvalidConfigurationException
+- testCreateCompactedTopicFailsWithTimeoutException
+org.apache.kafka.connect.mirror.OffsetSyncStoreTest:
+- testConsistentlySpacedSyncs
+- testDroppedSyncsSpacing
+- testNoTranslationIfNoOffsetSync
+- testNoTranslationIfStoreNotStarted
+- testOffsetTranslation
+- testPastOffsetTranslation
+- testPastOffsetTranslationWithoutInitializationReadToEnd
+- testRandomlySpacedSyncs
+org.apache.kafka.connect.mirror.OffsetSyncTest:
+- testSerde
+org.apache.kafka.connect.mirror.OffsetSyncWriterTest:
+- testFirePendingOffsetSyncs
+- testMaybeQueueOffsetSyncs
+- testPromoteDelayedOffsetSyncs
+org.apache.kafka.connect.mirror.integration.DedicatedMirrorIntegrationTest:
+- testClusterWithEmitOffsetDisabled
+- testMultiNodeCluster
+- testSingleNodeCluster
+org.apache.kafka.connect.mirror.integration.IdentityReplicationIntegrationTest:
+- testNoCheckpointsIfNoRecordsAreMirrored
+- testOffsetSyncsTopicsOnTarget
+- testOffsetTranslationBehindReplicationFlow
+- testOneWayReplicationWithAutoOffsetSync
+- testOneWayReplicationWithFrequentOffsetSyncs
+- testReplicateFromLatest
+- testReplicateSourceDefault
+- testReplicateTargetDefault
+- testReplication
+- testReplicationWithEmptyPartition
+- testReplicationWithoutOffsetSyncWillNotCreateOffsetSyncsTopic
+- testRestartReplication
+- testSyncTopicConfigs
+org.apache.kafka.connect.mirror.integration.MirrorConnectorsIntegrationBaseTest:
+- testNoCheckpointsIfNoRecordsAreMirrored
+- testOffsetSyncsTopicsOnTarget
+- testOffsetTranslationBehindReplicationFlow
+- testOneWayReplicationWithAutoOffsetSync
+- testOneWayReplicationWithFrequentOffsetSyncs
+- testReplicateFromLatest
+- testReplicateSourceDefault
+- testReplicateTargetDefault
+- testReplication
+- testReplicationWithEmptyPartition
+- testReplicationWithoutOffsetSyncWillNotCreateOffsetSyncsTopic
+- testRestartReplication
+- testSyncTopicConfigs
+org.apache.kafka.connect.mirror.integration.MirrorConnectorsIntegrationExactlyOnceTest:
+- testNoCheckpointsIfNoRecordsAreMirrored
+- testOffsetSyncsTopicsOnTarget
+- testOffsetTranslationBehindReplicationFlow
+- testOneWayReplicationWithAutoOffsetSync
+- testOneWayReplicationWithFrequentOffsetSyncs
+- testReplicateFromLatest
+- testReplicateSourceDefault
+- testReplicateTargetDefault
+- testReplication
+- testReplicationWithEmptyPartition
+- testReplicationWithoutOffsetSyncWillNotCreateOffsetSyncsTopic
+- testRestartReplication
+- testSyncTopicConfigs
+org.apache.kafka.connect.mirror.integration.MirrorConnectorsIntegrationSSLTest:
+- testNoCheckpointsIfNoRecordsAreMirrored
+- testOffsetSyncsTopicsOnTarget
+- testOffsetTranslationBehindReplicationFlow
+- testOneWayReplicationWithAutoOffsetSync
+- testOneWayReplicationWithFrequentOffsetSyncs
+- testReplicateFromLatest
+- testReplicateSourceDefault
+- testReplicateTargetDefault
+- testReplication
+- testReplicationWithEmptyPartition
+- testReplicationWithoutOffsetSyncWillNotCreateOffsetSyncsTopic
+- testRestartReplication
+- testSyncTopicConfigs
+org.apache.kafka.connect.mirror.integration.MirrorConnectorsIntegrationTransactionsTest:
+- testNoCheckpointsIfNoRecordsAreMirrored
+- testOffsetSyncsTopicsOnTarget
+- testOffsetTranslationBehindReplicationFlow
+- testOneWayReplicationWithAutoOffsetSync
+- testOneWayReplicationWithFrequentOffsetSyncs
+- testReplicateFromLatest
+- testReplicateSourceDefault
+- testReplicateTargetDefault
+- testReplication
+- testReplicationWithEmptyPartition
+- testReplicationWithoutOffsetSyncWillNotCreateOffsetSyncsTopic
+- testRestartReplication
+- testSyncTopicConfigs
+org.apache.kafka.connect.mirror.integration.MirrorConnectorsWithCustomForwardingAdminIntegrationTest:
+- testCreatePartitionsUseProvidedForwardingAdmin
+- testNoCheckpointsIfNoRecordsAreMirrored
+- testOffsetSyncsTopicsOnTarget
+- testOffsetTranslationBehindReplicationFlow
+- testOneWayReplicationWithAutoOffsetSync
+- testOneWayReplicationWithFrequentOffsetSyncs
+- testReplicateFromLatest
+- testReplicateSourceDefault
+- testReplicateTargetDefault
+- testReplication
+- testReplicationIsCreatingTopicsUsingProvidedForwardingAdmin
+- testReplicationWithEmptyPartition
+- testReplicationWithoutOffsetSyncWillNotCreateOffsetSyncsTopic
+- testRestartReplication
+- testSyncTopicACLsUseProvidedForwardingAdmin
+- testSyncTopicConfigUseProvidedForwardingAdmin
+- testSyncTopicConfigs

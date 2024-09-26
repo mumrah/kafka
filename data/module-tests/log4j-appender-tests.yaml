@@ -1,0 +1,11 @@
+org.apache.kafka.log4jappender.KafkaLog4jAppenderTest:
+- testJaasConfigNotSet
+- testKafkaLog4jConfigs
+- testLog4jAppends
+- testRealProducerConfigWithSyncSendAndNotIgnoringExceptionsShouldThrowException
+- testRealProducerConfigWithSyncSendShouldNotThrowException
+- testSaslMechanismNotSet
+- testSetJaasConfig
+- testSetSaslMechanism
+- testSyncSendAndSimulateProducerFailShouldThrowException
+- testSyncSendWithoutIgnoringExceptionsShouldNotThrowException
