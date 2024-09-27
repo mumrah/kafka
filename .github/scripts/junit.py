@@ -202,10 +202,13 @@ if __name__ == "__main__":
                 # failed for each suite. Then we can find flakes by taking the intersection of those two.
                 all_suite_passed = {test.key() for test in suite.passed_tests}
                 all_suite_failed = {test.key(): test for test in suite.failed_tests}
+                skipped = {test.key() for test in suite.skipped_tests}
                 flaky = all_suite_passed & all_suite_failed.keys()
                 all_tests = all_suite_passed | all_suite_failed.keys()
                 if dump_fp:
                     for test, method in all_tests:
+                        if (test, method) in skipped:
+                            continue
                         method = method.strip("\"")
                         m = method_matcher.match(method)
                         all_tests_dump.add(f"{test}#{m.group(1)}\n")

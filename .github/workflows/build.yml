@@ -156,6 +156,14 @@ jobs:
             **/build/reports/tests/test/*
           compression-level: 9
           if-no-files-found: ignore
+      - name: Archive JUnit XML
+        uses: actions/upload-artifact@v4
+        with:
+          name: junit-xml-${{ matrix.java }}
+          path: |
+            build/junit-xml/**/*.xml
+          compression-level: 9
+          if-no-files-found: ignore
       - name: Archive Thread Dumps
         id: thread-dump-upload-artifact
         if: always() && steps.junit-test.outputs.exitcode == '124'
