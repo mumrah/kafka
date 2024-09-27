@@ -20,6 +20,7 @@ from glob import glob
 import logging
 import os
 import os.path
+import re
 import sys
 from typing import Tuple, Optional, List, Iterable
 import xml.etree.ElementTree
@@ -152,12 +153,19 @@ if __name__ == "__main__":
                         required=False,
                         default="build/junit-xml/**/*.xml",
                         help="Path to XML files. Glob patterns are supported.")
+    parser.add_argument("--dump",
+                        required=False,
+                        help="Optional path to dump all tests")
 
     if not os.getenv("GITHUB_WORKSPACE"):
         print("This script is intended to by run by GitHub Actions.")
         exit(1)
 
     args = parser.parse_args()
+
+    dump_fp = None
+    if args.dump:
+        dump_fp = open(args.dump, 'w')
 
     reports = glob(pathname=args.path, recursive=True)
     logger.debug(f"Found {len(reports)} JUnit results")
@@ -177,6 +185,9 @@ if __name__ == "__main__":
     flaky_table = []
     skipped_table = []
 
+    method_matcher = re.compile("([a-zA-Z_$][a-zA-Z0-9]+).*")
+    all_tests_dump = set()
+
     for report in reports:
         with open(report, "r") as fp:
             logger.debug(f"Parsing {report}")
@@ -193,6 +204,12 @@ if __name__ == "__main__":
                 all_suite_failed = {test.key(): test for test in suite.failed_tests}
                 flaky = all_suite_passed & all_suite_failed.keys()
                 all_tests = all_suite_passed | all_suite_failed.keys()
+                if dump_fp:
+                    for test, method in all_tests:
+                        method = method.strip("\"")
+                        m = method_matcher.match(method)
+                        all_tests_dump.add(f"{test}#{m.group(1)}\n")
+
                 total_tests += len(all_tests)
                 total_flaky += len(flaky)
                 total_failures += len(all_suite_failed) - len(flaky)
@@ -215,6 +232,13 @@ if __name__ == "__main__":
                     simple_class_name = skipped_test.class_name.split(".")[-1]
                     logger.debug(f"Found skipped test: {skipped_test}")
                     skipped_table.append((simple_class_name, skipped_test.test_name))
+
+    if dump_fp:
+        all_tests_dump_sorted = sorted(all_tests_dump)
+        for line in all_tests_dump_sorted:
+            dump_fp.write(line)
+        dump_fp.close()
+
     duration = pretty_time_duration(total_time)
     logger.info(f"Finished processing {len(reports)} reports")
 
