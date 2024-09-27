@@ -30,25 +30,11 @@ concurrency:
   cancel-in-progress: ${{ github.ref != 'refs/heads/trunk' }}
 
 jobs:
-  check-draft-pr:
-    runs-on: ubuntu-latest
-    if: |
-      github.event_name == 'pull_request' && (
-        github.event.pull_request.draft ||
-        contains(github.event.pull_request.title, 'WIP')
-      )
-    outputs:
-      is-draft: 'true'
-    steps:
-      - run: echo "PR is a Draft"
-
   build:
-    needs: check-draft-pr
     uses: ./.github/workflows/build.yml
     with:
       gradle-cache-read-only: ${{ github.ref != 'refs/heads/trunk' }}
       gradle-cache-write-only: ${{ github.ref == 'refs/heads/trunk' }}
       is-public-fork: ${{ github.event.pull_request.head.repo.fork || false }}
-      is-draft: ${{ needs.check-draft-pr.outputs.is-draft == 'true' }}
     secrets:
       inherit
