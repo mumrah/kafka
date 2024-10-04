@@ -14,6 +14,7 @@
 # limitations under the License.
 
 import argparse
+from collections import OrderedDict
 import dataclasses
 from functools import partial
 from glob import glob
@@ -25,6 +26,8 @@ import sys
 from typing import Tuple, Optional, List, Iterable
 import xml.etree.ElementTree
 import html
+
+import yaml
 
 
 logger = logging.getLogger()
@@ -77,6 +80,43 @@ class TestSuite:
     failed_tests: List[TestCase]
     skipped_tests: List[TestCase]
     passed_tests: List[TestCase]
+
+
+class TestCatalogExporter:
+    def __init__(self):
+        self.all_tests = {}   # module -> class -> set of methods
+
+    def handle_suite(self, module: str, suite: TestSuite):
+        if module not in self.all_tests:
+            self.all_tests[module] = OrderedDict()
+
+        for test in suite.failed_tests:
+            if test.class_name not in self.all_tests[module]:
+                self.all_tests[module][test.class_name] = set()
+            self.all_tests[module][test.class_name].add(test.test_name)
+        for test in suite.passed_tests:
+            if test.class_name not in self.all_tests[module]:
+                self.all_tests[module][test.class_name] = set()
+            self.all_tests[module][test.class_name].add(test.test_name)
+
+    def export(self, out_dir: str):
+        if not os.path.exists(out_dir):
+            logger.debug(f"Creating output directory {out_dir}.")
+            os.makedirs(out_dir)
+
+        for module, module_tests in self.all_tests.items():
+            sorted_tests = {}
+            count = 0
+            for test_class, methods in module_tests.items():
+                sorted_methods = sorted(methods)
+                count += len(sorted_methods)
+                sorted_tests[test_class] = sorted_methods
+
+            out_path = os.path.join(out_dir, f"{module}.yaml")
+            logger.debug(f"Writing {count} tests for {module} into {out_path}.")
+            with open(out_path, "w") as fp:
+                yaml.dump(sorted_tests, fp)
+
 
 
 def parse_report(workspace_path, report_path, fp) -> Iterable[TestSuite]:
@@ -153,7 +193,7 @@ if __name__ == "__main__":
                         required=False,
                         default="build/junit-xml/**/*.xml",
                         help="Path to XML files. Glob patterns are supported.")
-    parser.add_argument("--dump",
+    parser.add_argument("--export-test-catalog",
                         required=False,
                         help="Optional path to dump all tests")
 
@@ -162,10 +202,6 @@ if __name__ == "__main__":
         exit(1)
 
     args = parser.parse_args()
-
-    dump_fp = None
-    if args.dump:
-        dump_fp = open(args.dump, 'w')
 
     reports = glob(pathname=args.path, recursive=True)
     logger.debug(f"Found {len(reports)} JUnit results")
@@ -186,9 +222,10 @@ if __name__ == "__main__":
     skipped_table = []
 
     method_matcher = re.compile("([a-zA-Z_$][a-zA-Z0-9]+).*")
-    all_tests_dump = set()
+    exporter = TestCatalogExporter()
 
     for report in reports:
+        module_name = os.path.split(os.path.dirname(report))[-1]    # a bit of an assumption, but seems ok
         with open(report, "r") as fp:
             logger.debug(f"Parsing {report}")
             for suite in parse_report(workspace_path, report, fp):
@@ -205,13 +242,6 @@ if __name__ == "__main__":
                 skipped = {test.key() for test in suite.skipped_tests}
                 flaky = all_suite_passed & all_suite_failed.keys()
                 all_tests = all_suite_passed | all_suite_failed.keys()
-                if dump_fp:
-                    for test, method in all_tests:
-                        if (test, method) in skipped:
-                            continue
-                        method = method.strip("\"")
-                        m = method_matcher.match(method)
-                        all_tests_dump.add(f"{test}#{m.group(1)}\n")
 
                 total_tests += len(all_tests)
                 total_flaky += len(flaky)
@@ -236,11 +266,11 @@ if __name__ == "__main__":
                     logger.debug(f"Found skipped test: {skipped_test}")
                     skipped_table.append((simple_class_name, skipped_test.test_name))
 
-    if dump_fp:
-        all_tests_dump_sorted = sorted(all_tests_dump)
-        for line in all_tests_dump_sorted:
-            dump_fp.write(line)
-        dump_fp.close()
+                if args.export_test_catalog:
+                    exporter.handle_suite(module_name, suite)
+
+    if args.export_test_catalog:
+        exporter.export(args.export_test_catalog)
 
     duration = pretty_time_duration(total_time)
     logger.info(f"Finished processing {len(reports)} reports")

@@ -31,27 +31,38 @@ handler.setLevel(logging.DEBUG)
 logger.addHandler(handler)
 
 
-def all_tests_to_yaml(glob_path: str, out_dir: str):
-    reports = glob(pathname=glob_path, recursive=True)
-    logger.debug(f"Found {len(reports)} module test files")
+def module_from_class(class_name: str):
+    toks = class_name.split(".")
+    if toks[0] in ("unit", "integration"):
+        return toks[2]
+    if toks[0] == "kafka":
+        if len(toks) == 2:
+            return "kafka"
+        else:
+            return toks[1]
+    if toks[0:3] == ["org", "apache", "kafka"]:
+        return toks[3]
+
+    return "unknown"
+
+
+def all_tests_to_yaml(file_path: str, out_dir: str):
     method_matcher = re.compile("([a-zA-Z_$][a-zA-Z0-9]+).*")
 
     all_tests = {}
-    for report in reports:
-        with open(report, "r") as fp:
-            logger.debug(f"Parsing {report}")
-            for line in fp:
-                line_tokens = line.strip().split(maxsplit=1)
-                module = line_tokens[0]
-                if module not in all_tests:
-                    all_tests[module] = OrderedDict()
-                test_tokens = line_tokens[1].split("#", maxsplit=1)
-                clazz = test_tokens[0]
-                if clazz not in all_tests[module]:
-                    all_tests[module][clazz] = set()
-                method = test_tokens[1].rstrip("()")
-                m = method_matcher.match(method)
-                all_tests[module][clazz].add(m.group(1))
+    with open(file_path, "r") as fp:
+        for line in fp:
+            test_tokens = line.split("#", maxsplit=1)
+            class_name = test_tokens[0]
+            module = module_from_class(class_name)
+            if module not in all_tests:
+                all_tests[module] = OrderedDict()
+            if class_name not in all_tests[module]:
+                all_tests[module][class_name] = set()
+            method = test_tokens[1].rstrip("()")
+            m = method_matcher.match(method)
+            all_tests[module][class_name].add(m.group(1))
+
     if not os.path.exists(out_dir):
         logger.debug(f"Creating output directory {out_dir}.")
         os.makedirs(out_dir)
