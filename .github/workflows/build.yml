@@ -119,13 +119,6 @@ jobs:
           gradle-cache-read-only: ${{ inputs.gradle-cache-read-only }}
           gradle-cache-write-only: ${{ inputs.gradle-cache-write-only }}
           develocity-access-key: ${{ secrets.GE_ACCESS_TOKEN }}
-      - name: Load Test Catalog
-        id: load-catalog
-        run: |
-          git fetch origin test-metrics
-          git checkout cce5772c -- data/module-tests
-          python .github/scripts/format-all-tests.py from-yaml --output-file data/all-tests.txt
-          echo "test-catalog=$(realpath data/all-tests.txt)" >> "$GITHUB_OUTPUT"
       - name: Test
         # Gradle flags
         # --build-cache:  Let Gradle restore the build cache
