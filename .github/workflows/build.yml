@@ -175,18 +175,18 @@ jobs:
           compression-level: 9
           if-no-files-found: ignore
       - name: Parse JUnit tests
-        run: python .github/scripts/junit.py --dump all-junit-tests.txt >> $GITHUB_STEP_SUMMARY
+        run: python .github/scripts/junit.py --export-test-catalog ./test-catalog >> $GITHUB_STEP_SUMMARY
         env:
           GITHUB_WORKSPACE: ${{ github.workspace }}
           JUNIT_REPORT_URL: ${{ steps.junit-upload-artifact.outputs.artifact-url }}
           THREAD_DUMP_URL: ${{ steps.thread-dump-upload-artifact.outputs.artifact-url }}
           GRADLE_EXIT_CODE: ${{ steps.junit-test.outputs.exitcode }}
-      - name: Archive All JUnit tests run
-        if: always()
+      - name: Archive Test Catalog
+        if: ${{ always() && matrix.java == '21' }}
         uses: actions/upload-artifact@v4
         with:
-          name: all-junit-tests-${{ matrix.java }}
-          path: all-junit-tests.txt
+          name: test-catalog
+          path: test-catalog
           compression-level: 9
           if-no-files-found: ignore
       - name: Archive Build Scan
@@ -195,15 +195,6 @@ jobs:
         with:
           name: build-scan-test-${{ matrix.java }}
           path: ~/.gradle/build-scan-data
-          compression-level: 9
-          if-no-files-found: ignore
-      - name: Archive Tests Run
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: module-tests-run-${{ matrix.java }}
-          path: |
-            **/build/module-tests.txt
           compression-level: 9
           if-no-files-found: ignore
 
@@ -217,25 +208,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          persist-credentials: true
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-      - run: pip install -r .github/scripts/requirements.txt
-      - name: Download tests run
+          persist-credentials: true  # Needed to push later
+          ref: test-catalog
+      - name: Download Test Catalog
         uses: actions/download-artifact@v4
         with:
-          name: module-tests-run-17
-      - name: Update test data
-        if: always()
+          name: test-catalog
+      - name: Update Test Catalog
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git fetch origin test-metrics
-          git switch test-metrics
-          git checkout ${{ github.sha }} -- .github/scripts/format-all-tests.py
-          git restore --staged .github/scripts/format-all-tests.py
-          python .github/scripts/format-all-tests.py to-yaml
-          git add data/module-tests
+          git add test-catalog
           git diff --quiet && git diff --staged --quiet || git commit -m 'Update all-tests data for Run ${{ github.run_id }}'
           git push
