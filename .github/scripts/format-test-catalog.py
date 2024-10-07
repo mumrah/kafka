@@ -31,56 +31,6 @@ handler.setLevel(logging.DEBUG)
 logger.addHandler(handler)
 
 
-def module_from_class(class_name: str):
-    toks = class_name.split(".")
-    if toks[0] in ("unit", "integration"):
-        return toks[2]
-    if toks[0] == "kafka":
-        if len(toks) == 2:
-            return "kafka"
-        else:
-            return toks[1]
-    if toks[0:3] == ["org", "apache", "kafka"]:
-        return toks[3]
-
-    return "unknown"
-
-
-def all_tests_to_yaml(file_path: str, out_dir: str):
-    method_matcher = re.compile("([a-zA-Z_$][a-zA-Z0-9]+).*")
-
-    all_tests = {}
-    with open(file_path, "r") as fp:
-        for line in fp:
-            test_tokens = line.split("#", maxsplit=1)
-            class_name = test_tokens[0]
-            module = module_from_class(class_name)
-            if module not in all_tests:
-                all_tests[module] = OrderedDict()
-            if class_name not in all_tests[module]:
-                all_tests[module][class_name] = set()
-            method = test_tokens[1].rstrip("()")
-            m = method_matcher.match(method)
-            all_tests[module][class_name].add(m.group(1))
-
-    if not os.path.exists(out_dir):
-        logger.debug(f"Creating output directory {out_dir}.")
-        os.makedirs(out_dir)
-
-    for module, tests in all_tests.items():
-        sorted_tests = {}
-        count = 0
-        for test, methods in tests.items():
-            sorted_methods = sorted(methods)
-            count += len(sorted_methods)
-            sorted_tests[test] = sorted_methods
-
-        out_path = os.path.join(out_dir, f"{module}-tests.yaml")
-        logger.debug(f"Writing {count} tests for {module} into {out_path}.")
-        stream = open(out_path, "w")
-        yaml.dump(sorted_tests, stream)
-
-
 def yaml_to_all_tests(glob_path: str, out_file: str):
     yamls = glob(pathname=glob_path, recursive=True)
     logger.debug(f"Found {len(yamls)} YAML files")
@@ -97,39 +47,20 @@ def yaml_to_all_tests(glob_path: str, out_file: str):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Convert test suite to and from YAML.")
-    subparsers = parser.add_subparsers(dest="command")
-    to_yaml_parser = subparsers.add_parser("to-yaml", help="Convert the module test suite data to YAML files")
-    to_yaml_parser.add_argument("--path",
-                                required=False,
-                                default="**/build/module-tests.txt",
-                                help="Path to module-tests.txt files. Glob patterns are supported.")
-    to_yaml_parser.add_argument("--yaml-output-dir",
-                                required=False,
-                                default="data/module-tests",
-                                help="Directory to output YAML files")
+    parser = argparse.ArgumentParser(description="Convert the test catalog to a single text file")
 
-    from_yaml_parser = subparsers.add_parser("from-yaml", help="Convert the YAML files to a test suite descriptor")
-    from_yaml_parser.add_argument("--path",
-                                  required=False,
-                                  default="data/module-tests/*.yaml",
-                                  help="Path to module YAML files. Glob patterns are supported.")
-    from_yaml_parser.add_argument("--output-file",
-                                  required=False,
-                                  default="data/all-tests.txt",
-                                  help="Output file location")
+    parser.add_argument("--path",
+                        required=False,
+                        default="test-catalog/*.yaml",
+                        help="Path to module YAML files. Glob patterns are supported.")
+    parser.add_argument("--output-file",
+                        required=False,
+                        default="data/all-tests.txt",
+                        help="Output file location")
 
     if not os.getenv("GITHUB_WORKSPACE"):
         print("This script is intended to by run by GitHub Actions.")
         exit(1)
 
     args = parser.parse_args()
-    if args.command == "to-yaml":
-        all_tests_to_yaml(args.path, args.yaml_output_dir)
-        exit(0)
-    elif args.command == "from-yaml":
-        yaml_to_all_tests(args.path, args.output_file)
-        exit(0)
-    else:
-        print(f"Unknown sub-command: {args.command}")
-        exit(1)
+    yaml_to_all_tests(args.path, args.output_file)

@@ -485,6 +485,7 @@ subprojects {
 
     // KAFKA-17433 Used by deflake.yml github action to repeat individual tests
     systemProperty("kafka.cluster.test.repeat", project.findProperty("kafka.cluster.test.repeat"))
+    systemProperty("kafka.test.catalog.file", project.findProperty("kafka.test.catalog.file"))
 
     testLogging {
       events = userTestLoggingEvents ?: testLoggingEvents

@@ -82,6 +82,12 @@ class TestSuite:
     passed_tests: List[TestCase]
 
 
+def clean_test_name(test_name: str) -> str:
+    cleaned = test_name.strip("\"").rstrip("()")
+    m = re.match(r"([a-zA-Z_$][a-zA-Z0-9_$]+).*", cleaned)
+    return m.group(1)
+
+
 class TestCatalogExporter:
     def __init__(self):
         self.all_tests = {}   # module -> class -> set of methods
@@ -93,11 +99,11 @@ class TestCatalogExporter:
         for test in suite.failed_tests:
             if test.class_name not in self.all_tests[module]:
                 self.all_tests[module][test.class_name] = set()
-            self.all_tests[module][test.class_name].add(test.test_name)
+            self.all_tests[module][test.class_name].add(clean_test_name(test.test_name))
         for test in suite.passed_tests:
             if test.class_name not in self.all_tests[module]:
                 self.all_tests[module][test.class_name] = set()
-            self.all_tests[module][test.class_name].add(test.test_name)
+            self.all_tests[module][test.class_name].add(clean_test_name(test.test_name))
 
     def export(self, out_dir: str):
         if not os.path.exists(out_dir):

@@ -222,7 +222,7 @@ public class QuorumControllerTest {
     }
 
     @Test
-    public void testSomethingNew() {
+    public void testSomethingNewer() {
 
     }
 
