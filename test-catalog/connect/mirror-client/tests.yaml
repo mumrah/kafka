@@ -1,0 +1,20 @@
+org.apache.kafka.connect.mirror.MirrorClientTest:
+- checkpointsTopicsTest
+- countHopsForTopicTest
+- heartbeatTopicsTest
+- remoteTopicsSeparatorTest
+- remoteTopicsTest
+- replicationHopsTest
+- testIdentityReplicationRemoteTopics
+- testIdentityReplicationTopicSource
+- testIdentityReplicationUpstreamClusters
+- testIsCheckpointTopic
+- testIsHeartbeatTopic
+- upstreamClustersTest
+org.apache.kafka.connect.mirror.ReplicationPolicyTest:
+- checkpointsTopic_shouldBeEffectedByInternalTopicSeparatorEnabled
+- heartbeatsTopic_shouldNotBeEffectedByInternalTopicSeparatorConfig
+- offsetSyncsTopic_shouldBeEffectedByInternalTopicSeparatorEnabled
+- testInternalTopic
+org.apache.kafka.connect.mirror.SourceAndTargetTest:
+- testEquals

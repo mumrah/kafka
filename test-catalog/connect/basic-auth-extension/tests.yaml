@@ -1,0 +1,19 @@
+org.apache.kafka.connect.rest.basic.auth.extension.BasicAuthSecurityRestExtensionTest:
+- testBadJaasConfigExtensionSetup
+- testBadJaasConfigInitialization
+- testGoodJaasConfigInitialization
+- testJaasConfigurationNotOverwritten
+org.apache.kafka.connect.rest.basic.auth.extension.JaasBasicAuthFilterTest:
+- testBadCredential
+- testBadPassword
+- testEmptyCredentialsFile
+- testInternalTaskConfigEndpointSkipped
+- testInternalZombieFencingEndpointSkipped
+- testNoFileOption
+- testPostNotChangingConnectorTask
+- testSecurityContextSet
+- testSuccess
+- testUnknownBearer
+- testUnknownCredentialsFile
+- testUnknownLoginModule
+- testUnsupportedCallback

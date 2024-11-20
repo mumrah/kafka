@@ -1,0 +1,107 @@
+org.apache.kafka.trogdor.agent.AgentTest:
+- testAgentCreateWorkers
+- testAgentExecWithNormalExit
+- testAgentExecWithTimeout
+- testAgentFinishesTasks
+- testAgentGetStatus
+- testAgentGetUptime
+- testAgentProgrammaticShutdown
+- testAgentStartShutdown
+- testCreateExpiredWorkerIsNotScheduled
+- testDestroyWorkers
+- testKiboshFaults
+- testWorkerCompletions
+org.apache.kafka.trogdor.basic.BasicPlatformTest:
+- testCreateBasicPlatform
+org.apache.kafka.trogdor.common.JsonSerializationTest:
+- testDeserializationDoesNotProduceNulls
+org.apache.kafka.trogdor.common.JsonUtilTest:
+- testObjectFromCommandLineArgument
+- testOpenBraceComesFirst
+org.apache.kafka.trogdor.common.StringExpanderTest:
+- testExpansions
+- testNoExpansionNeeded
+org.apache.kafka.trogdor.common.StringFormatterTest:
+- testDateString
+- testDurationString
+- testPrettyPrintGrid
+org.apache.kafka.trogdor.common.TopologyTest:
+- testAgentNodeNames
+org.apache.kafka.trogdor.common.WorkerUtilsTest:
+- testAddConfigsToPropertiesAddsAllConfigs
+- testClientConfigOverwritesBothDefaultAndCommonConfigs
+- testCommonConfigOverwritesDefaultProps
+- testCreateNonExistingTopicsWithZeroTopicsDoesNothing
+- testCreateOneTopic
+- testCreateRetriesOnTimeout
+- testCreateTopicsFailsIfAtLeastOneTopicExists
+- testCreateZeroTopicsDoesNothing
+- testCreatesNotExistingTopics
+- testCreatesOneTopicVerifiesOneTopic
+- testExistingTopicsMustHaveRequestedNumberOfPartitions
+- testExistingTopicsNotCreated
+- testGetMatchingTopicPartitionsCorrectlyMatchesExactTopicName
+- testGetMatchingTopicPartitionsCorrectlyMatchesTopics
+- testVerifyTopics
+org.apache.kafka.trogdor.coordinator.CoordinatorClientTest:
+- testPrettyPrintTaskInfo
+org.apache.kafka.trogdor.coordinator.CoordinatorTest:
+- testAgentFailureAndTaskExpiry
+- testCoordinatorStatus
+- testCoordinatorUptime
+- testCreateTask
+- testNetworkPartitionFault
+- testTaskCancellation
+- testTaskDestruction
+- testTaskDistribution
+- testTaskRequest
+- testTaskRequestWithFutureStartMsDoesNotGetRun
+- testTaskRequestWithOldStartMsGetsUpdated
+- testTasksRequest
+- testTasksRequestMatches
+- testWorkersExitingAtDifferentTimes
+org.apache.kafka.trogdor.rest.RestExceptionMapperTest:
+- testToExceptionClassNotFoundException
+- testToExceptionNotFoundException
+- testToExceptionRuntimeException
+- testToExceptionSerializationException
+- testToResponseClassNotFoundException
+- testToResponseInvalidRequestException
+- testToResponseInvalidTypeIdException
+- testToResponseJsonMappingException
+- testToResponseNotFound
+- testToResponseSerializationException
+- testToResponseUnknownException
+org.apache.kafka.trogdor.task.TaskSpecTest:
+- testTaskSpecSerialization
+org.apache.kafka.trogdor.workload.ConsumeBenchSpecTest:
+- testInvalidTopicNameRaisesExceptionInMaterialize
+- testMaterializeTopicsWithNoPartitions
+- testMaterializeTopicsWithSomePartitions
+org.apache.kafka.trogdor.workload.ExternalCommandWorkerTest:
+- testProcessForceKillTimeout
+- testProcessNotFound
+- testProcessStop
+- testProcessWithFailedExit
+- testProcessWithNormalExit
+org.apache.kafka.trogdor.workload.HistogramTest:
+- testHistogramAverage
+- testHistogramPercentiles
+- testHistogramSamples
+org.apache.kafka.trogdor.workload.PayloadGeneratorTest:
+- testConstantPayloadGenerator
+- testNullPayloadGenerator
+- testPayloadIterator
+- testRandomComponentPayloadGenerator
+- testRandomComponentPayloadGeneratorErrors
+- testSequentialPayloadGenerator
+- testUniformRandomPayloadGenerator
+- testUniformRandomPayloadGeneratorPaddingBytes
+org.apache.kafka.trogdor.workload.ThrottleTest:
+- testThrottle
+org.apache.kafka.trogdor.workload.TimeIntervalTransactionsGeneratorTest:
+- testCommitsTransactionAfterIntervalPasses
+org.apache.kafka.trogdor.workload.TopicsSpecTest:
+- testMaterialize
+- testPartitionNumbers
+- testPartitionsSpec

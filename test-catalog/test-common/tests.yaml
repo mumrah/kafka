@@ -1,0 +1,13 @@
+org.apache.kafka.common.test.KafkaClusterTestKitTest:
+- testCreateClusterAndCloseWithMultipleLogDirs
+- testCreateClusterWithBadNumDisksThrows
+- testCreateClusterWithBadNumOfBrokers
+- testCreateClusterWithBadNumOfControllers
+- testCreateClusterWithBadPerServerProperties
+- testCreateClusterWithSpecificBaseDir
+- testExposedFaultHandlers
+org.apache.kafka.common.test.KafkaClusterThreadFactoryTest:
+- testGetThreadIds
+org.apache.kafka.common.test.TestKitNodeTest:
+- testListenerName
+- testSecurityProtocol

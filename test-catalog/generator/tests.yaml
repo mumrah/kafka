@@ -1,0 +1,115 @@
+org.apache.kafka.message.CodeBufferTest:
+- testEquals
+- testIndentMustBeNonNegative
+- testWrite
+org.apache.kafka.message.EntityTypeTest:
+- testUnknownEntityType
+- testVerifyTypeMatches
+- testVerifyTypeMismatches
+org.apache.kafka.message.IsNullConditionalTest:
+- testAnotherNullCheck
+- testNeverNull
+- testNeverNullWithBlockScope
+- testNotNullCheck
+- testNullCheck
+org.apache.kafka.message.MessageDataGeneratorTest:
+- testDuplicateTags
+- testInvalidFieldName
+- testInvalidFlexibleVersionsRange
+- testInvalidNegativeTag
+- testInvalidNullDefaultForInt
+- testInvalidNullDefaultForNullableStruct
+- testInvalidNullDefaultForPotentiallyNonNullableArray
+- testInvalidNullDefaultForPotentiallyNonNullableStruct
+- testInvalidSometimesNullableTaggedField
+- testInvalidTagWithoutTaggedVersions
+- testInvalidTaggedVersionsNotASubsetOfVersions
+- testInvalidTaggedVersionsRange
+- testInvalidTaggedVersionsWithoutTag
+- testNullDefaults
+- testNullDefaultsWithDeprecatedVersions
+org.apache.kafka.message.MessageGeneratorTest:
+- stripSuffixTest
+- testCapitalizeFirst
+- testConstants
+- testFirstIsCapitalized
+- testLowerCaseFirst
+- testToSnakeCase
+org.apache.kafka.message.StructRegistryTest:
+- testCommonStructs
+- testDuplicateCommonStructError
+- testReSpecifiedCommonStructError
+- testSingleStruct
+org.apache.kafka.message.StructSpecTest:
+- testNamesMustBeUnique
+- testTagsMustBeUnique
+org.apache.kafka.message.VersionConditionalTest:
+- testAllowMembershipCheckAlwaysFalseFails
+- testAlwaysFalseConditional
+- testAlwaysTrueConditional
+- testAlwaysTrueConditionalWithAlwaysEmitBlockScope
+- testAnotherAlwaysFalseConditional
+- testFullRangeCheck
+- testLowerRangeCheckWithElse
+- testLowerRangeCheckWithIfMember
+- testLowerRangeCheckWithIfNotMember
+- testUpperRangeCheckWithElse
+- testUpperRangeCheckWithIfMember
+- testUpperRangeCheckWithIfNotMember
+org.apache.kafka.message.VersionsTest:
+- testContains
+- testIntersections
+- testRoundTrips
+- testSubtract
+- testVersionsParse
+org.apache.kafka.message.checker.CheckerUtilsTest:
+- testMax0and1
+- testMax1and0
+- testMax5and5
+- testMin0and1
+- testMin1and0
+- testMin5and5
+- testReadMessageSpecFromFile
+- testValidateTaggedVersionsOnNontaggedField
+- testValidateTaggedVersionsOnTaggedField
+- testValidateTaggedVersionsOnTaggedFieldWithError
+org.apache.kafka.message.checker.EvolutionVerifierTest:
+- testFieldNullableVersionsMustBeInsideTopLevelVersion
+- testFieldTaggedVersionsMustBeInsideTopLevelVersion
+- testFieldVersionsMustBeInsideTopLevelVersion
+- testFlexibleVersionsIsNotASubset
+- testIncompatibleFieldTypeChange
+- testMaximumVersionOfInitialMessageIsHigher
+- testMinimumVersionOfInitialMessageIsHigher
+- testNewFieldAddition
+- testTopLevelMessageApiKeysDoNotMatch
+- testTopLevelMessageTypesDoNotMatch
+org.apache.kafka.message.checker.FieldDomainTest:
+- testBoth
+- testMessage1Only
+- testMessage2Only
+- testNeither
+org.apache.kafka.message.checker.MetadataSchemaCheckerToolTest:
+- testSuccessfulParse
+- testSuccessfulVerifyEvolution
+org.apache.kafka.message.checker.UnifierTest:
+- testAddNewField
+- testArrayElementTypesDoNotMatch
+- testArrayFieldTypesMatch
+- testDefaultsChangedCausesFailure
+- testDefaultsCheckPasses
+- testFieldTypesDoNotMatch
+- testFieldTypesMatch
+- testFlexibleVersionsChangedCausesFailure1
+- testFlexibleVersionsChangedCausesFailure2
+- testFlexibleVersionsCheckPasses
+- testMaximumValidVersionForField2IsLowerThanField1
+- testMaximumValidVersionForIsReasonable1
+- testMaximumValidVersionForIsReasonable2
+- testMinimumValidVersionForField2IsHigherThanField1
+- testMinimumValidVersionForField2IsLowerThanField1
+- testMinimumValidVersionForField2IsLowerThanField1Again
+- testNullableVersionsCheckFails1
+- testNullableVersionsCheckFails2
+- testNullableVersionsCheckPasses1
+- testNullableVersionsCheckPasses2

@@ -1,0 +1,12 @@
+org.apache.kafka.coordinator.transaction.ProducerIdManagerTest:
+- testConcurrentGeneratePidRequests
+- testInvalidRanges
+- testRetryBackoff
+- testUnrecoverableErrors
+org.apache.kafka.coordinator.transaction.TransactionLogConfigTest:
+- ShouldDefineAllConfigInConfigDef
+- ShouldGetDynamicValueFromAbstractConfig
+- ShouldGetStaticValueFromClassAttribute
+org.apache.kafka.coordinator.transaction.TransactionStateManagerConfigTest:
+- ShouldDefineAllConfigInConfigDef
+- ShouldGetStaticValueFromClassAttribute
