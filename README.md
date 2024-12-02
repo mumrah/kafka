@@ -1,4 +1,4 @@
-# ASF Committers
+# ASF Committers File
 
 This orphaned branch includes a file named `committers.gitconfig` which is used to define
 a mapping of GitHub usernames to a committers preferred name and email address. This data 
@@ -29,3 +29,11 @@ To update an existing entry, you can edit the committers.gitconfig file directly
 to remove an existing value before updating it.
 
 Push to your changes to a fork and open a PR with `asf-committers` as the base branch.
+
+To use this data, the file can be used directly with `--file` or as a Git ref with `--blob`
+
+```
+git config --blob asf-committers:committers.gitconfig --get committer.anexample.name
+> Alice N Example
+```
+
