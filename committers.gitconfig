@@ -1,9 +1,168 @@
+[committer "ableegoldman"]
+	name = Anna Sophie Blee-Goldman
+	email = sophie@responsive.dev
+[committer "bbejeck"]
+	name = Bill Bejeck
+	email = bill@confluent.io
+[committer "abbccdda"]
+	name = Boyang Chen
+	email = bchen11@outlook.com
+[committer "cadonna"]
+	name = Bruno Cadonna
+	email = cadonna@apache.org
+[committer "C0urante"]
+	name = Chris Egerton
+	email = fearthecellos@gmail.com
+[committer "chia7712"]
+	name = Chia-Ping Tsai
+	email = chia7712@gmail.com
+[committer "clolov"]
+	name = Christo Lolov
+	email = lolovc@amazon.com
+[committer "cmccabe"]
+	name = Colin P. McCabe
+	email = cmccabe@apache.org
+[committer "dajac"]
+	name = David Jacot
+	email = david.jacot@gmail.com
+[committer "dguy"]
+	name = Damian Guy
+	email = damian@confluent.io
 [committer "mumrah"]
 	name = David Arthur
 	email = mumrah@gmail.com
-[committer "dajac"]
-	name = David Jacot
-	email = djacot@confluent.io
-[committer "jscanio"]
+[committer "dengziming"]
+	name = dengziming
+	email = dengziming1993@gmail.com
+[committer "divijvaidya"]
+	name = Divij Vaidya
+	email = diviv@amazon.com
+[committer "edoardocomar"]
+	name = Edoardo Comar
+	email = ecomar@uk.ibm.com
+[committer "ewencp"]
+	name = Ewen Cheslack-Postava
+	email = me@ewencp.org
+[committer "gharris1727"]
+	name = Greg Harris
+	email = gharris1727@gmail.com
+[committer "granthenke"]
+	name = Grant Henke
+	email = granthenke@gmail.com
+[committer "guozhangwang"]
+	name = Guozhang Wang
+	email = wangguoz@gmail.com
+[committer "gwenshap"]
+	name = Gwen (Chen) Shapira
+	email = cshapi@gmail.com
+[committer "ijuma"]
+	name = Ismael Juma
+	email = ismael@juma.me.uk
+[committer "jeffkbkim"]
+	name = Jeff Kim
+	email = jeff.kim@confluent.io
+[committer "hachikuji"]
+	name = Jason Gustafson
+	email = jason@confluent.io
+[committer "jjkoshy"]
+	name = Joel Koshy
+	email = jjkoshy@gmail.com
+[committer "jkreps"]
+	name = Jay Kreps
+	email = jay.kreps@gmail.com
+[committer "jlprat"]
+	name = Josep Prat
+	email = josep.prat@aiven.io
+[committer "jstein"]
+	name = Joe Stein
+	email = joe.stein@stealth.ly
+[committer "jolshan"]
+	name = Justine Olshan
+	email = jolshan@confluent.io
+[committer "becketqin"]
+	name = Jiangjie (Becket) Qin
+	email = becket.qin@gmail.com
+[committer "jsancio"]
 	name = José Armando García Sancio
 	email = jsancio@apache.org
+[committer "junrao"]
+	name = Jun Rao
+	email = junrao@gmail.com
+[committer "kamalcph"]
+	name = Kamal Chandraprakash
+	email = kamal.chandraprakash@gmail.com
+[committer "kkonstantine"]
+	name = Konstantine Karantasis
+	email = k.karantasis@gmail.com
+[committer "lianetm"]
+	name = Lianet Magrans
+	email = lmagrans@confluent.io
+[committer "lindong28"]
+	name = Dong Lin
+	email = lindong28@gmail.com
+[committer "lbradstreet"]
+	name = Lucas Bradstreet
+	email = lucas@confluent.io
+[committer "lucasbru"]
+	name = Lucas Brutschy
+	email = lbrutschy@confluent.io
+[committer "omkreddy"]
+	name = Manikumar Reddy
+	email = manikumar.reddy@gmail.com
+[committer "mimaison"]
+	name = Mickael Maison
+	email = mickael.maison@gmail.com
+[committer "mjsax"]
+	name = Matthias J. Sax
+	email = matthias@confluent.io
+[committer "nehanarkhede"]
+	name = Neha Narkhede
+	email = neha.narkhede@gmail.com
+[committer "onurkaraman"]
+	name = Onur Karaman
+	email = okaraman@linkedin.com
+[committer "pmenon"]
+	name = Prashanth Menon
+	email = prashanthmenon@apache.org
+[committer "rhauch"]
+	name = Randall Hauch
+	email = rhauch@gmail.com
+[committer "rondagostino"]
+	name = Ron Dagostino
+	email = rndgstn@gmail.com
+[committer "rajinisivaram"]
+	name = Rajini Sivaram
+	email = rajinisivaram@googlemail.com
+[committer "satishd"]
+	name = Satish Duggana
+	email = satishd@apache.org
+[committer "showuon"]
+	name = Luke Chen
+	email = showuon@gmail.com
+[committer "soarez"]
+	name = Igor Soarez
+	email = soarez@apple.com
+[committer "harshach"]
+	name = Sriharsha Chintalapani
+	email = harsha@hortonworks.com
+[committer "sriramsub"]
+	name = Sriram Subramanian
+	email = sriram.sub@gmail.com
+[committer "stanislavkozlovski"]
+	name = Stanislav Kozlovski
+	email = stanislav_kozlovski@outlook.com
+[committer "tombentley"]
+	name = Tom Bentley
+	email = tbentley@redhat.com
+[committer "vahidhashemian"]
+	name = Vahid Hashemian
+	email = vahid.hashemian@gmail.com
+[committer "vvcephei"]
+	name = John Roesler
+	email = john@confluent.io
+[committer "wcarlson5"]
+	name = Walker Carlson
+	email = wcarlson@apache.org
+[committer "yashmayya"]
+	name = Yash Mayya
+	email = yash.mayya@gmail.com
