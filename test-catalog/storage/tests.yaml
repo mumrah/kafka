@@ -372,5 +372,4 @@ org.apache.kafka.tiered.storage.integration.TransactionsWithTieredStoreTest:
 - testOffsetMetadataInSendOffsetsToTransaction
 - testReadCommittedConsumerShouldNotSeeUndecidedData
 - testSendOffsetsToTransactionTimeout
-- testSendOffsetsWithGroupId
 - testSendOffsetsWithGroupMetadata

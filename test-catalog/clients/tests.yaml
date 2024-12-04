@@ -785,6 +785,10 @@ org.apache.kafka.clients.consumer.KafkaConsumerTest:
 - testSecondPollWithDeserializationErrorThrowsRecordDeserializationException
 - testSeekNegative
 - testShouldAttemptToRejoinGroupAfterSyncGroupFailed
+- testShouldNotCallMetricReporterMetricRemovalWithExistingConsumerMetric
+- testShouldOnlyCallMetricReporterMetricChangeOnceWithExistingConsumerMetric
+- testSubscribingCustomMetricsDoesntAffectConsumerMetrics
+- testSubscribingCustomMetricsWithSameNameDoesntAffectConsumerMetrics
 - testSubscription
 - testSubscriptionChangesWithAutoCommitDisabled
 - testSubscriptionChangesWithAutoCommitEnabled
@@ -795,8 +799,10 @@ org.apache.kafka.clients.consumer.KafkaConsumerTest:
 - testSubscriptionOnNullTopic
 - testSubscriptionOnNullTopicCollection
 - testSubscriptionWithEmptyPartitionAssignment
+- testUnSubscribingNonExisingMetricsDoesntCauseError
 - testUnsubscribeShouldTriggerPartitionsLostWithNoGeneration
 - testUnsubscribeShouldTriggerPartitionsRevokedWithValidGeneration
+- testUnsubscribingCustomMetricsWithSameNameDoesntAffectConsumerMetrics
 - testUnusedConfigs
 - testWakeupWithFetchDataAvailable
 - verifyHeartbeatSent
@@ -2326,7 +2332,6 @@ org.apache.kafka.clients.producer.KafkaProducerTest:
 - testUnusedConfigs
 org.apache.kafka.clients.producer.MockProducerTest:
 - shouldAbortEmptyTransaction
-- shouldAddOffsetsWhenSendOffsetsToTransactionByGroupId
 - shouldAddOffsetsWhenSendOffsetsToTransactionByGroupMetadata
 - shouldBeFlushedIfNoBufferedRecords
 - shouldBeFlushedWithAutoCompleteIfBufferedRecords
@@ -2336,7 +2341,6 @@ org.apache.kafka.clients.producer.MockProducerTest:
 - shouldDropConsumerGroupOffsetsOnAbortIfTransactionsAreEnabled
 - shouldDropMessagesOnAbortIfTransactionsAreEnabled
 - shouldFlushOnCommitForNonAutoCompleteIfTransactionsAreEnabled
-- shouldIgnoreEmptyOffsetsWhenSendOffsetsToTransactionByGroupId
 - shouldIgnoreEmptyOffsetsWhenSendOffsetsToTransactionByGroupMetadata
 - shouldInitTransactions
 - shouldNotBeFlushedAfterFlush
@@ -2369,7 +2373,6 @@ org.apache.kafka.clients.producer.MockProducerTest:
 - shouldThrowOnFlushProducerIfProducerIsClosed
 - shouldThrowOnInitTransactionIfProducerAlreadyInitializedForTransactions
 - shouldThrowOnInitTransactionIfProducerIsClosed
-- shouldThrowOnNullConsumerGroupIdWhenSendOffsetsToTransaction
 - shouldThrowOnNullConsumerGroupMetadataWhenSendOffsetsToTransaction
 - shouldThrowOnSendIfProducerGotFenced
 - shouldThrowOnSendIfProducerIsClosed

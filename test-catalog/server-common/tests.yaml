@@ -330,6 +330,8 @@ org.apache.kafka.timeline.SnapshotRegistryTest:
 - testCreateSnapshots
 - testDeleteSnapshotUpTo
 - testEmptyRegistry
+- testReset
+- testScrub
 org.apache.kafka.timeline.SnapshottableHashTableTest:
 - testAddAndRemove
 - testDeleteOnEmptyDeltaTable

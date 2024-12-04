@@ -106,7 +106,6 @@ org.apache.kafka.connect.integration.ConnectWorkerIntegrationTest:
 - testSourceTaskNotBlockedOnShutdownWithNonExistentTopic
 - testStoppedState
 - testTaskStatuses
-- testTasksConfigDeprecation
 - testTasksMaxEnforcement
 org.apache.kafka.connect.integration.ConnectorClientPolicyIntegrationTest:
 - testCreateWithAllowedOverridesForAllPolicy
@@ -1076,8 +1075,7 @@ org.apache.kafka.connect.runtime.rest.resources.ConnectorsResourceTest:
 - testGetConnectorTaskConfigsConnectorNotFound
 - testGetOffsets
 - testGetOffsetsConnectorNotFound
-- testGetTasksConfig
-- testGetTasksConfigConnectorNotFound
+- testGetTaskConfigs
 - testListConnectors
 - testPatchConnectorConfig
 - testPatchConnectorConfigLeaderRedirect
