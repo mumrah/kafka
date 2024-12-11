@@ -35,6 +35,8 @@ org.apache.kafka.coordinator.share.ShareCoordinatorShardTest:
 - testReadNullMetadataImage
 - testReadStateFencedLeaderEpochError
 - testReadStateInvalidRequestData
+- testReadStateLeaderEpochUpdateNoUpdate
+- testReadStateLeaderEpochUpdateSuccess
 - testReadStateSuccess
 - testReplayWithShareSnapshot
 - testSubsequentWriteStateSnapshotEpochUpdatesSuccessfully

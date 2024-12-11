@@ -194,6 +194,7 @@ org.apache.kafka.coordinator.group.GroupMetadataManagerTest:
 - testConsumerGroupHeartbeatToClassicGroupFromExistingStaticMember
 - testConsumerGroupHeartbeatToClassicGroupWithEmptyAssignmentMember
 - testConsumerGroupHeartbeatWithCompletingRebalanceClassicGroup
+- testConsumerGroupHeartbeatWithCustomAssignorClassicGroup
 - testConsumerGroupHeartbeatWithEmptyClassicGroup
 - testConsumerGroupHeartbeatWithNonEmptyClassicGroup
 - testConsumerGroupHeartbeatWithPreparingRebalanceClassicGroup
@@ -201,6 +202,10 @@ org.apache.kafka.coordinator.group.GroupMetadataManagerTest:
 - testConsumerGroupMaybeDelete
 - testConsumerGroupMemberEpochValidation
 - testConsumerGroupMemberEpochValidationForStaticMember
+- testConsumerGroupMemberJoinRefreshesExpiredRegexes
+- testConsumerGroupMemberJoinsWithNewRegex
+- testConsumerGroupMemberJoinsWithRegexAndUpdatesItBeforeResolutionCompleted
+- testConsumerGroupMemberJoinsWithUpdatedRegex
 - testConsumerGroupMemberPicksUpExistingResolvedRegularExpression
 - testConsumerGroupMemberUsingClassicProtocolBatchLeaveGroup
 - testConsumerGroupMemberUsingClassicProtocolBatchLeaveGroupUpdatingSubscriptionMetadata
@@ -214,6 +219,7 @@ org.apache.kafka.coordinator.group.GroupMetadataManagerTest:
 - testDelayRebalanceUptoRebalanceTimeout
 - testDescribeGroupRebalancing
 - testDescribeGroupStable
+- testDescribeGroupsBeforeV6GroupIdNotFoundException
 - testDescribeGroupsGroupIdNotFoundException
 - testDynamicMembersCanRejoinGroupWithMaxSizeWhileRebalancing
 - testDynamicMembersJoinGroupWithMaxSizeAndNotRequiredKnownMember
@@ -333,6 +339,8 @@ org.apache.kafka.coordinator.group.GroupMetadataManagerTest:
 - testReplayConsumerGroupTargetAssignmentMetadataTombstone
 - testReplayGroupMetadataRecords
 - testResetRebalanceDelayWhenNewMemberJoinsGroupDuringInitialRebalance
+- testResolvedRegularExpressionsRemovedWhenConsumerMembersRemovedByAdminApi
+- testResolvedRegularExpressionsRemovedWhenMembersLeaveOrFenced
 - testSecondMemberPartiallyJoinAndTimeout
 - testSessionTimeoutExpiration
 - testSessionTimeoutExpirationStaticMember
@@ -679,6 +687,10 @@ org.apache.kafka.coordinator.group.modern.consumer.ConsumerGroupTest:
 - testAsDescribedGroup
 - testAsListedGroup
 - testClassicMembersSupportedProtocols
+- testComputeSubscribedRegularExpressions
+- testComputeSubscribedTopicNames
+- testComputeSubscribedTopicNamesWithoutDeletedMembers
+- testCreateGroupTombstoneRecords
 - testCreateGroupTombstoneRecordsWithReplacedMember
 - testDeletingMemberRemovesPartitionEpoch
 - testFromClassicGroup
@@ -698,6 +710,7 @@ org.apache.kafka.coordinator.group.modern.consumer.ConsumerGroupTest:
 - testRemoveStaticMember
 - testStateTransitionMetrics
 - testSubscribedRegularExpressionCount
+- testSubscriptionType
 - testUpdateAndRemoveRegularExpression
 - testUpdateInvertedAssignment
 - testUpdateMember

@@ -18,12 +18,14 @@ org.apache.kafka.coordinator.common.runtime.CoordinatorRuntimeMetricsImplTest:
 - testHistogramMetrics
 - testMetricNames
 - testPartitionLoadSensorMetrics
+- testRecordEventPurgatoryTimeLimit
 - testThreadIdleSensor
 - testUpdateNumPartitionsMetrics
 org.apache.kafka.coordinator.common.runtime.CoordinatorRuntimeTest:
 - testAppendRecordBatchSize
 - testCancelTimer
 - testClose
+- testCompleteTransactionEventCompletesOnlyOnce
 - testCoordinatorCompleteTransactionEventWriteTimeoutTaskIsCancelledWhenHighWatermarkIsUpdated
 - testCoordinatorExecutor
 - testHighWatermarkUpdate
@@ -74,6 +76,7 @@ org.apache.kafka.coordinator.common.runtime.CoordinatorRuntimeTest:
 - testStateChanges
 - testStateMachineIsReloadedWhenOutOfSync
 - testTimerScheduleIfAbsent
+- testWriteEventCompletesOnlyOnce
 - testWriteEventWriteTimeoutTaskIsCancelledWhenHighWatermarkIsUpdated
 - testWriteOpIsNotReleasedWhenStateMachineIsNotCaughtUpAfterLoad
 org.apache.kafka.coordinator.common.runtime.EventAccumulatorTest:

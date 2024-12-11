@@ -3,6 +3,8 @@ org.apache.kafka.controller.AclControlManagerTest:
 - testCreateAclDeleteAcl
 - testDeleteDedupe
 - testLoadSnapshot
+- testValidateAclWithBadPrincipal
+- testValidateAclWithEmptyPrincipal
 - testValidateFilter
 - testValidateNewAcl
 org.apache.kafka.controller.ActivationRecordsGeneratorTest:
@@ -59,6 +61,7 @@ org.apache.kafka.controller.ClientQuotaControlManagerTest:
 - testValidateQuotaKeyValueForValidRequestPercentage
 - testValidateQuotaKeyValueForZeroQuota
 org.apache.kafka.controller.ClusterControlManagerTest:
+- testBrokerContactTimesAreUpdatedOnClusterControlActivation
 - testDefaultDir
 - testHasOnlineDir
 - testPlaceReplicas
@@ -212,7 +215,8 @@ org.apache.kafka.controller.QuorumControllerTest:
 - testRegisterBrokerKRaftVersions
 - testSnapshotSaveAndLoad
 - testTimeouts
-- testUncleanShutdownBroker
+- testUncleanShutdownBrokerElrEnabled
+- testUncleanShutdownElrDisabled
 - testUnregisterBroker
 - testUpgradeFromPreProductionVersion
 org.apache.kafka.controller.QuorumFeaturesTest:
@@ -840,12 +844,15 @@ org.apache.kafka.metadata.storage.FormatterTest:
 - testFormatWithInitialVoters
 - testFormatWithInitialVotersFailsWithOlderKraftVersion
 - testFormatWithInitialVotersFailsWithOlderMetadataVersion
+- testFormatWithNoInitialControllers
+- testFormatWithNoInitialControllersFailsWithOlderKraftVersion
 - testFormatWithOlderReleaseVersion
 - testFormatWithScram
 - testFormatWithScramFailsOnUnsupportedReleaseVersions
 - testFormatWithUnstableReleaseVersion
 - testFormatWithUnstableReleaseVersionFailsWithoutEnableUnstable
 - testFormatWithoutInitialVotersFailsWithNewerKraftVersion
+- testFormatWithoutNoInitialControllersFailsWithNewerKraftVersion
 - testFormatterFailsOnAlreadyFormatted
 - testFormatterFailsOnUnwritableDirectory
 - testFormattingCreatesLogDirId

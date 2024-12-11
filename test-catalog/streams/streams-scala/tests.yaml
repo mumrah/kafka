@@ -22,8 +22,6 @@ org.apache.kafka.streams.scala.kstream.KStreamSplitTest:
 - testRouteMessagesToAnonymousConsumers
 - testRouteMessagesToConsumers
 org.apache.kafka.streams.scala.kstream.KStreamTest:
-- testCorrectlyFlatTransformValuesInRecords
-- testCorrectlyFlatTransformValuesInRecordsWithKey
 - testFilterRecordsNotSatisfyingPredicate
 - testFilterRecordsSatisfyingPredicate
 - testForeachActionsOnRecords
@@ -31,6 +29,7 @@ org.apache.kafka.streams.scala.kstream.KStreamTest:
 - testJoinTwoKStreamToTables
 - testPeekActionsOnRecords
 - testProcessCorrectlyRecords
+- testProcessValuesCorrectlyRecords
 - testRepartitionKStream
 - testSelectNewKey
 - testSettingNameOnFilter
@@ -47,6 +46,8 @@ org.apache.kafka.streams.scala.kstream.KTableTest:
 - testFilterRecordsSatisfyingPredicate
 - testJoinCorrectlyRecords
 - testJoinCorrectlyRecordsAndStateStore
+- testJoinWithBiFunctionKeyExtractor
+- testLeftJoinWithBiFunctionKeyExtractor
 - testMapValuesWithValueMapperWithKeyAndWithMaterialized
 - testMapValuesWithValueMapperWithMaterialized
 - testSettingNameOnCountProcessor

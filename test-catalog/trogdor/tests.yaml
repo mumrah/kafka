@@ -97,6 +97,9 @@ org.apache.kafka.trogdor.workload.PayloadGeneratorTest:
 - testSequentialPayloadGenerator
 - testUniformRandomPayloadGenerator
 - testUniformRandomPayloadGeneratorPaddingBytes
+org.apache.kafka.trogdor.workload.ShareConsumeBenchSpecTest:
+- testExpandTopicNames
+- testInvalidNameRaisesException
 org.apache.kafka.trogdor.workload.ThrottleTest:
 - testThrottle
 org.apache.kafka.trogdor.workload.TimeIntervalTransactionsGeneratorTest:

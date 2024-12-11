@@ -10,6 +10,8 @@ org.apache.kafka.common.test.api.ClusterTestExtensionsTest:
 - testClusterTest
 - testClusterTestWithDisksPerBroker
 - testClusterTests
+- testControllerListenerName
+- testCreateDefaultProducerAndConsumer
 - testCreateProducerAndConsumer
 - testCreateTopic
 - testDefaults

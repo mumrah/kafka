@@ -336,6 +336,7 @@ org.apache.kafka.raft.MockLogTest:
 - testCreateExistingSnapshot
 - testCreateSnapshot
 - testCreateSnapshotBeforeLogStartOffset
+- testCreateSnapshotInMiddleOfBatch
 - testCreateSnapshotLaterThanHighWatermark
 - testCreateSnapshotMuchEarlierEpoch
 - testCreateSnapshotMuchLaterEpoch

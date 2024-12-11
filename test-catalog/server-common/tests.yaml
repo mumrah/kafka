@@ -28,15 +28,24 @@ org.apache.kafka.security.PasswordEncoderTest:
 - testEncodeDecode
 - testEncodeDecodeAlgorithms
 - testEncoderConfigChange
-org.apache.kafka.server.common.FeaturesTest:
+org.apache.kafka.server.common.FeatureTest:
+- testDefaultLevelAllFeatures
 - testDefaultTestVersion
-- testDefaultValueAllFeatures
+- testDefaultVersionDependencyIsDefaultReady
 - testFromFeatureLevelAllFeatures
 - testInvalidValidateVersion
-- testLatestProductionMapsToLatestMetadataVersion
+- testLatestProductionDependencyIsProductionReady
+- testLatestProductionIsNotBehindLatestMetadataVersion
+- testLatestProductionIsOneOfFeatureValues
 - testUnstableTestVersion
 - testV0SupportedInEarliestMV
 - testValidateVersionAllFeatures
+- testValidateWithDefaultValueDependencyAheadOfItsDefaultLevel
+- testValidateWithDependencyNotProductionReady
+- testValidateWithLaggingLatestProduction
+- testValidateWithMVDependencyAheadOfBootstrapMV
+- testValidateWithMVDependencyNotProductionReady
+- testValidateWithNonExistentLatestProduction
 org.apache.kafka.server.common.FinalizedFeaturesTest:
 - testKRaftModeFeatures
 - testZkModeFeatures

@@ -92,6 +92,7 @@ org.apache.kafka.message.checker.FieldDomainTest:
 org.apache.kafka.message.checker.MetadataSchemaCheckerToolTest:
 - testSuccessfulParse
 - testSuccessfulVerifyEvolution
+- testVerifyEvolutionGit
 org.apache.kafka.message.checker.UnifierTest:
 - testAddNewField
 - testArrayElementTypesDoNotMatch
