@@ -258,6 +258,7 @@ org.apache.kafka.clients.admin.KafkaAdminClientTest:
 - testDescribeCluster
 - testDescribeClusterFailBack
 - testDescribeClusterHandleError
+- testDescribeClusterHandleUnsupportedVersionForIncludingFencedBrokers
 - testDescribeConfigsPartialResponse
 - testDescribeConfigsUnrequested
 - testDescribeConsumerGroupConfigs
@@ -998,6 +999,8 @@ org.apache.kafka.clients.consumer.internals.AcknowledgementsTest:
 - testSingleStateMultiRecord
 - testSingleStateSingleGap
 - testSingleStateSingleRecord
+org.apache.kafka.clients.consumer.internals.ApplicationEventHandlerTest:
+- testRecordApplicationEventQueueSize
 org.apache.kafka.clients.consumer.internals.AsyncKafkaConsumerTest:
 - testAssign
 - testAssignOnEmptyTopicInPartition
@@ -1066,6 +1069,7 @@ org.apache.kafka.clients.consumer.internals.AsyncKafkaConsumerTest:
 - testReaperInvokedInClose
 - testReaperInvokedInPoll
 - testReaperInvokedInUnsubscribe
+- testRecordBackgroundEventQueueSizeAndBackgroundEventQueueTime
 - testRefreshCommittedOffsetsNotCalledIfNoGroupId
 - testRefreshCommittedOffsetsShouldNotResetIfFailedWithTimeout
 - testSeekToBeginning
@@ -1096,6 +1100,8 @@ org.apache.kafka.clients.consumer.internals.AutoOffsetResetStrategyTest:
 - testFromString
 - testTimestamp
 - testValidator
+org.apache.kafka.clients.consumer.internals.BackgroundEventHandlerTest:
+- testRecordBackgroundEventQueueSize
 org.apache.kafka.clients.consumer.internals.CommitRequestManagerTest:
 - testAsyncAutocommitNotRetriedAfterException
 - testAsyncCommitWhileCoordinatorUnknownIsSentOutWhenCoordinatorDiscovered
@@ -1283,7 +1289,6 @@ org.apache.kafka.clients.consumer.internals.ConsumerNetworkClientTest:
 - testDisconnectWakesUpPoll
 - testDisconnectWithInFlightRequests
 - testDisconnectWithUnsentRequests
-- testFutureCompletionOutsidePoll
 - testInvalidTopicExceptionPropagatedFromMetadata
 - testMetadataFailurePropagated
 - testTimeoutUnsentRequest
@@ -1297,6 +1302,8 @@ org.apache.kafka.clients.consumer.internals.ConsumerNetworkThreadTest:
 - testMaximumTimeToWait
 - testRequestsTransferFromManagersToClientOnThreadRun
 - testRunOnceInvokesReaper
+- testRunOnceRecordApplicationEventQueueSizeAndApplicationEventQueueTime
+- testRunOnceRecordTimeBetweenNetworkThreadPoll
 - testSendUnsentRequests
 - testStartupAndTearDown
 org.apache.kafka.clients.consumer.internals.ConsumerProtocolTest:
@@ -1471,6 +1478,7 @@ org.apache.kafka.clients.consumer.internals.CoordinatorRequestManagerTest:
 - testBackoffAfterRetriableFailure
 - testFindCoordinatorResponseVersions
 - testMarkCoordinatorUnknown
+- testMarkCoordinatorUnknownLoggingAccuracy
 - testNetworkTimeout
 - testNullGroupIdShouldThrow
 - testPropagateAndBackoffAfterFatalError
@@ -1854,6 +1862,7 @@ org.apache.kafka.clients.consumer.internals.NetworkClientDelegateTest:
 - testPollResultTimer
 - testPropagateMetadataError
 - testPropagateMetadataErrorWithErrorEvent
+- testRecordUnsentRequestsQueueTime
 - testSuccessfulResponse
 - testTimeoutAfterSend
 - testTimeoutBeforeSend
@@ -2276,6 +2285,17 @@ org.apache.kafka.clients.consumer.internals.events.CompletableEventReaperTest:
 - testExpired
 - testIncompleteQueue
 - testIncompleteTracked
+org.apache.kafka.clients.consumer.internals.metrics.AsyncConsumerMetricsTest:
+- shouldMetricNames
+- shouldRecordApplicationEventQueueProcessingTime
+- shouldRecordApplicationEventQueueSize
+- shouldRecordApplicationEventQueueTime
+- shouldRecordBackgroundEventQueueProcessingTime
+- shouldRecordBackgroundEventQueueSize
+- shouldRecordBackgroundEventQueueTime
+- shouldRecordTimeBetweenNetworkThreadPoll
+- shouldRecordUnsentRequestsQueueSize
+- shouldRecordUnsentRequestsQueueTime
 org.apache.kafka.clients.consumer.internals.metrics.HeartbeatMetricsManagerTest:
 - testHeartbeatMetrics
 org.apache.kafka.clients.consumer.internals.metrics.OffsetCommitMetricsManagerTest:
@@ -3163,6 +3183,7 @@ org.apache.kafka.common.message.NullableStructMessageTest:
 - testNullForAllFields
 - testNullableStruct2CanNotBeNullInVersion0
 - testRoundTrip
+- testTaggedStructSize
 - testToStringWithNullStructs
 org.apache.kafka.common.message.RecordsSerdeTest:
 - testSerdeEmptyRecords

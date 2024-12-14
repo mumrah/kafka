@@ -9,8 +9,6 @@ org.apache.kafka.controller.AclControlManagerTest:
 - testValidateNewAcl
 org.apache.kafka.controller.ActivationRecordsGeneratorTest:
 - testActivationMessageForEmptyLog
-- testActivationMessageForNonEmptyLogNoMigrations
-- testActivationMessageForNonEmptyLogWithMigrations
 org.apache.kafka.controller.BrokerHeartbeatManagerTest:
 - testCalculateNextBrokerState
 - testControlledShutdownOffsetIsOnlyUpdatedOnce
@@ -97,7 +95,6 @@ org.apache.kafka.controller.FeatureControlManagerTest:
 - testCannotUpgradeToLowerVersion
 - testCannotUseSafeDowngradeIfMetadataChanged
 - testCreateFeatureLevelRecords
-- testNoMetadataVersionChangeDuringMigration
 - testReplay
 - testReplayRecords
 - testUnsafeDowngradeIsTemporarilyDisabled
@@ -226,11 +223,6 @@ org.apache.kafka.controller.QuorumFeaturesTest:
 - testIsControllerId
 - testLocalSupportedFeature
 - testReasonNotSupported
-- testZkMigrationNotReadyIfControllerNotReady
-- testZkMigrationNotReadyIfMetadataVersionTooLow
-- testZkMigrationNotReadyIfNotAllControllersRegistered
-- testZkMigrationReadyIfAllControllersReady
-- testZkMigrationReadyIfControllerRegistrationNotSupported
 org.apache.kafka.controller.ReplicationControlManagerTest:
 - testAlterPartitionHandleUnknownTopicIdOrName
 - testAlterPartitionShouldRejectBrokersWithStaleEpoch

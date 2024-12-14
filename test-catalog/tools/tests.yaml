@@ -24,6 +24,10 @@ org.apache.kafka.tools.ClusterToolTest:
 - testClusterIdWithBootstrapController
 - testClusterTooOldToHaveId
 - testLegacyModeClusterCannotUnregisterBroker
+- testListEndpointsArgumentWithBootstrapController
+- testListEndpointsArgumentWithBootstrapServer
+- testListEndpointsWithBootstrapController
+- testListEndpointsWithBootstrapServer
 - testPrintClusterId
 - testUnregister
 - testUnregisterBroker
@@ -302,11 +306,14 @@ org.apache.kafka.tools.PushHttpMetricsReporterTest:
 org.apache.kafka.tools.ReplicaVerificationToolTest:
 - testReplicaBufferVerifyChecksum
 org.apache.kafka.tools.ResetIntegrationTest:
+- shouldAllowGroupProtocolClassic
+- shouldDefaultToClassicGroupProtocol
 - shouldNotAllowToResetWhenInputTopicAbsent
 - shouldNotAllowToResetWhenIntermediateTopicAbsent
 - shouldNotAllowToResetWhenSpecifiedInternalTopicDoesNotExist
 - shouldNotAllowToResetWhenSpecifiedInternalTopicIsNotInternal
 - shouldNotAllowToResetWhileStreamsIsRunning
+- shouldOverwriteGroupProtocolOtherThanClassic
 - testReprocessingByDurationAfterResetWithoutIntermediateUserTopic
 - testReprocessingFromDateTimeAfterResetWithoutIntermediateUserTopic
 - testReprocessingFromFileAfterResetWithoutIntermediateUserTopic
@@ -515,11 +522,14 @@ org.apache.kafka.tools.consumer.group.DeleteOffsetsConsumerGroupCommandIntegrati
 - testDeleteOffsetsOfStableConsumerGroupWithUnknownTopicPartition
 org.apache.kafka.tools.consumer.group.DescribeConsumerGroupTest:
 - testDescribeAllExistingGroups
-- testDescribeExistingGroup
 - testDescribeExistingGroupWithNoMembers
 - testDescribeExistingGroups
+- testDescribeGroupMemberWithMigration
+- testDescribeGroupMembers
 - testDescribeGroupMembersWithShortInitializationTimeout
+- testDescribeGroupOffsets
 - testDescribeGroupOffsetsWithShortInitializationTimeout
+- testDescribeGroupState
 - testDescribeGroupStateWithShortInitializationTimeout
 - testDescribeGroupWithShortInitializationTimeout
 - testDescribeMembersOfExistingGroup

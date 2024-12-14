@@ -90,6 +90,7 @@ org.apache.kafka.raft.FollowerStateTest:
 - testGrantVote
 - testLeaderIdAndEndpoint
 - testMonotonicHighWatermark
+- testPreVoteIfHasNotFetchedFromLeaderYet
 org.apache.kafka.raft.KafkaNetworkChannelTest:
 - testFetchRequestDowngrade
 - testSendAndDisconnect
@@ -101,6 +102,22 @@ org.apache.kafka.raft.KafkaNetworkChannelTest:
 org.apache.kafka.raft.KafkaRaftClientDriverTest:
 - testShutdown
 - testUncaughtException
+org.apache.kafka.raft.KafkaRaftClientPreVoteTest:
+- testFollowerGrantsPreVoteIfHasNotFetchedYet
+- testHandleInvalidPreVoteRequestWithOlderEpoch
+- testHandlePreVoteRequestAsCandidate
+- testHandlePreVoteRequestAsFollowerObserver
+- testHandlePreVoteRequestAsFollowerWithElectedLeader
+- testHandlePreVoteRequestAsResigned
+- testHandlePreVoteRequestAsUnattachedObserver
+- testHandlePreVoteRequestAsUnattachedVoted
+- testHandlePreVoteRequestAsUnattachedWithLeader
+- testInvalidVoteRequest
+- testInvalidVoterReplicaPreVoteRequest
+- testLeaderAcceptPreVoteFromObserver
+- testLeaderRejectPreVoteRequestOnSameEpoch
+- testPreVoteRequestClusterIdValidation
+- testRejectPreVoteIfRemoteLogIsNotUpToDate
 org.apache.kafka.raft.KafkaRaftClientReconfigTest:
 - testAddVoter
 - testAddVoterFailsWhenLosingLeadership
@@ -227,6 +244,8 @@ org.apache.kafka.raft.KafkaRaftClientTest:
 - testFetchShouldBeTreatedAsLeaderAcknowledgement
 - testFollowerAsObserverDoesNotBecomeCandidateAfterFetchTimeout
 - testFollowerGracefulShutdown
+- testFollowerLeaderRediscoveryAfterBrokerNotAvailableError
+- testFollowerLeaderRediscoveryAfterRequestTimeout
 - testFollowerLogReconciliation
 - testFollowerReplication
 - testGracefulShutdownSingleMemberQuorum
@@ -299,6 +318,7 @@ org.apache.kafka.raft.KafkaRaftClientTest:
 - testRetryElection
 - testStaticVotersIgnoredWithBootstrapSnapshot
 - testUnattachedAsObserverDoesNotBecomeCandidateAfterElectionTimeout
+- testUnattachedAsVoterCanBecomeFollowerAfterFindingLeader
 - testVoteRequestClusterIdValidation
 - testVoteRequestTimeout
 - testVoteResponseIgnoredAfterBecomingFollower

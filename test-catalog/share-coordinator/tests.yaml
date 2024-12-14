@@ -3,6 +3,11 @@ org.apache.kafka.coordinator.share.PersisterStateBatchCombinerTest:
 - testStateBatchCombineCornerCases
 - testStateBatchCombineDifferentStates
 - testStateBatchCombineSameState
+org.apache.kafka.coordinator.share.ShareCoordinatorOffsetsManagerTest:
+- testUpdateStateAddsToInternalState
+- testUpdateStateComplexCases
+- testUpdateStateNoRedundantState
+- testUpdateStateRedundantState
 org.apache.kafka.coordinator.share.ShareCoordinatorRecordHelpersTest:
 - testNewShareSnapshotRecord
 - testNewShareUpdateRecord
@@ -24,6 +29,13 @@ org.apache.kafka.coordinator.share.ShareCoordinatorServiceTest:
 - testReadStateSuccess
 - testReadStateValidationsError
 - testReadStateWhenNotStarted
+- testRecordPruningTaskEmptyOffsetReturned
+- testRecordPruningTaskException
+- testRecordPruningTaskPeriodicityWithAllSuccess
+- testRecordPruningTaskPeriodicityWithSomeFailures
+- testRecordPruningTaskRepeatedSameOffsetForTopic
+- testRecordPruningTaskRetriesRepeatedSameOffsetForTopic
+- testRecordPruningTaskSuccess
 - testStartupShutdown
 - testTopicPartitionFor
 - testWriteFutureReturnsError
@@ -31,6 +43,7 @@ org.apache.kafka.coordinator.share.ShareCoordinatorServiceTest:
 - testWriteStateValidationsError
 - testWriteStateWhenNotStarted
 org.apache.kafka.coordinator.share.ShareCoordinatorShardTest:
+- testLastRedundantOffset
 - testNonSequentialBatchUpdates
 - testReadNullMetadataImage
 - testReadStateFencedLeaderEpochError

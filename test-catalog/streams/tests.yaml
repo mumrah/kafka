@@ -1,3 +1,10 @@
+org.apache.kafka.streams.AutoOffsetResetTest:
+- customDurationShouldMatchExpectedValue
+- shouldThrowExceptionIfDurationIsNegative
+- shouldThrowExceptionOnDurationForEarliestReset
+- shouldThrowExceptionOnDurationForLastetReset
+- shouldThrowExceptionOnDurationForNoneReset
+- twoInstancesCreatedAtTheSameTimeWithSameOptionsShouldBeEqual
 org.apache.kafka.streams.KafkaStreamsTest:
 - inMemoryStatefulTopologyShouldNotCreateStateDirectory
 - shouldAddThreadWhenRunning
@@ -159,10 +166,19 @@ org.apache.kafka.streams.StreamsBuilderTest:
 - shouldWrapProcessorsForStatelessOperators
 - shouldWrapProcessorsForStreamAggregate
 - shouldWrapProcessorsForStreamReduce
+- shouldWrapProcessorsForStreamStreamInnerJoin
+- shouldWrapProcessorsForStreamStreamLeftJoin
+- shouldWrapProcessorsForStreamStreamOuterJoin
+- shouldWrapProcessorsForStreamStreamOuterJoinWithoutSpuriousResultsFix
+- shouldWrapProcessorsForStreamStreamSelfJoin
+- shouldWrapProcessorsForStreamStreamSelfJoinWithSharedStoreOptimization
 - shouldWrapProcessorsForStreamTableJoin
 - shouldWrapProcessorsForStreamTableJoinWithGracePeriod
 - shouldWrapProcessorsForTableAggregate
 - shouldWrapProcessorsForTableReduce
+- shouldWrapProcessorsForTableTableInnerJoin
+- shouldWrapProcessorsForTableTableLeftJoin
+- shouldWrapProcessorsForTableTableOuterJoin
 - shouldWrapProcessorsForTimeWindowStreamAggregate
 - shouldWrapProcessorsForUnmaterializedSourceTable
 org.apache.kafka.streams.StreamsConfigTest:
@@ -654,12 +670,17 @@ org.apache.kafka.streams.kstream.internals.InternalStreamsBuilderTest:
 - ktableShouldHaveNullTimestampExtractorWhenNoneSupplied
 - ktableShouldUseProvidedTimestampExtractor
 - shouldAddGlobalTablesToEachGroup
+- shouldAddRegexTopicToDurationAutoOffsetResetList
 - shouldAddRegexTopicToEarliestAutoOffsetResetList
 - shouldAddRegexTopicToLatestAutoOffsetResetList
+- shouldAddTableToDurationAutoOffsetResetList
 - shouldAddTableToEarliestAutoOffsetResetList
 - shouldAddTableToLatestAutoOffsetResetList
+- shouldAddTableToNoneAutoOffsetResetList
+- shouldAddTopicToDurationAutoOffsetResetList
 - shouldAddTopicToEarliestAutoOffsetResetList
 - shouldAddTopicToLatestAutoOffsetResetList
+- shouldAddTopicToNoneAutoOffsetResetList
 - shouldBuildGlobalTableWithNonQueryableStoreName
 - shouldBuildGlobalTableWithQueryaIbleStoreName
 - shouldBuildGlobalTopologyWithAllGlobalTables
@@ -810,8 +831,7 @@ org.apache.kafka.streams.kstream.internals.KStreamGlobalKTableLeftJoinTest:
 - shouldNotJoinWithEmptyGlobalTableOnStreamUpdates
 - shouldNotRequireCopartitioning
 org.apache.kafka.streams.kstream.internals.KStreamImplTest:
-- shouldBindStateWithOldProcessor
-- shouldBindStateWithOldProcessorSupplier
+- shouldBindStateWithProcessorSupplier
 - shouldMaterializeKTableFromKStream
 - shouldMergeMultipleStreams
 - shouldMergeTwoStreams
@@ -957,7 +977,7 @@ org.apache.kafka.streams.kstream.internals.KStreamImplTest:
 - shouldProcessFromSourceThatMatchPattern
 - shouldProcessFromSourcesThatMatchMultiplePattern
 - shouldProcessValues
-- shouldProcessWithOldProcessorAndState
+- shouldProcessWithProcessorAndState
 - shouldPropagateRepartitionFlagAfterGlobalKTableJoin
 - shouldSendDataThroughRepartitionTopicUsingRepartitioned
 - shouldSendDataToDynamicTopics
