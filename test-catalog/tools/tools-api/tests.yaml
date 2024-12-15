@@ -1,2 +1,0 @@
-org.apache.kafka.tools.api.RecordReaderTest:
-- testDefaultCloseAndConfigure
