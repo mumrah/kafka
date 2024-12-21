@@ -1,0 +1,4 @@
+org.apache.kafka.server.log.remote.storage.LogSegmentDataTest:
+- testOptionalTransactionIndex
+org.apache.kafka.server.log.remote.storage.RemoteLogSegmentMetadataTest:
+- createWithUpdates

@@ -1,0 +1,44 @@
+org.apache.kafka.connect.file.FileStreamSinkConnectorTest:
+- testConnectorConfigValidation
+- testConnectorConfigsPropagateToTaskConfigs
+- testSinkTasks
+- testSinkTasksStdout
+- testTaskClass
+org.apache.kafka.connect.file.FileStreamSinkTaskTest:
+- testPutFlush
+- testStart
+org.apache.kafka.connect.file.FileStreamSourceConnectorTest:
+- testAlterOffsetsIncorrectOffsetKey
+- testAlterOffsetsIncorrectPartitionKey
+- testAlterOffsetsMultiplePartitions
+- testAlterOffsetsOffsetPositionValues
+- testAlterOffsetsStdin
+- testAlterOffsetsTombstones
+- testBlankTopic
+- testConnectorConfigValidation
+- testConnectorConfigsPropagateToTaskConfigs
+- testExactlyOnceSupport
+- testInvalidBatchSize
+- testMissingTopic
+- testSourceTasks
+- testSourceTasksStdin
+- testSuccessfulAlterOffsets
+- testTaskClass
+- testTransactionBoundaryDefinition
+- testValidConfigsAndDefaults
+org.apache.kafka.connect.file.FileStreamSourceTaskTest:
+- testBatchSize
+- testBufferResize
+- testInvalidFile
+- testNormalLifecycle
+- testUsingSystemInputSourceOnMissingFile
+org.apache.kafka.connect.file.integration.FileStreamSinkConnectorIntegrationTest:
+- testAlterOffsets
+- testResetOffsets
+- testSimpleSink
+- testSinkMultipleTopicsWithMultipleTasks
+org.apache.kafka.connect.file.integration.FileStreamSourceConnectorIntegrationTest:
+- testAlterOffsets
+- testResetOffsets
+- testSimpleSource
+- testStopResumeSavedOffset
