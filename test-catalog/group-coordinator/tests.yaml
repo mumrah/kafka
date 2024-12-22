@@ -487,6 +487,11 @@ org.apache.kafka.coordinator.group.OffsetMetadataManagerTest:
 - testSimpleGroupOffsetCommit
 - testSimpleGroupOffsetCommitWithInstanceId
 - testTransactionalReplay
+org.apache.kafka.coordinator.group.ShareGroupAutoOffsetResetStrategyTest:
+- testEqualsAndHashCode
+- testFromString
+- testTimestamp
+- testValidator
 org.apache.kafka.coordinator.group.assignor.GroupSpecImplTest:
 - testIsPartitionAssigned
 - testMemberAssignment

@@ -28,6 +28,7 @@ org.apache.kafka.coordinator.common.runtime.CoordinatorRuntimeTest:
 - testCompleteTransactionEventCompletesOnlyOnce
 - testCoordinatorCompleteTransactionEventWriteTimeoutTaskIsCancelledWhenHighWatermarkIsUpdated
 - testCoordinatorExecutor
+- testEmptyBatch
 - testHighWatermarkUpdate
 - testNonRetryableTimer
 - testOnNewMetadataImage

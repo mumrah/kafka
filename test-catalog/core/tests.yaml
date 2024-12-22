@@ -23,27 +23,6 @@ kafka.KafkaConfigTest:
 - testKafkaSslPasswords
 - testKafkaSslPasswordsWithSymbols
 - testMustContainQuorumVotersIfUsingProcessRoles
-kafka.admin.AclCommandTest:
-- testAclCliWithAdminAPI
-- testAclCliWithAdminAPIAndBootstrapController
-- testAclCliWithClientId
-- testAclCliWithClientIdAndBootstrapController
-- testAclCliWithMisusingBootstrapControllerToServer
-- testAclCliWithMisusingBootstrapServerToController
-- testAclsOnPrefixedResourcesWithAdminAPI
-- testAclsOnPrefixedResourcesWithAdminAPIAndBootstrapController
-- testExactlyOneAction
-- testInvalidArgs
-- testPatternTypesWithAdminAPI
-- testPatternTypesWithAdminAPIAndBootstrapController
-- testProducerConsumerCliWithAdminAPI
-- testProducerConsumerCliWithAdminAPIAndBootstrapController
-- testUseBootstrapServerOptWithBootstrapControllerOpt
-- testUseConsumerOptWithoutRequiredOpt
-- testUseIdempotentOptWithoutProducerOpt
-- testUseListPrincipalsOptWithoutListOpt
-- testUseProducerOptWithoutTopicOpt
-- testUseWithoutBootstrapServerOptAndBootstrapControllerOpt
 kafka.admin.AddPartitionsTest:
 - testIncrementPartitions
 - testManualAssignmentOfReplicas
@@ -332,8 +311,6 @@ kafka.api.ConsumerTopicCreationTest:
 kafka.api.ConsumerWithLegacyMessageFormatIntegrationTest:
 - testEarliestOrLatestOffsets
 - testOffsetsForTimes
-kafka.api.CustomQuotaCallbackTest:
-- testCustomQuotaCallback
 kafka.api.DelegationTokenEndToEndAuthorizationTest:
 - testCreateUserWithDelegationToken
 - testNoConsumeWithDescribeAclViaAssign
@@ -821,8 +798,12 @@ kafka.api.UserQuotaTest:
 - testThrottledRequest
 kafka.api.test.ProducerCompressionTest:
 - testCompression
-kafka.clients.consumer.AsyncKafkaConsumerIntegrationTest:
+kafka.clients.consumer.ConsumerIntegrationTest:
 - testAsyncConsumerWithOldGroupCoordinator
+- testFetchPartitionsAfterFailedListenerWithGroupProtocolClassic
+- testFetchPartitionsAfterFailedListenerWithGroupProtocolConsumer
+- testFetchPartitionsWithAlwaysFailedListenerWithGroupProtocolClassic
+- testFetchPartitionsWithAlwaysFailedListenerWithGroupProtocolConsumer
 kafka.cluster.AssignmentStateTest:
 - testPartitionAssignmentStatus
 kafka.cluster.BrokerEndPointTest:
@@ -1154,6 +1135,7 @@ kafka.coordinator.group.GroupMetadataManagerTest:
 - testGroupLoadWithConsumerAndTransactionalOffsetCommitsConsumerWins
 - testGroupLoadWithConsumerAndTransactionalOffsetCommitsTransactionWins
 - testGroupLoadedWithPendingCommits
+- testGroupMetadataKey
 - testGroupMetadataRemoval
 - testGroupMetadataRemovalWithLogAppendTime
 - testGroupNotExists
@@ -1179,6 +1161,7 @@ kafka.coordinator.group.GroupMetadataManagerTest:
 - testLoadWithCommittedAndAbortedTransactionalOffsetCommits
 - testLogInfoFromCleanupGroupMetadata
 - testMetrics
+- testOffsetCommitKey
 - testOffsetExpirationOfActiveGroupSemantics
 - testOffsetExpirationOfSimpleConsumer
 - testOffsetExpirationSemantics
@@ -1373,8 +1356,6 @@ kafka.coordinator.transaction.TransactionLogTest:
 - testReadTxnRecordKeyCanReadUnknownMessage
 - testSerializeTransactionLogValueToFlexibleVersion
 - testSerializeTransactionLogValueToHighestNonFlexibleVersion
-- testTransactionMetadataParsing
-- testTransactionMetadataTombstoneParsing
 kafka.coordinator.transaction.TransactionMarkerChannelManagerTest:
 - shouldAbortAppendToLogOnEndTxnWhenNotCoordinatorError
 - shouldCompleteAppendToLogOnEndTxnWhenSendMarkersSucceed
@@ -2024,7 +2005,6 @@ kafka.network.RequestConvertToJsonTest:
 - testRequestDesc
 - testRequestDescMetrics
 - testRequestHeaderNode
-- testRequestHeaderNodeWithDeprecatedApiVersion
 kafka.network.SocketServerTest:
 - closingChannelSendFailure
 - closingChannelWithBufferedReceivesFailedSend
@@ -2074,7 +2054,6 @@ kafka.network.SocketServerTest:
 - testNoOpActionResponseWithThrottledChannelWhereThrottlingInProgress
 - testProcessorMetricsTags
 - testRequestMetricsAfterStop
-- testRequestPerSecAndDeprecatedRequestsPerSecMetrics
 - testSaslReauthenticationFailureNoKip152SaslAuthenticate
 - testSaslReauthenticationFailureWithKip152SaslAuthenticate
 - testSendActionResponseWithThrottledChannelWhereThrottlingAlreadyDone
@@ -2626,6 +2605,7 @@ kafka.server.DynamicBrokerConfigTest:
 - testPasswordConfigEncoderSecretChange
 - testPasswordConfigEncryption
 - testReconfigurableValidation
+- testRemoteLogDynamicThreadPoolWithInvalidValues
 - testRemoteLogManagerCopyQuotaUpdates
 - testRemoteLogManagerFetchQuotaUpdates
 - testRemoteLogManagerMultipleConfigUpdates
@@ -2635,6 +2615,7 @@ kafka.server.DynamicBrokerConfigTest:
 - testUpdateDynamicThreadPool
 - testUpdateMetricReporters
 - testUpdateMetricReportersNoJmxReporter
+- testUpdateRemoteLogManagerDynamicThreadPool
 kafka.server.DynamicBrokerReconfigurationTest:
 - testConfigDescribeUsingAdminClient
 - testConsecutiveConfigChange
@@ -2685,12 +2666,6 @@ kafka.server.FetchFromFollowerIntegrationTest:
 - testFetchFromFollowerWithRoll
 - testFetchFromLeaderWhilePreferredReadReplicaIsUnavailable
 - testFollowerCompleteDelayedFetchesOnReplication
-kafka.server.FetchRequestDownConversionConfigTest:
-- testLatestFetchWithDownConversionDisabled
-- testV12WithDownConversionDisabled
-- testV1FetchFromConsumer
-- testV1FetchFromReplica
-- testV1FetchWithDownConversionDisabled
 kafka.server.FetchRequestMaxBytesTest:
 - testConsumeMultipleRecords
 kafka.server.FetchRequestTest:
@@ -2698,8 +2673,6 @@ kafka.server.FetchRequestTest:
 - testCreateIncrementalFetchWithPartitionsInErrorV12
 - testCurrentEpochValidation
 - testCurrentEpochValidationV12
-- testDownConversionFromBatchedToUnbatchedRespectsOffset
-- testDownConversionWithConnectionFailure
 - testEpochValidationWithinFetchSession
 - testEpochValidationWithinFetchSessionV12
 - testFetchRequestToNonReplica
@@ -2994,7 +2967,6 @@ kafka.server.KafkaApisTest:
 - testListOffsetLatestTieredTimestampWithUnsupportedVersion
 - testListOffsetMaxTimestampWithUnsupportedVersion
 - testListOffsetNegativeTimestampWithOneOrAboveVersion
-- testListOffsetNegativeTimestampWithZeroVersion
 - testListTransactionsAuthorization
 - testListTransactionsErrorResponse
 - testLog4jIncrementalAlterConfigsRequestWithKRaft
@@ -3094,6 +3066,7 @@ kafka.server.KafkaConfigTest:
 - testControllerListenerNameDoesNotMapToPlaintextByDefaultForNonKRaft
 - testControllerListenerNameMapsToPlaintextByDefaultForKRaft
 - testControllerListenerNames
+- testControllerListenerNamesValidForKRaftControllerOnly
 - testControllerListenersCanBeAdvertisedForKRaftCombined
 - testControllerQuorumVoterStringsToNodes
 - testCustomMetadataLogDir
@@ -3269,7 +3242,6 @@ kafka.server.LogOffsetTest:
 - testGetOffsetsAfterDeleteRecords
 - testGetOffsetsBeforeEarliestTime
 - testGetOffsetsBeforeLatestTime
-- testGetOffsetsBeforeNow
 - testGetOffsetsForUnknownTopic
 kafka.server.LogRecoveryTest:
 - testHWCheckpointNoFailuresMultipleLogSegments
@@ -3306,7 +3278,6 @@ kafka.server.MetadataRequestTest:
 - testAutoCreateTopicWithInvalidReplicationFactor
 - testAutoTopicCreation
 - testClusterIdIsValid
-- testClusterIdWithRequestVersion1
 - testIsInternal
 - testIsrAfterBrokerShutDownAndJoinsBack
 - testNoTopicsRequest
@@ -3837,8 +3808,10 @@ kafka.server.share.SharePartitionTest:
 - testMaybeAcquireAndReleaseFetchLock
 - testMaybeInitialize
 - testMaybeInitializeDefaultStartEpochGroupConfigNotPresent
+- testMaybeInitializeDefaultStartEpochGroupConfigReturnsByDuration
 - testMaybeInitializeDefaultStartEpochGroupConfigReturnsEarliest
 - testMaybeInitializeDefaultStartEpochGroupConfigReturnsLatest
+- testMaybeInitializeFetchOffsetForByDurationThrowsError
 - testMaybeInitializeFetchOffsetForEarliestTimestampThrowsError
 - testMaybeInitializeFetchOffsetForLatestTimestampThrowsError
 - testMaybeInitializeSharePartitionAgain
@@ -3929,6 +3902,8 @@ kafka.test.api.ShareConsumerTest:
 - testMultipleConsumersWithDifferentGroupIds
 - testPollNoSubscribeFails
 - testPollThrowsInterruptExceptionIfInterrupted
+- testShareAutoOffsetResetByDuration
+- testShareAutoOffsetResetByDurationInvalidFormat
 - testShareAutoOffsetResetDefaultValue
 - testShareAutoOffsetResetEarliest
 - testShareAutoOffsetResetEarliestAfterLsoMovement
@@ -3964,6 +3939,7 @@ kafka.tools.DumpLogSegmentsTest:
 - testPrintDataLog
 - testPrintDataLogPartialBatches
 - testShareGroupStateMessageParser
+- testTransactionLogMessageParser
 kafka.tools.StorageToolTest:
 - testBootstrapScramRecords
 - testConfigToLogDirectories
