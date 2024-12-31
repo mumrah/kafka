@@ -899,8 +899,6 @@ kafka.cluster.PartitionTest:
 - testUseCheckpointToInitializeHighWatermark
 - testZkIsrManagerAsyncCallback
 - tryCompleteDelayedRequestsCatchesExceptions
-kafka.cluster.PartitionWithLegacyMessageFormatTest:
-- testMakeLeaderDoesNotUpdateEpochCacheForOldFormats
 kafka.cluster.ReplicaTest:
 - testFenceStaleUpdates
 - testInitialState
@@ -1531,8 +1529,6 @@ kafka.log.LogCleanerManagerTest:
 kafka.log.LogCleanerParameterizedIntegrationTest:
 - cleanerConfigUpdateTest
 - cleanerTest
-- testCleanerWithMessageFormatV0
-- testCleaningNestedMessagesWithV0AndV1
 - testCleansCombinedCompactAndDeleteTopic
 kafka.log.LogCleanerTest:
 - testAbortMarkerRemoval
@@ -1621,7 +1617,6 @@ kafka.log.LogLoaderTest:
 - testCorruptedLogRecoveryDoesNotDeleteProducerStateSnapshotsPostRecovery
 - testFullTransactionIndexRecovery
 - testIndexRebuild
-- testLeaderEpochCacheClearedAfterStaticMessageFormatDowngrade
 - testLoadProducersAfterDeleteRecordsMidSegment
 - testLoadProducersAfterDeleteRecordsOnSegment
 - testLoadingLogKeepsLargestStrayProducerStateSnapshot
@@ -1636,7 +1631,6 @@ kafka.log.LogLoaderTest:
 - testOverCompactedLogRecoveryMultiRecordV1
 - testProducerSnapshotsRecoveryAfterUncleanShutdownCurrentMessageFormat
 - testProducerSnapshotsRecoveryAfterUncleanShutdownV1
-- testRebuildTimeIndexForOldMessages
 - testRecoverAfterNonMonotonicCoordinatorEpochWrite
 - testRecoverLastSegmentWithNoSnapshots
 - testRecoverOnlyLastSegment
@@ -1650,8 +1644,6 @@ kafka.log.LogLoaderTest:
 - testReopenThenTruncate
 - testSkipLoadingIfEmptyProducerStateBeforeTruncation
 - testSkipTruncateAndReloadIfNewMessageFormatAndCleanShutdown
-- testSkipTruncateAndReloadIfOldMessageFormatAndCleanShutdown
-- testSkipTruncateAndReloadIfOldMessageFormatAndNoCleanShutdown
 kafka.log.LogManagerTest:
 - testBrokerConfigChangeDeliveredToAllLogs
 - testCheckpointForOnlyAffectedLogs
@@ -1772,8 +1764,6 @@ kafka.log.UnifiedLogTest:
 - testLastStableOffsetDoesNotExceedLogStartOffsetMidSegment
 - testLastStableOffsetWithMixedProducerData
 - testLeaderEpochCacheClearedAfterDowngradeInAppendedMessages
-- testLeaderEpochCacheClearedAfterDynamicMessageFormatDowngrade
-- testLeaderEpochCacheCreatedAfterMessageFormatUpgrade
 - testLoadEmptyLog
 - testLoadPartitionDirWithNoSegmentsShouldNotThrow
 - testLoadingLogDeletesProducerStateSnapshotsPastLogEndOffset
@@ -1995,6 +1985,9 @@ kafka.network.DynamicConnectionQuotaTest:
 - testDynamicListenerConnectionQuota
 kafka.network.DynamicNumNetworkThreadsTest:
 - testDynamicNumNetworkThreads
+kafka.network.ProcessorTest:
+- testParseRequestHeaderWithDisabledApi
+- testParseRequestHeaderWithUnsupportedApiVersion
 kafka.network.RequestChannelTest:
 - testAlterRequests
 - testBuildEnvelopeResponse
@@ -2036,8 +2029,6 @@ kafka.network.SocketServerTest:
 - testConnectionIdReuse
 - testConnectionRateLimit
 - testConnectionRatePerIp
-- testControlPlaneAsPrivilegedListener
-- testControlPlaneTakePrecedenceOverInterBrokerListenerAsPrivilegedListener
 - testDisabledRequestIsRejected
 - testExceptionInAcceptor
 - testFailedAcceptorStartupCausesEnableRequestProcessingFailure
@@ -2063,7 +2054,6 @@ kafka.network.SocketServerTest:
 - testSocketsCloseOnShutdown
 - testSslSocketServer
 - testStagedListenerShutdownWhenConnectionQueueIsFull
-- testStagedListenerStartup
 - testThrottledSocketsClosedOnShutdown
 - testUnmuteChannelWithBufferedReceives
 - testZeroMaxConnectionsPerIp
@@ -2588,7 +2578,6 @@ kafka.server.DynamicBrokerConfigTest:
 - testConfigUpdateWithSomeInvalidConfigs
 - testConnectionQuota
 - testConnectionRateQuota
-- testDynamicConfigInitializationWithoutConfigsInZK
 - testDynamicListenerConfig
 - testDynamicLogConfigHandlesSynonymsCorrectly
 - testDynamicLogLocalRetentionMsConfig
@@ -2597,13 +2586,12 @@ kafka.server.DynamicBrokerConfigTest:
 - testDynamicLogLocalRetentionThrowsOnIncorrectConfig
 - testDynamicRemoteFetchMaxWaitMsConfig
 - testDynamicRemoteListOffsetsRequestTimeoutMsConfig
-- testEnableDefaultUncleanLeaderElection
 - testImproperConfigsAreRemoved
 - testIsolatedControllerAuthorizerConfig
 - testLogRetentionTimeMinutesIsNotDynamicallyReconfigurable
 - testNonInternalValuesDoesNotExposeInternalConfigs
 - testPasswordConfigEncoderSecretChange
-- testPasswordConfigEncryption
+- testPasswordConfigNotEncryption
 - testReconfigurableValidation
 - testRemoteLogDynamicThreadPoolWithInvalidValues
 - testRemoteLogManagerCopyQuotaUpdates
@@ -2800,8 +2788,6 @@ kafka.server.KafkaApisTest:
 - shouldResignCoordinatorsIfStopReplicaReceivedWithDeleteFlagAndNoEpochSentinel
 - shouldRespondWithUnknownTopicOrPartitionForBadPartitionAndNoErrorsForGoodPartition
 - shouldRespondWithUnknownTopicWhenPartitionIsNotHosted
-- shouldRespondWithUnsupportedForMessageFormatOnHandleWriteTxnMarkersWhenMagicLowerThanRequired
-- shouldRespondWithUnsupportedMessageFormatForBadPartitionAndNoErrorsForGoodPartition
 - shouldThrowUnsupportedVersionExceptionOnHandleAddOffsetToTxnRequestWhenInterBrokerProtocolNotSupported
 - shouldThrowUnsupportedVersionExceptionOnHandleAddPartitionsToTxnRequestWhenInterBrokerProtocolNotSupported
 - shouldThrowUnsupportedVersionExceptionOnHandleEndTxnRequestWhenInterBrokerProtocolNotSupported
@@ -2841,7 +2827,6 @@ kafka.server.KafkaApisTest:
 - testDescribeConfigsWithAuthorizer
 - testDescribeProducers
 - testDescribeQuorumForwardedForKRaftClusters
-- testDescribeQuorumNotAllowedForZkClusters
 - testDescribeTransactions
 - testDescribeTransactionsFiltersUnauthorizedTopics
 - testElectLeadersForwarding
@@ -2868,7 +2853,6 @@ kafka.server.KafkaApisTest:
 - testGetAcknowledgeBatchesFromShareFetchRequestError
 - testGetAllTopicMetadataShouldNotCreateTopicOrReturnUnknownTopicPartition
 - testGetTelemetrySubscriptions
-- testGetTelemetrySubscriptionsNotAllowedForZkClusters
 - testGetTelemetrySubscriptionsWithException
 - testHandleAcknowledgementsInvalidAcknowledgementBatches
 - testHandleAcknowledgementsSuccess
@@ -2957,7 +2941,6 @@ kafka.server.KafkaApisTest:
 - testLeaderReplicaIfLocalRaisesUnknownTopicOrPartition
 - testListClientMetricsResources
 - testListClientMetricsResourcesEmptyResponse
-- testListClientMetricsResourcesNotAllowedForZkClusters
 - testListClientMetricsResourcesWithException
 - testListGroupsRequest
 - testListGroupsRequestFiltersUnauthorizedGroupsWithDescribeCluster
@@ -2994,7 +2977,6 @@ kafka.server.KafkaApisTest:
 - testProduceResponseMetadataLookupErrorOnNotLeaderOrFollower
 - testProduceResponseReplicaManagerLookupErrorOnNotLeaderOrFollower
 - testPushTelemetry
-- testPushTelemetryNotAllowedForZkClusters
 - testPushTelemetryWithException
 - testRaftShouldAlwaysForwardAlterClientQuotasRequest
 - testRaftShouldAlwaysForwardAlterPartitionReassignmentsRequest
@@ -3048,8 +3030,6 @@ kafka.server.KafkaApisTest:
 - testWriteTxnMarkersShouldAllBeIncludedInTheResponse
 kafka.server.KafkaConfigTest:
 - testAcceptsLargeNodeIdForRaftBasedCase
-- testAcceptsLargeNodeIdForZkBasedCaseWithAutoGenDisabled
-- testAcceptsNegativeOneNodeIdForZkBasedCaseWithAutoGenEnabled
 - testAdvertiseConfigured
 - testAdvertiseDefaults
 - testAdvertisedListenersAllowedForKRaftControllerOnlyRole
@@ -3059,7 +3039,6 @@ kafka.server.KafkaConfigTest:
 - testConsumerGroupHeartbeatIntervalValidation
 - testConsumerGroupMigrationPolicy
 - testConsumerGroupSessionTimeoutValidation
-- testControlPlaneListenerName
 - testControlPlaneListenerNameNotAllowedWithKRaft
 - testControllerListenerDefinedForKRaftBroker
 - testControllerListenerDefinedForKRaftController
@@ -3089,7 +3068,6 @@ kafka.server.KafkaConfigTest:
 - testIgnoreUserInterBrokerProtocolVersionKRaft
 - testInterBrokerListenerNameAndSecurityProtocolSet
 - testInterBrokerListenerNameMissingFromListenerSecurityProtocolMap
-- testInterBrokerVersionMessageFormatCompatibility
 - testInvalidAdvertisedListenersProtocol
 - testInvalidAuthorizerClassName
 - testInvalidCompressionType
@@ -3127,12 +3105,9 @@ kafka.server.KafkaConfigTest:
 - testPopulateSynonymsOnMapWithoutBrokerId
 - testPopulateSynonymsOnMapWithoutNodeId
 - testPortInQuorumVotersNotRequiredToMatchFirstControllerListenerPortForThisKRaftController
-- testRejectsLargeNodeIdForZkBasedCaseWithAutoGenEnabled
 - testRejectsNegativeNodeIdForRaftBasedBrokerCaseWithAutoGenEnabled
 - testRejectsNegativeNodeIdForRaftBasedCaseWithAutoGenDisabled
 - testRejectsNegativeNodeIdForRaftBasedControllerCaseWithAutoGenEnabled
-- testRejectsNegativeNodeIdForZkBasedCaseWithAutoGenDisabled
-- testRejectsNegativeTwoNodeIdForZkBasedCaseWithAutoGenEnabled
 - testSaslJwksEndpointRetryDefaults
 - testSeparateControllerListenerDefinedForKRaftBrokerController
 - testShareGroupHeartbeatIntervalValidation
@@ -3145,12 +3120,9 @@ kafka.server.KafkaConfigTest:
 - testUncleanElectionInvalid
 - testUncleanLeaderElectionDefault
 - testValidCompressionType
-- testValidEmptyQuorumVotersParsing
 - testValidQuorumVotersParsingWithIpAddress
 - testValidQuorumVotersParsingWithMultipleHost
 - testVersionConfiguration
-- testZookeeperConnectNotRequiredIfNonEmptyProcessRoles
-- testZookeeperConnectRequiredIfEmptyProcessRoles
 kafka.server.KafkaMetricReporterExceptionHandlingTest:
 - testBothReportersAreInvoked
 kafka.server.KafkaMetricsReporterTest:
@@ -3408,7 +3380,6 @@ kafka.server.ReplicaManagerTest:
 - testApplyDeltaShouldHandleReplicaAssignedToUnassignedDirectory
 - testBecomeFollowerInvokeOnBecomingFollowerListener
 - testBecomeFollowerWhenLeaderIsUnchangedButMissedLeaderUpdate
-- testBecomeFollowerWhenLeaderIsUnchangedButMissedLeaderUpdateIbp26
 - testBecomeFollowerWhileNewClientFetchInPurgatory
 - testBecomeFollowerWhileOldClientFetchInPurgatory
 - testBuildRemoteLogAuxStateMetricsThrowsException

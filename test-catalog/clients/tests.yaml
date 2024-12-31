@@ -154,6 +154,10 @@ org.apache.kafka.clients.admin.ConfigTest:
 - shouldReturnNullOnGetUnknownEntry
 - testEquals
 - testHashCodeAndEqualsWithNull
+org.apache.kafka.clients.admin.ConsumerGroupDescriptionTest:
+- testState
+org.apache.kafka.clients.admin.ConsumerGroupListingTest:
+- testState
 org.apache.kafka.clients.admin.DeleteConsumerGroupOffsetsResultTest:
 - testNoErrorConstructor
 - testPartitionLevelErrorConstructor
@@ -314,7 +318,6 @@ org.apache.kafka.clients.admin.KafkaAdminClientTest:
 - testListConsumerGroupOffsetsNonRetriableErrors
 - testListConsumerGroupOffsetsNumRetries
 - testListConsumerGroupOffsetsOptionsWithBatchedApi
-- testListConsumerGroupOffsetsOptionsWithUnbatchedApi
 - testListConsumerGroupOffsetsRetriableErrors
 - testListConsumerGroupOffsetsRetryBackoff
 - testListConsumerGroups
@@ -387,6 +390,8 @@ org.apache.kafka.clients.admin.KafkaAdminClientTest:
 - testUpdateFeaturesShouldFailRequestForInvalidFeatureName
 - testUpdateFeaturesShouldFailRequestInClientWhenDowngradeFlagIsNotSetDuringDeletion
 - testUpdateFeaturesTopLevelError
+org.apache.kafka.clients.admin.ListConsumerGroupsOptionsTest:
+- testState
 org.apache.kafka.clients.admin.ListTransactionsResultTest:
 - testAllFuturesFailIfLookupFails
 - testAllFuturesSucceed
@@ -1177,7 +1182,8 @@ org.apache.kafka.clients.consumer.internals.ConsumerHeartbeatRequestManagerTest:
 - testSkippingHeartbeat
 - testSuccessfulHeartbeatTiming
 - testTimerNotDue
-- testUnsupportedVersion
+- testUnsupportedVersionFromBroker
+- testUnsupportedVersionFromClient
 - testValidateConsumerGroupHeartbeatRequest
 - testValidateConsumerGroupHeartbeatRequestAssignmentSentWhenLocalEpochChanges
 - testisExpiredByUsedForLogging
@@ -2083,6 +2089,8 @@ org.apache.kafka.clients.consumer.internals.ShareHeartbeatRequestManagerTest:
 - testSkippingHeartbeat
 - testSuccessfulHeartbeatTiming
 - testTimerNotDue
+- testUnsupportedVersionGeneratedOnTheBroker
+- testUnsupportedVersionGeneratedOnTheClient
 org.apache.kafka.clients.consumer.internals.ShareMembershipManagerTest:
 - testDelayedMetadataUsedToCompleteAssignment
 - testFatalFailureWhenMemberAlreadyLeft
@@ -2356,7 +2364,6 @@ org.apache.kafka.clients.producer.KafkaProducerTest:
 - testOsDefaultSocketBufferSizes
 - testOverwriteAcksAndRetriesForIdempotentProducers
 - testPartitionAddedToTransaction
-- testPartitionAddedToTransactionAfterFullBatchRetry
 - testPartitionerClose
 - testPartitionsForWithNullTopic
 - testProducerJmxPrefix
@@ -2455,8 +2462,6 @@ org.apache.kafka.clients.producer.RecordSendTest:
 - testTimeout
 org.apache.kafka.clients.producer.RoundRobinPartitionerTest:
 - testRoundRobinWithKeyBytes
-- testRoundRobinWithNullKeyBytes
-- testRoundRobinWithNullKeyBytesAndEvenPartitionCount
 - testRoundRobinWithUnavailablePartitions
 org.apache.kafka.clients.producer.internals.BufferPoolTest:
 - outOfMemoryOnAllocation
@@ -4134,13 +4139,14 @@ org.apache.kafka.common.security.authenticator.SaslAuthenticatorTest:
 - testValidSaslScramMechanisms
 - testValidSaslScramSha256
 org.apache.kafka.common.security.authenticator.SaslServerAuthenticatorTest:
+- testInvalidRequestHeader
 - testLatestApiVersionsRequest
 - testOldestApiVersionsRequest
 - testOversizeRequest
 - testSessionExpiresAtMaxReauthTime
 - testSessionExpiresAtTokenExpiry
 - testSessionExpiresAtTokenExpiryDespiteNoReauthIsSet
-- testUnexpectedRequestType
+- testUnexpectedRequestTypeWithValidRequestHeader
 org.apache.kafka.common.security.kerberos.KerberosNameTest:
 - testInvalidRules
 - testParse
