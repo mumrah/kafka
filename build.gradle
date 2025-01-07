@@ -554,7 +554,7 @@ subprojects {
         // If there were any test failures, we want to fail the task to prevent the failures
         // from being cached.
         if (ext.hadFailure) {
-          throw new GradleException("Failing this task since '${project.name}:${name}' had test failures.")
+          throw new TaskExecutionException("Failing this task since '${project.name}:${name}' had test failures.")
         }
       }
     }
@@ -625,7 +625,7 @@ subprojects {
         // If there were any test failures, we want to fail the task to prevent the failures
         // from being cached.
         if (ext.hadFailure) {
-          throw new GradleException("Failing this task since '${project.name}:${name}' had test failures.")
+          throw new TaskExecutionException("Failing this task since '${project.name}:${name}' had test failures.")
         }
       }
     }
