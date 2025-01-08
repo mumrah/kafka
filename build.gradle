@@ -547,8 +547,10 @@ subprojects {
         def moduleDirPath = projectToJUnitXmlPath(project)
         def dest = rootProject.layout.buildDirectory.dir("junit-xml/${moduleDirPath}/test").get().asFile
         println "Copy JUnit XML for ${project.name} to $dest"
-        ant.copy(todir: "$dest") {
-          ant.fileset(dir: "${test.reports.junitXml.entryPoint}")
+        ant.copy(todir: "$dest", failonerror: "false", verbose: "true") {
+          ant.fileset(dir: "${test.reports.junitXml.entryPoint}") {
+            ant.include(name: "**/*.xml")
+          }
         }
 
         // If there were any test failures, we want to fail the task to prevent the failures
@@ -617,7 +619,7 @@ subprojects {
         def moduleDirPath = projectToJUnitXmlPath(project)
         def dest = rootProject.layout.buildDirectory.dir("junit-xml/${moduleDirPath}/quarantinedTest").get().asFile
         println "Copy JUnit XML for ${project.name} to $dest"
-        ant.copy(todir: "$dest", failonerror: "false") {
+        ant.copy(todir: "$dest", failonerror: "false", verbose: "true") {
           ant.fileset(dir: "${quarantinedTest.reports.junitXml.entryPoint}") {
             ant.include(name: "**/*.xml")
           }
