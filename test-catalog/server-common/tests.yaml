@@ -24,10 +24,6 @@ org.apache.kafka.queue.KafkaEventQueueTest:
 - testShutdownBeforeDeferred
 - testSize
 - testTimeouts
-org.apache.kafka.security.PasswordEncoderTest:
-- testEncodeDecode
-- testEncodeDecodeAlgorithms
-- testEncoderConfigChange
 org.apache.kafka.server.common.FeatureTest:
 - testDefaultLevelAllFeatures
 - testDefaultTestVersion
@@ -62,7 +58,6 @@ org.apache.kafka.server.common.MetadataVersionTest:
 - assertLatestProductionIsProduction
 - testDirectoryAssignmentSupported
 - testFromVersionString
-- testGroupMetadataValueVersion
 - testIsDelegationTokenSupported
 - testIsElrSupported
 - testIsInControlledShutdownStateSupported
@@ -71,9 +66,6 @@ org.apache.kafka.server.common.MetadataVersionTest:
 - testKRaftVersions
 - testListOffsetsValueVersion
 - testMetadataChanged
-- testMinSupportedVersionFor
-- testOffsetCommitValueVersion
-- testOffsetCommitValueVersionWithExpiredTimestamp
 - testPartitionChangeRecordVersion
 - testPartitionRecordVersion
 - testPrevious
@@ -245,6 +237,35 @@ org.apache.kafka.server.quota.QuotaUtilsTest:
 - testThrottleTimeThrowsExceptionIfProvidedNonRateMetric
 org.apache.kafka.server.record.BrokerCompressionTypeTest:
 - testTargetCompressionType
+org.apache.kafka.server.share.persister.DefaultStatePersisterTest:
+- testDefaultPersisterClose
+- testReadStateResponseToResultFailedFuture
+- testReadStateResponseToResultPartialResults
+- testReadStateSuccess
+- testReadStateValidate
+- testWriteStateResponseToResultFailedFuture
+- testWriteStateResponseToResultPartialResults
+- testWriteStateSuccess
+- testWriteStateValidate
+org.apache.kafka.server.share.persister.PersisterStateManagerTest:
+- testFindCoordinatorAttemptsExhausted
+- testFindCoordinatorFatalError
+- testFindCoordinatorSuccess
+- testPersisterStateManagerClose
+- testReadStateRequestCoordinatorFoundOnRetry
+- testReadStateRequestCoordinatorFoundSuccessfully
+- testReadStateRequestFailureMaxRetriesExhausted
+- testReadStateRequestIllegalStateCoordinatorFoundSuccessfully
+- testReadStateRequestRetryWithCoordinatorNodeLookup
+- testReadStateRequestRetryWithNotCoordinatorSuccessfulOnRetry
+- testReadStateRequestWithCoordinatorNodeLookup
+- testWriteStateRequestBatchingWithCoordinatorNodeLookup
+- testWriteStateRequestCoordinatorFoundOnRetry
+- testWriteStateRequestCoordinatorFoundSuccessfully
+- testWriteStateRequestFailedMaxRetriesExhausted
+- testWriteStateRequestRetryWithNotCoordinatorSuccessfulOnRetry
+- testWriteStateRequestWithCoordinatorNodeLookup
+- testWriteStateRequestWithRetryAndCoordinatorNodeLookup
 org.apache.kafka.server.util.CommandLineUtilsTest:
 - testInitializeBootstrapPropertiesWithBothBootstraps
 - testInitializeBootstrapPropertiesWithBrokerBootstrap

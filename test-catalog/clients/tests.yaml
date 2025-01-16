@@ -457,6 +457,7 @@ org.apache.kafka.clients.admin.internals.AdminFetchMetricsManagerTest:
 - testSingleNodeLatency
 org.apache.kafka.clients.admin.internals.AdminMetadataManagerTest:
 - testAuthenticationFailure
+- testAuthorizationFailure
 - testMetadataReady
 - testMetadataRefreshBackoff
 - testNeedsRebootstrap
@@ -822,6 +823,12 @@ org.apache.kafka.clients.consumer.KafkaShareConsumerMetricsTest:
 - testClosingConsumerUnregistersConsumerMetrics
 - testPollIdleRatio
 - testPollTimeMetrics
+- testRegisteringCustomMetricsDoesntAffectConsumerMetrics
+- testRegisteringCustomMetricsWithSameNameDoesntAffectConsumerMetrics
+- testShouldNotCallMetricReporterMetricRemovalWithExistingConsumerMetric
+- testShouldOnlyCallMetricReporterMetricChangeOnceWithExistingConsumerMetric
+- testUnregisteringCustomMetricsWithSameNameDoesntAffectConsumerMetrics
+- testUnregisteringNonexistingMetricsDoesntCauseError
 org.apache.kafka.clients.consumer.MockConsumerTest:
 - endOffsetsShouldBeIdempotent
 - shouldNotClearRecordsForPausedPartitions
@@ -1672,6 +1679,8 @@ org.apache.kafka.clients.consumer.internals.FetchMetricsManagerTest:
 - testBytesFetched
 - testBytesFetchedTopic
 - testLatency
+- testMaybeUpdateAssignment
+- testMaybeUpdateAssignmentWithAdditionalRegisteredMetrics
 - testNodeLatency
 - testPartitionLag
 - testPartitionLead
@@ -2020,6 +2029,9 @@ org.apache.kafka.clients.consumer.internals.ShareConsumeRequestManagerTest:
 - testParseInvalidRecordBatch
 - testPendingCommitAsyncBeforeCommitSync
 - testPiggybackAcknowledgementsInFlight
+- testResultHandlerCompleteIfEmpty
+- testResultHandlerOnCommitAsync
+- testResultHandlerOnCommitSync
 - testRetryAcknowledgements
 - testRetryAcknowledgementsWithLeaderChange
 - testServerDisconnectedOnShareAcknowledge
@@ -2312,6 +2324,7 @@ org.apache.kafka.clients.producer.KafkaProducerTest:
 - configurableObjectsShouldSeeGeneratedClientId
 - negativePartitionShouldThrow
 - shouldCloseProperlyAndThrowIfInterrupted
+- shouldNotInvokeFlushInCallback
 - testAbortTransaction
 - testAcksAndIdempotenceForIdempotentProducers
 - testCallbackAndInterceptorHandleError
@@ -2554,6 +2567,7 @@ org.apache.kafka.clients.producer.internals.RecordAccumulatorTest:
 - testStressfulSituation
 - testUniformBuiltInPartitioner
 org.apache.kafka.clients.producer.internals.SenderTest:
+- senderThreadShouldNotGetStuckWhenThrottledAndAddingPartitionsToTxn
 - testAppendInExpiryCallback
 - testAwaitPendingRecordsBeforeCommittingTransaction
 - testBatchesDrainedWithOldProducerIdShouldSucceedOnSubsequentRetry
@@ -3659,7 +3673,6 @@ org.apache.kafka.common.record.FileRecordsTest:
 - testConversion
 - testDownconversionAfterMessageFormatDowngrade
 - testFileSize
-- testFormatConversionWithNoMessages
 - testFormatConversionWithPartialMessage
 - testIterationDoesntChangePosition
 - testIterationOverPartialAndTruncation
@@ -3677,9 +3690,6 @@ org.apache.kafka.common.record.FileRecordsTest:
 - testTruncateIfSizeIsDifferentToTargetSize
 - testTruncateNotCalledIfSizeIsBiggerThanTargetSize
 - testTruncateNotCalledIfSizeIsSameAsTargetSize
-org.apache.kafka.common.record.LazyDownConversionRecordsTest:
-- testConversion
-- testConversionOfCommitMarker
 org.apache.kafka.common.record.LegacyRecordTest:
 - testChecksum
 - testEquality
@@ -3765,13 +3775,11 @@ org.apache.kafka.common.requests.AlterReplicaLogDirsResponseTest:
 org.apache.kafka.common.requests.ApiErrorTest:
 - fromThrowableShouldReturnCorrectError
 org.apache.kafka.common.requests.ApiVersionsResponseTest:
-- shouldCreateApiResponseOnlyWithKeysSupportedByMagicValue
 - shouldCreateApiResponseWithTelemetryWhenEnabled
 - shouldHaveCommonlyAgreedApiVersionResponseWithControllerOnForwardableAPIs
 - shouldHaveCorrectDefaultApiVersionsResponse
 - shouldNotCreateApiResponseWithTelemetryWhenDisabled
-- shouldReturnAllKeysWhenMagicIsCurrentValueAndThrottleMsIsDefaultThrottle
-- shouldReturnFeatureKeysWhenMagicIsCurrentValueAndThrottleMsIsDefaultThrottle
+- shouldReturnAllKeysWhenThrottleMsIsDefaultThrottle
 - testAlterV0Features
 - testIntersect
 - testMetadataQuorumApisAreDisabled
@@ -3906,8 +3914,8 @@ org.apache.kafka.common.requests.OffsetFetchResponseTest:
 - testUseDefaultLeaderEpochV0ToV7
 - testUseDefaultLeaderEpochV8
 org.apache.kafka.common.requests.OffsetsForLeaderEpochRequestTest:
-- testDefaultReplicaId
 - testForConsumerRequiresVersion3
+- testForFollower
 org.apache.kafka.common.requests.ProduceRequestTest:
 - shouldBeFlaggedAsIdempotentWhenIdempotentRecords
 - shouldBeFlaggedAsTransactionalWhenTransactionalRecords
@@ -3981,6 +3989,8 @@ org.apache.kafka.common.requests.RequestResponseTest:
 - testValidApiVersionsRequest
 - testValidTaggedFieldsWithSaslAuthenticateRequest
 - verifyFetchResponseFullWrites
+org.apache.kafka.common.requests.RequestUtilsTest:
+- testIsFatalException
 org.apache.kafka.common.requests.SyncGroupRequestTest:
 - testRequestVersionCompatibilityFailBuild
 org.apache.kafka.common.requests.TxnOffsetCommitRequestTest:
@@ -4379,6 +4389,7 @@ org.apache.kafka.common.security.scram.internals.ScramSaslServerTest:
 - authorizationIdNotEqualsAuthenticationId
 - noAuthorizationIdSpecified
 - validateFailedNonceExchange
+- validateFailedNonceExchangeWithPrependingClientNonce
 - validateNonceExchange
 org.apache.kafka.common.security.ssl.CommonNameLoggingSslEngineFactoryTest:
 - testCarriageReturnLineFeed
@@ -4708,7 +4719,6 @@ org.apache.kafka.common.utils.ConfigUtilsTest:
 - testConfigMapToRedactedStringWithSecrets
 - testGetBoolean
 org.apache.kafka.common.utils.Crc32CTest:
-- testUpdate
 - testValue
 org.apache.kafka.common.utils.ExitTest:
 - shouldAddShutdownHookImmediately

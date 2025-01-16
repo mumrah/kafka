@@ -309,8 +309,12 @@ org.apache.kafka.connect.runtime.AbstractWorkerSourceTaskTest:
 - testHeaders
 - testHeadersWithCustomConverter
 - testMetricsGroup
+- testSendRecordsConversionExceptionErrorToleranceAll
+- testSendRecordsConversionExceptionErrorToleranceNone
 - testSendRecordsConvertsData
 - testSendRecordsCorruptTimestamp
+- testSendRecordsFailedTransformationErrorToleranceAll
+- testSendRecordsFailedTransformationErrorToleranceNone
 - testSendRecordsNoTimestamp
 - testSendRecordsPropagatesTimestamp
 - testSendRecordsRetriableException
@@ -528,9 +532,13 @@ org.apache.kafka.connect.runtime.WorkerSinkTaskTest:
 - testPreCommit
 - testPreCommitFailure
 - testPreCommitFailureAfterPartialRevocationAndAssignment
+- testRaisesFailedRetriableExceptionFromConvert
+- testRaisesFailedRetriableExceptionFromTransform
 - testRequestCommit
 - testShutdown
 - testSinkTasksHandleCloseErrors
+- testSkipsFailedRetriableExceptionFromConvert
+- testSkipsFailedRetriableExceptionFromTransform
 - testStartPaused
 - testSuppressCloseErrors
 - testTaskCancelPreventsFinalOffsetCommit
@@ -877,6 +885,10 @@ org.apache.kafka.connect.runtime.errors.RetryWithToleranceOperatorTest:
 - testHandleExceptionInTaskPut
 - testHandleExceptionInTransformations
 - testHandleExceptionInValueConverter
+- testHandleRetriableExceptionInHeaderConverterToleranceNone
+- testHandleRetriableExceptionInKeyConverterToleranceNone
+- testHandleRetriableExceptionInTransformationsToleranceNone
+- testHandleRetriableExceptionInValueConverterToleranceNone
 - testReportWithMultipleReporters
 - testReportWithSingleReporter
 - testSetConfigs
@@ -908,6 +920,7 @@ org.apache.kafka.connect.runtime.isolation.PluginDescTest:
 - testPluginDescWithSystemClassLoader
 - testRegularPluginDesc
 org.apache.kafka.connect.runtime.isolation.PluginScannerTest:
+- testClasspathPluginIsAlsoLoadedInIsolation
 - testNonVersionedPluginHasUndefinedVersion
 - testScanningEmptyPluginPath
 - testScanningInvalidUberJar
@@ -1218,6 +1231,7 @@ org.apache.kafka.connect.storage.KafkaConfigBackingStoreTest:
 - testRecordToRestartRequestOnlyFailedInconsistent
 - testRemoveConnectorConfigSlowProducer
 - testRestore
+- testRestoreCompactedDeletedConnector
 - testRestoreConnectorDeletion
 - testRestoreRestartRequestInconsistentState
 - testRestoreTargetState

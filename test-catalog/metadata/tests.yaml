@@ -9,6 +9,10 @@ org.apache.kafka.controller.AclControlManagerTest:
 - testValidateNewAcl
 org.apache.kafka.controller.ActivationRecordsGeneratorTest:
 - testActivationMessageForEmptyLog
+- testActivationMessageForEmptyLogAtMv3_4
+- testActivationMessageForEmptyLogAtMv3_6
+- testActivationMessageForEmptyLogAtMv3_6WithTransaction
+- testActivationMessageForEmptyLogAtMv3_6WithTransactionAndElr
 org.apache.kafka.controller.BrokerHeartbeatManagerTest:
 - testCalculateNextBrokerState
 - testControlledShutdownOffsetIsOnlyUpdatedOnce
@@ -83,7 +87,22 @@ org.apache.kafka.controller.ConfigurationControlManagerTest:
 - testIncrementalAlterConfigsWithoutExistence
 - testIncrementalAlterMultipleConfigValues
 - testLegacyAlterConfigs
+- testMaybeGenerateElrSafetyRecords
+- testRejectMinIsrChangeWhenElrEnabled
 - testReplay
+org.apache.kafka.controller.EventPerformanceMonitorTest:
+- testDefaultPeriodNs
+- testDoNotLogFastEvent
+- testFormatNsAsDecimalMsWith100
+- testFormatNsAsDecimalMsWith123456789
+- testFormatNsAsDecimalMsWithZero
+- testGeneratePeriodicPerformanceMessageResetsState
+- testLogSlowEvent
+- testPeriodicPerformanceMessageWithNoEvents
+- testPeriodicPerformanceMessageWithOneEvent
+- testPeriodicPerformanceMessageWithThreeEvents
+- testSlowestEventWithNoEvents
+- testSlowestEventWithThreeEvents
 org.apache.kafka.controller.FeatureControlManagerTest:
 - testApplyMetadataVersionChangeRecord
 - testCanUpgradeToHigherVersion
@@ -100,6 +119,7 @@ org.apache.kafka.controller.FeatureControlManagerTest:
 - testUnsafeDowngradeIsTemporarilyDisabled
 - testUpdateFeatures
 - testUpdateFeaturesErrorCases
+- testUpgradeElrFeatureLevel
 org.apache.kafka.controller.LogReplayTrackerTest:
 - testEmpty
 org.apache.kafka.controller.OffsetControlManagerTest:
@@ -203,6 +223,7 @@ org.apache.kafka.controller.QuorumControllerTest:
 - testConfigurationOperations
 - testDelayedConfigurationOperations
 - testEarlyControllerResults
+- testElrEnabledByDefault
 - testFatalMetadataErrorDuringLogLoading
 - testFatalMetadataErrorDuringSnapshotLoading
 - testFatalMetadataReplayErrorOnActive
@@ -212,7 +233,6 @@ org.apache.kafka.controller.QuorumControllerTest:
 - testRegisterBrokerKRaftVersions
 - testSnapshotSaveAndLoad
 - testTimeouts
-- testUncleanShutdownBrokerElrEnabled
 - testUncleanShutdownElrDisabled
 - testUnregisterBroker
 - testUpgradeFromPreProductionVersion
