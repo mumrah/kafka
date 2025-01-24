@@ -149,7 +149,6 @@ org.apache.kafka.coordinator.group.GroupCoordinatorShardTest:
 - testReplayShareGroupMetadata
 - testReplayShareGroupMetadataWithNullValue
 - testReplayTransactionalOffsetCommit
-- testReplayWithUnsupportedVersion
 - testScheduleClassicGroupSizeCounter
 - testScheduleCleanupGroupMetadata
 - testShareGroupHeartbeat
@@ -275,6 +274,7 @@ org.apache.kafka.coordinator.group.GroupMetadataManagerTest:
 - testJoiningConsumerGroupWithNewDynamicMember
 - testJoiningConsumerGroupWithNewStaticMember
 - testLastConsumerProtocolMemberLeavingConsumerGroup
+- testLastConsumerProtocolMemberLeavingConsumerGroupByAdminApi
 - testLastConsumerProtocolMemberRebalanceTimeoutInConsumerGroup
 - testLastConsumerProtocolMemberSessionTimeoutInConsumerGroup
 - testLastJoiningMembersAreKickedOutWhenRejoiningGroupWithMaxSize
@@ -690,6 +690,7 @@ org.apache.kafka.coordinator.group.modern.consumer.ConsumerGroupMemberTest:
 - testUpdateWithConsumerGroupMemberMetadataValue
 org.apache.kafka.coordinator.group.modern.consumer.ConsumerGroupTest:
 - testAddPartitionEpochs
+- testAllMembersUseClassicProtocolExcept
 - testAsDescribedGroup
 - testAsListedGroup
 - testClassicMembersSupportedProtocols
@@ -803,6 +804,16 @@ org.apache.kafka.coordinator.group.streams.StreamsTopologyTest:
 - subtopologiesMapShouldBeImmutable
 - subtopologiesMapShouldNotBeNull
 - topologyEpochShouldNotBeNegative
+org.apache.kafka.coordinator.group.streams.TopicMetadataTest:
+- testConstructor
+- testConstructorWithEmptyName
+- testConstructorWithNegativeNumPartitions
+- testConstructorWithNullName
+- testConstructorWithNullPartitionRacks
+- testConstructorWithNullUuid
+- testConstructorWithZeroNumPartitions
+- testConstructorWithZeroUuid
+- testFromRecord
 org.apache.kafka.coordinator.group.streams.assignor.GroupSpecImplTest:
 - testMembers
 org.apache.kafka.coordinator.group.streams.assignor.MockAssignorTest:
@@ -837,6 +848,7 @@ org.apache.kafka.coordinator.group.streams.topics.ConfiguredTopologyTest:
 - testConstructorWithNullSubtopologies
 - testConstructorWithNullTopicConfigurationException
 - testIsReady
+- testNoExceptionButNoSubtopologies
 org.apache.kafka.coordinator.group.streams.topics.CopartitionedTopicsEnforcerTest:
 - shouldDeductNumberOfPartitionsFromRepartitionTopicWithEnforcedNumberOfPartitions
 - shouldEnforceCopartitioningOnRepartitionTopics
@@ -845,16 +857,19 @@ org.apache.kafka.coordinator.group.streams.topics.CopartitionedTopicsEnforcerTes
 - shouldSetNumPartitionsToMaximumPartitionsWhenAllTopicsAreRepartitionTopics
 - shouldThrowAnExceptionIfTopicInfosWithEnforcedNumOfPartitionsHaveDifferentNumOfPartitions
 - shouldThrowAnExceptionWhenNumberOfPartitionsOfNonRepartitionTopicAndRepartitionTopicWithEnforcedNumOfPartitionsDoNotMatch
-- shouldThrowTopicConfigurationExceptionIfNoPartitionsFoundForCoPartitionedTopic
+- shouldThrowIllegalStateExceptionIfNoPartitionsFoundForCoPartitionedTopic
 - shouldThrowTopicConfigurationExceptionIfPartitionCountsForCoPartitionedTopicsDontMatch
+org.apache.kafka.coordinator.group.streams.topics.InternalTopicManagerTest:
+- testConfigureTopics
+- testConfigureTopicsSetsConfigurationExceptionWhenSourceTopicIsMissing
 org.apache.kafka.coordinator.group.streams.topics.RepartitionTopicsTest:
 - shouldNotSetupRepartitionTopicsWhenTopologyDoesNotContainAnyRepartitionTopics
 - shouldSetRepartitionTopicPartitionCountFromUpstreamExternalSourceTopic
 - shouldSetRepartitionTopicPartitionCountFromUpstreamInternalRepartitionSourceTopic
 - shouldSetupRepartitionTopics
+- shouldThrowIllegalStateExceptionIfMissingSourceTopics
 - shouldThrowStreamsInvalidTopologyExceptionIfPartitionCountCannotBeComputedForAllRepartitionTopicsDueToLoops
 - shouldThrowStreamsInvalidTopologyExceptionIfPartitionCountCannotBeComputedForAllRepartitionTopicsDueToMissingSinks
-- shouldThrowStreamsMissingSourceTopicsExceptionIfMissingSourceTopics
 org.apache.kafka.coordinator.group.streams.topics.TopicConfigurationExceptionTest:
 - testIncorrectlyPartitionedTopics
 - testMissingInternalTopics
