@@ -1563,8 +1563,10 @@ kafka.log.LogCleanerTest:
 - testLogCleanerStats
 - testLogToClean
 - testLogToCleanWithUncleanableSection
+- testMaxBufferUtilizationPercentMetric
+- testMaxCleanTimeMetric
 - testMaxCleanTimeSecs
-- testMaxOverCleanerThreads
+- testMaxCompactionDelayMetrics
 - testMessageLargerThanMaxMessageSize
 - testMessageLargerThanMaxMessageSizeWithCorruptHeader
 - testMetricsActiveAfterReconfiguration
@@ -1590,7 +1592,6 @@ kafka.log.LogConfigTest:
 - testEnableRemoteLogStorageOnCompactedTopic
 - testFromPropsInvalid
 - testGetConfigValue
-- testInValidRemoteConfigsInZK
 - testInvalidCompactionLagConfig
 - testInvalidLocalLogRetentionProps
 - testKafkaConfigToProps
@@ -2750,6 +2751,8 @@ kafka.server.KafkaApisTest:
 - testConsumerGroupHeartbeatRequestAuthorizationFailed
 - testConsumerGroupHeartbeatRequestFutureFailed
 - testConsumerGroupHeartbeatReturnsUnsupportedVersion
+- testDeleteShareGroupStateAuthorizationFailed
+- testDeleteShareGroupStateSuccess
 - testDescribeClusterRequest
 - testDescribeConfigsClientMetrics
 - testDescribeConfigsConsumerGroup
@@ -2774,6 +2777,7 @@ kafka.server.KafkaApisTest:
 - testGetAcknowledgeBatchesFromShareAcknowledgeRequestError
 - testGetAcknowledgeBatchesFromShareFetchRequest
 - testGetAcknowledgeBatchesFromShareFetchRequestError
+- testGetAllTopicMetadataShouldNotCreateTopicOrReturnUnknownTopicPartition
 - testGetTelemetrySubscriptions
 - testGetTelemetrySubscriptionsWithException
 - testHandleAcknowledgementsInvalidAcknowledgementBatches
@@ -3098,8 +3102,6 @@ kafka.server.LogOffsetTest:
 - testFetchOffsetByTimestampForMaxTimestampAfterTruncate
 - testFetchOffsetByTimestampForMaxTimestampWithEmptyLog
 - testFetchOffsetByTimestampForMaxTimestampWithUnorderedTimestamps
-- testFetchOffsetsBeforeWithChangingSegmentSize
-- testFetchOffsetsBeforeWithChangingSegments
 - testGetOffsetsAfterDeleteRecords
 - testGetOffsetsBeforeEarliestTime
 - testGetOffsetsBeforeLatestTime
@@ -3118,12 +3120,12 @@ kafka.server.MetadataCacheTest:
 - getTopicMetadataPartitionListenerNotAvailableOnLeader
 - getTopicMetadataReplicaNotAvailable
 - getTopicMetadataWithNonSupportedSecurityProtocol
+- testDescribeTopicResponse
 - testGetAliveBrokersWithBrokerFenced
 - testGetLeaderAndIsr
 - testGetLiveBrokerEpoch
 - testGetOfflineReplicasConsidersDirAssignment
 - testGetPartitionReplicaEndpoints
-- testGetTopicMetadataForDescribeTopicPartitionsResponse
 - testIsBrokerFenced
 - testIsBrokerInControlledShutdown
 kafka.server.MetadataRequestTest:
@@ -3132,6 +3134,7 @@ kafka.server.MetadataRequestTest:
 - testAutoCreateTopicWithInvalidReplicationFactor
 - testAutoTopicCreation
 - testClusterIdIsValid
+- testClusterIdWithRequestVersion1
 - testIsInternal
 - testIsrAfterBrokerShutDownAndJoinsBack
 - testNoTopicsRequest
@@ -3356,7 +3359,7 @@ kafka.server.ServerShutdownTest:
 - testNoCleanShutdownAfterFailedStartupDueToCorruptLogs
 - testShutdownWithKRaftControllerUnavailable
 kafka.server.ServerTest:
-- testCreateSelfManagedKafkaMetricsContext
+- testCreateKafkaMetricsContext
 kafka.server.ShareFetchAcknowledgeRequestTest:
 - testShareAcknowledgeInitialRequestError
 - testShareAcknowledgeRequestInvalidShareSessionEpoch
@@ -3518,6 +3521,7 @@ kafka.server.share.SharePartitionManagerTest:
 - testCachedTopicPartitionsWithNoTopicPartitions
 - testCloseSharePartitionManager
 - testDelayedInitializationShouldCompleteFetchRequest
+- testFetchMessagesRotatePartitions
 - testGetErroneousAndValidTopicIdPartitions
 - testListenerRegistration
 - testMultipleConcurrentShareFetches
@@ -3709,6 +3713,7 @@ kafka.test.api.ShareConsumerTest:
 - testAcknowledgementCommitCallbackThrowsException
 - testAcknowledgementSentOnSubscriptionChange
 - testAcquisitionLockTimeoutOnConsumer
+- testComplexShareConsumer
 - testConsumerCloseInGroupSequential
 - testControlRecordsSkipped
 - testExplicitAcknowledgeCommitSuccess
@@ -3740,6 +3745,7 @@ kafka.test.api.ShareConsumerTest:
 - testShareAutoOffsetResetEarliest
 - testShareAutoOffsetResetEarliestAfterLsoMovement
 - testShareAutoOffsetResetMultipleGroupsWithDifferentValue
+- testShareConsumerAfterCoordinatorMovement
 - testSubscribeAndPollNoRecords
 - testSubscribeOnInvalidTopicThrowsInvalidTopicException
 - testSubscribePollSubscribe

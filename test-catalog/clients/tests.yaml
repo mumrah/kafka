@@ -830,7 +830,8 @@ org.apache.kafka.clients.consumer.KafkaShareConsumerMetricsTest:
 - testUnregisteringCustomMetricsWithSameNameDoesntAffectConsumerMetrics
 - testUnregisteringNonexistingMetricsDoesntCauseError
 org.apache.kafka.clients.consumer.KafkaShareConsumerTest:
-- testVerifyFetchAndAcknowledgeSync
+- testVerifyFetchAndCloseImplicit
+- testVerifyFetchAndCommitSyncImplicit
 - testVerifyHeartbeats
 org.apache.kafka.clients.consumer.MockConsumerTest:
 - endOffsetsShouldBeIdempotent
@@ -3812,8 +3813,8 @@ org.apache.kafka.common.requests.ApiVersionsResponseTest:
 - shouldNotCreateApiResponseWithTelemetryWhenDisabled
 - shouldReturnAllKeysWhenThrottleMsIsDefaultThrottle
 - testAlterV0Features
+- testBrokerApisAreEnabled
 - testIntersect
-- testMetadataQuorumApisAreDisabled
 org.apache.kafka.common.requests.BrokerRegistrationRequestTest:
 - testAlterFeaturesWithMinVersion0BeforeV4
 - testBasicBuild
@@ -3913,7 +3914,8 @@ org.apache.kafka.common.requests.ListOffsetsRequestTest:
 - testListOffsetsRequestOldestVersion
 - testToListOffsetsTopics
 org.apache.kafka.common.requests.MetadataRequestTest:
-- testEmptyMeansEmptyForAllVersions
+- testEmptyMeansAllTopicsV0
+- testEmptyMeansEmptyForVersionsAboveV0
 - testMetadataRequestVersion
 - testTopicIdAndNullTopicNameRequests
 - testTopicIdWithZeroUuid
