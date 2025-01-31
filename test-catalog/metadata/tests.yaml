@@ -276,6 +276,7 @@ org.apache.kafka.controller.ReplicationControlManagerTest:
 - testEligibleLeaderReplicas_ShrinkAndExpandIsr
 - testEligibleLeaderReplicas_UncleanShutdown
 - testElrsRemovedOnMinIsrUpdate
+- testElrsRemovedShouldNotBumpPartitionEpochIfNoChange
 - testExcessiveNumberOfTopicsCannotBeCreated
 - testExcessiveNumberOfTopicsCannotBeCreatedWithAssignments
 - testFenceMultipleBrokers
@@ -346,6 +347,7 @@ org.apache.kafka.controller.metrics.ControllerMetadataMetricsTest:
 - testFencedBrokerMetric
 - testGlobalPartitionCountMetric
 - testGlobalTopicCountMetric
+- testIgnoredStaticVoters
 - testMetadataErrorCount
 - testMetricNames
 - testOfflinePartitionCountMetric
@@ -440,6 +442,8 @@ org.apache.kafka.image.ScramImageTest:
 org.apache.kafka.image.TopicsImageTest:
 - testApplyDelta1
 - testBasicLocalChanges
+- testClearElrRecordForNonExistTopic
+- testClearElrRecords
 - testDeleteAfterChanges
 - testEmptyImageRoundTrip
 - testImage1RoundTrip

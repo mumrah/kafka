@@ -245,6 +245,7 @@ kafka.api.AuthorizerIntegrationTest:
 - testDescribeGroupConfigsWithoutDescribeAcl
 - testDescribeTopicAclWithOperationAll
 - testDescribeTopicConfigsAclWithOperationAll
+- testFetchConsumerRequest
 - testFetchFollowerRequest
 - testHostAddressBasedAcls
 - testIdempotentProducerNoIdempotentWriteAclInInitProducerId
@@ -1279,6 +1280,7 @@ kafka.coordinator.transaction.TransactionCoordinatorTest:
 - shouldAppendPrepareCommitToLogOnEndTxnWhenStatusIsOngoingAndResultIsCommit
 - shouldFailToAbortTransactionOnHandleInitPidWhenProducerEpochIsSmaller
 - shouldGenerateNewProducerIdIfEpochsExhausted
+- shouldGenerateNewProducerIdIfEpochsExhaustedV2
 - shouldGenerateNewProducerIdIfNoStateAndProducerIdAndEpochProvided
 - shouldIncrementEpochAndUpdateMetadataOnHandleInitPidWhenExistingCompleteCommitTransaction
 - shouldIncrementEpochAndUpdateMetadataOnHandleInitPidWhenExistingCompleteTransaction
@@ -1314,6 +1316,7 @@ kafka.coordinator.transaction.TransactionCoordinatorTest:
 - shouldRespondWithSuccessOnAddPartitionsWhenStateIsCompleteCommit
 - shouldRespondWithSuccessOnAddPartitionsWhenStateIsOngoing
 - shouldReturnConcurrentTransactionsOnEndTxnRequestWhenStatusIsPrepareCommit
+- shouldReturnConcurrentTxnOnAddPartitionsIfEndTxnV2EpochOverflowAndNotComplete
 - shouldReturnInvalidEpochOnEndTxnWhenEpochIsLarger
 - shouldReturnInvalidEpochOnEndTxnWhenEpochIsSmaller
 - shouldReturnInvalidRequestWhenTransactionalIdIsEmpty
@@ -2055,6 +2058,9 @@ kafka.network.SocketServerTest:
 - testUnmuteChannelWithBufferedReceives
 - testZeroMaxConnectionsPerIp
 - tooBigRequestIsRejected
+kafka.raft.DefaultExternalKRaftMetricsTest:
+- testDefaultExternalKRaftMetrics
+- testEmptyDefaultExternalKRaftMetrics
 kafka.raft.KafkaMetadataLogTest:
 - testAdvanceLogStartOffsetAfterCleaning
 - testCleanupOlderSnapshots
@@ -2925,7 +2931,6 @@ kafka.server.KafkaApisTest:
 - testWriteShareGroupStateSuccess
 - testWriteTxnMarkersShouldAllBeIncludedInTheResponse
 kafka.server.KafkaConfigTest:
-- testAcceptsLargeNodeIdForRaftBasedCase
 - testAdvertiseConfigured
 - testAdvertiseDefaults
 - testAdvertisedListenersAllowedForKRaftControllerOnlyRole
@@ -2998,8 +3003,8 @@ kafka.server.KafkaConfigTest:
 - testPopulateSynonymsOnMapWithoutBrokerId
 - testPopulateSynonymsOnMapWithoutNodeId
 - testPortInQuorumVotersNotRequiredToMatchFirstControllerListenerPortForThisKRaftController
+- testRejectsNegativeNodeId
 - testRejectsNegativeNodeIdForRaftBasedBrokerCaseWithAutoGenEnabled
-- testRejectsNegativeNodeIdForRaftBasedCaseWithAutoGenDisabled
 - testRejectsNegativeNodeIdForRaftBasedControllerCaseWithAutoGenEnabled
 - testSaslJwksEndpointRetryDefaults
 - testSeparateControllerListenerDefinedForKRaftBrokerController
@@ -3262,6 +3267,7 @@ kafka.server.ReplicaManagerTest:
 - testClearPurgatoryOnBecomingFollower
 - testDefaultReplicaSelector
 - testDelayedFetchIncludesAbortedTransactions
+- testDelayedShareFetchPurgatoryOperationExpiration
 - testDeleteRecordsInternalTopicDeleteAllowed
 - testDeleteRecordsInternalTopicDeleteDisallowed
 - testDeltaFollowerRemovedTopic
@@ -3333,7 +3339,8 @@ kafka.server.ReplicaManagerTest:
 - testTransactionVerificationGuardOnMultiplePartitions
 - testTransactionVerificationWhenNotLeader
 - testUnknownReplicaSelector
-- testVerificationErrorConversions
+- testVerificationErrorConversionsTV1
+- testVerificationErrorConversionsTV2
 - testVerificationForTransactionalPartitionsOnly
 kafka.server.ReplicationQuotaManagerTest:
 - shouldExceedQuotaThenReturnBackBelowBoundAsTimePasses
@@ -3502,6 +3509,17 @@ kafka.server.share.DelayedShareFetchTest:
 - testTryCompleteWhenMinBytesNotSatisfiedOnFirstFetch
 - testTryCompleteWhenMinBytesNotSatisfiedOnSubsequentFetch
 - testTryCompleteWhenPartitionMaxBytesStrategyThrowsException
+kafka.server.share.ShareCoordinatorMetadataCacheHelperImplTest:
+- testConstructorThrowsErrorOnNullArgs
+- testContainsTopicReturnsFalseOnException
+- testContainsTopicSuccess
+- testGetClusterNodesEmptyListOnException
+- testGetClusterNodesSuccess
+- testShareCoordinatorReturnsNoNodeIfTopicMetadataInvalid
+- testShareCoordinatorReturnsNoNodeOnGetAliveNodeEmptyResponse
+- testShareCoordinatorReturnsNoNodeOnGetAliveNodeException
+- testShareCoordinatorReturnsNoNodeWhenNoInternalTopicInCache
+- testShareCoordinatorSuccess
 kafka.server.share.ShareFetchUtilsTest:
 - testProcessFetchResponse
 - testProcessFetchResponseWhenNoRecordsAreAcquired
