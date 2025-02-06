@@ -10,6 +10,7 @@ org.apache.kafka.coordinator.group.GroupConfigTest:
 - testValidShareAutoOffsetResetValues
 org.apache.kafka.coordinator.group.GroupCoordinatorConfigTest:
 - testConfigs
+- testConsumerGroupAssignorsDefault
 - testInvalidConfigs
 org.apache.kafka.coordinator.group.GroupCoordinatorRecordHelpersTest:
 - testEmptyGroupMetadataRecord
@@ -43,6 +44,7 @@ org.apache.kafka.coordinator.group.GroupCoordinatorRecordSerdeTest:
 - testDeserializeWithInvalidKeyBytes
 - testDeserializeWithInvalidRecordType
 - testDeserializeWithInvalidValueBytes
+- testDeserializeWithInvalidValueVersion
 - testDeserializeWithKeyEmptyBuffer
 - testDeserializeWithTombstoneForValue
 - testDeserializeWithValueEmptyBuffer
@@ -75,6 +77,13 @@ org.apache.kafka.coordinator.group.GroupCoordinatorServiceTest:
 - testDescribeGroups
 - testDescribeGroupsInvalidGroupId
 - testDescribeGroupsWhenNotStarted
+- testDescribeShareGroupOffsetsCoordinatorNotActive
+- testDescribeShareGroupOffsetsMetadataImageNull
+- testDescribeShareGroupOffsetsWithDefaultPersister
+- testDescribeShareGroupOffsetsWithDefaultPersisterNullResult
+- testDescribeShareGroupOffsetsWithDefaultPersisterNullTopicData
+- testDescribeShareGroupOffsetsWithDefaultPersisterThrowsError
+- testDescribeShareGroupOffsetsWithNoOpPersister
 - testFetchOffsets
 - testFetchOffsetsWhenNotStarted
 - testFetchOffsetsWithWrappedError
@@ -149,8 +158,8 @@ org.apache.kafka.coordinator.group.GroupCoordinatorShardTest:
 - testReplayShareGroupMetadata
 - testReplayShareGroupMetadataWithNullValue
 - testReplayTransactionalOffsetCommit
-- testScheduleClassicGroupSizeCounter
 - testScheduleCleanupGroupMetadata
+- testScheduleGroupSizeCounter
 - testShareGroupHeartbeat
 org.apache.kafka.coordinator.group.GroupMetadataManagerTest:
 - testClassicGroupCompletedRebalanceSensor
@@ -298,9 +307,6 @@ org.apache.kafka.coordinator.group.GroupMetadataManagerTest:
 - testNewMemberTimeoutCompletion
 - testNoConversionWhenSizeExceedsClassicMaxGroupSize
 - testNoGroupEpochBumpWhenStaticMemberTemporarilyLeaves
-- testOnClassicGroupStateTransitionOnLoading
-- testOnConsumerGroupStateTransition
-- testOnConsumerGroupStateTransitionOnLoading
 - testOnLoaded
 - testOnLoadedExceedGroupMaxSizeTriggersRebalance
 - testOnLoadedSchedulesClassicGroupMemberHeartbeats
@@ -414,7 +420,7 @@ org.apache.kafka.coordinator.group.GroupMetadataManagerTest:
 - testSyncGroupSucceedWhenProtocolTypeAndNameAreNotProvided
 - testUnknownGroupId
 - testUnknownMemberIdJoinsConsumerGroup
-- testUpdateClassicGroupSizeCounter
+- testUpdateGroupSizeCounter
 - testUpdatingSubscriptionTriggersNewTargetAssignment
 - testValidHeartbeat
 - testValidLeaveGroup
@@ -626,7 +632,6 @@ org.apache.kafka.coordinator.group.classic.ClassicGroupTest:
 - testValidateOffsetCommit
 - testValidateOffsetDelete
 org.apache.kafka.coordinator.group.metrics.GroupCoordinatorMetricsShardTest:
-- testConsumerGroupStateTransitionMetrics
 - testTimelineGaugeCounters
 org.apache.kafka.coordinator.group.metrics.GroupCoordinatorMetricsTest:
 - aggregateShards
@@ -715,7 +720,6 @@ org.apache.kafka.coordinator.group.modern.consumer.ConsumerGroupTest:
 - testRemoveMember
 - testRemovePartitionEpochs
 - testRemoveStaticMember
-- testStateTransitionMetrics
 - testSubscribedRegularExpressionCount
 - testSubscriptionType
 - testUpdateAndRemoveRegularExpression
@@ -865,6 +869,17 @@ org.apache.kafka.coordinator.group.streams.StreamsTopologyTest:
 - subtopologiesMapShouldBeImmutable
 - subtopologiesMapShouldNotBeNull
 - topologyEpochShouldNotBeNegative
+org.apache.kafka.coordinator.group.streams.TargetAssignmentBuilderTest:
+- testAssignmentHasNotChanged
+- testAssignmentSwapped
+- testBuildEmptyAssignmentWhenTopologyNotReady
+- testCreateAssignmentMemberSpec
+- testDeleteMember
+- testEmpty
+- testNewMember
+- testPartialAssignmentUpdate
+- testReplaceStaticMember
+- testUpdateMember
 org.apache.kafka.coordinator.group.streams.TasksTupleTest:
 - testContainsAny
 - testFromTargetAssignmentRecord
@@ -882,6 +897,15 @@ org.apache.kafka.coordinator.group.streams.TopicMetadataTest:
 - testConstructorWithZeroNumPartitions
 - testConstructorWithZeroUuid
 - testFromRecord
+org.apache.kafka.coordinator.group.streams.TopologyMetadataTest:
+- testIsStateful
+- testIsStatefulThrowsExceptionWhenSubtopologyIdDoesNotExist
+- testMaxNumInputPartitions
+- testMaxNumInputPartitionsThrowsExceptionWhenSubtopologyContainsNoSourceTopics
+- testMaxNumInputPartitionsThrowsExceptionWhenSubtopologyIdDoesNotExist
+- testSubtopologies
+- testTopicMetadata
+- testTopology
 org.apache.kafka.coordinator.group.streams.assignor.GroupSpecImplTest:
 - testMembers
 org.apache.kafka.coordinator.group.streams.assignor.MockAssignorTest:
@@ -891,6 +915,50 @@ org.apache.kafka.coordinator.group.streams.assignor.MockAssignorTest:
 - testTwoMembersTwoSubtopologies
 - testTwoMembersTwoSubtopologiesStickiness
 - testZeroMembers
+org.apache.kafka.coordinator.group.streams.assignor.ProcessStateTest:
+- shouldAddActiveTaskToMember
+- shouldAddStandbyTaskToMember
+- shouldCompareBasedOnLoadAndCapacity
+- shouldIncreaseCapacity
+- shouldReturnAllAssignedTasks
+- shouldReturnFalseIfTaskIsNotAssigned
+- shouldReturnFalseWhenCapacityIsFull
+- shouldReturnTrueIfTaskIsAssigned
+- shouldReturnTrueWhenCapacityIsAvailable
+org.apache.kafka.coordinator.group.streams.assignor.StickyTaskAssignorTest:
+- shouldAssignActiveAndStandbyTasks
+- shouldAssignAtLeastOneTaskToEachClientIfPossible
+- shouldAssignBasedOnCapacity
+- shouldAssignBasedOnCapacityWhenMultipleClientHaveStandbyTasks
+- shouldAssignEachActiveTaskToOneClientWhenMoreClientsThanTasks
+- shouldAssignMoreTasksToClientWithMoreCapacity
+- shouldAssignMultipleReplicasOfStandbyTask
+- shouldAssignNewTasksToNewClientWhenPreviousTasksAssignedToOldClients
+- shouldAssignOneActiveTaskToEachProcessWhenTaskCountSameAsProcessCount
+- shouldAssignStandbyTasksToDifferentClientThanCorrespondingActiveTaskIsAssignedTo
+- shouldAssignTasksEvenlyWithUnequalTopicGroupSizes
+- shouldAssignTasksNotPreviouslyActiveToMultipleNewClients
+- shouldAssignTasksNotPreviouslyActiveToNewClient
+- shouldAssignTasksToClientWithPreviousStandbyTasks
+- shouldAssignTasksToNewClient
+- shouldAssignTasksToNewClientWithoutFlippingAssignmentBetweenExistingAndBouncedClients
+- shouldAssignTasksToNewClientWithoutFlippingAssignmentBetweenExistingClients
+- shouldAssignTopicGroupIdEvenlyAcrossClientsWithNoStandByTasks
+- shouldAssignTopicGroupIdEvenlyAcrossClientsWithStandByTasks
+- shouldBalanceActiveAndStandbyTasksAcrossAvailableClients
+- shouldKeepActiveTaskStickinessWhenMoreClientThanActiveTasks
+- shouldMigrateActiveTasksToNewProcessWithoutChangingAllAssignments
+- shouldMoveMinimalNumberOfTasksWhenPreviouslyAboveCapacityAndNewClientAdded
+- shouldNotAssignStandbyTaskReplicasWhenNoClientAvailableWithoutHavingTheTaskAssigned
+- shouldNotAssignStandbyTasksToClientWithPreviousStandbyTasksAndCurrentActiveTasks
+- shouldNotHaveSameAssignmentOnAnyTwoHosts
+- shouldNotHaveSameAssignmentOnAnyTwoHostsWhenThereArePreviousActiveTasks
+- shouldNotHaveSameAssignmentOnAnyTwoHostsWhenThereArePreviousStandbyTasks
+- shouldNotMigrateActiveTaskToOtherProcess
+- shouldNotMoveAnyTasksWhenNewTasksAdded
+- shouldReBalanceTasksAcrossAllClientsWhenCapacityAndTaskCountTheSame
+- shouldReBalanceTasksAcrossClientsWhenCapacityLessThanTaskCount
+- shouldRebalanceTasksToClientsBasedOnCapacity
 org.apache.kafka.coordinator.group.streams.topics.ChangelogTopicsTest:
 - shouldContainBothTypesOfPreExistingChangelogs
 - shouldContainNonSourceBasedChangelogs

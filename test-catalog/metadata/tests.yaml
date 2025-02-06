@@ -68,6 +68,7 @@ org.apache.kafka.controller.ClusterControlManagerTest:
 - testHasOnlineDir
 - testPlaceReplicas
 - testReRegistrationAndBrokerEpoch
+- testReRegistrationWithCleanShutdownDetection
 - testRegisterBrokerRecordVersion
 - testRegisterControlWithOlderMetadataVersion
 - testRegisterWithDuplicateDirectoryId
@@ -230,6 +231,8 @@ org.apache.kafka.controller.QuorumControllerTest:
 - testFenceMultipleBrokers
 - testInsertBootstrapRecordsToEmptyLog
 - testMinIsrUpdateWithElr
+- testNewFlakyTest
+- testNewTest
 - testNoOpRecordWriteAfterTimeout
 - testRegisterBrokerKRaftVersions
 - testSnapshotSaveAndLoad
@@ -274,6 +277,7 @@ org.apache.kafka.controller.ReplicationControlManagerTest:
 - testEligibleLeaderReplicas_DeleteTopic
 - testEligibleLeaderReplicas_EffectiveMinIsr
 - testEligibleLeaderReplicas_ShrinkAndExpandIsr
+- testEligibleLeaderReplicas_ShrinkToEmptyIsr
 - testEligibleLeaderReplicas_UncleanShutdown
 - testElrsRemovedOnMinIsrUpdate
 - testElrsRemovedShouldNotBumpPartitionEpochIfNoChange
@@ -673,6 +677,9 @@ org.apache.kafka.metadata.MetadataRecordSerdeTest:
 - testParsingUnsupportedApiKey
 - testParsingVersionTooLarge
 - testSerde
+org.apache.kafka.metadata.MockConfigRepositoryTest:
+- testEmptyRepository
+- testSetTopicConfig
 org.apache.kafka.metadata.OptionalStringComparatorTest:
 - testComparisons
 org.apache.kafka.metadata.PartitionRegistrationTest:
