@@ -146,6 +146,10 @@ kafka.admin.DeleteTopicTest:
 - testPartitionReassignmentDuringDeleteTopic
 - testRecreateTopicAfterDeletion
 - testResumeDeleteTopicWithRecoveredFollower
+kafka.admin.DescribeAuthorizedOperationsTest:
+- testClusterAuthorizedOperations
+- testConsumerGroupAuthorizedOperations
+- testTopicAuthorizedOperations
 kafka.admin.ListOffsetsIntegrationTest:
 - testListMaxTimestampWithEmptyLog
 - testThreeCompressedRecordsInOneBatch
@@ -316,6 +320,8 @@ kafka.api.ConsumerTopicCreationTest:
 kafka.api.ConsumerWithLegacyMessageFormatIntegrationTest:
 - testEarliestOrLatestOffsets
 - testOffsetsForTimes
+kafka.api.CustomQuotaCallbackTest:
+- testCustomQuotaCallback
 kafka.api.DelegationTokenEndToEndAuthorizationTest:
 - testCreateUserWithDelegationToken
 - testNoConsumeWithDescribeAclViaAssign
@@ -1791,7 +1797,6 @@ kafka.log.UnifiedLogTest:
 - testNextTransactionVerificationGuardNotCleared
 - testNoOpWhenRemoteLogStorageIsDisabled
 - testNonSequentialAppend
-- testOffsetFromProducerSnapshotFile
 - testOffsetSnapshot
 - testOldProducerEpoch
 - testPeriodicProducerIdExpiration
@@ -2934,6 +2939,7 @@ kafka.server.KafkaApisTest:
 - testWriteShareGroupStateSuccess
 - testWriteTxnMarkersShouldAllBeIncludedInTheResponse
 kafka.server.KafkaConfigTest:
+- testAcceptsLargeId
 - testAdvertiseConfigured
 - testAdvertiseDefaults
 - testAdvertisedListenersAllowedForKRaftControllerOnlyRole
@@ -2952,7 +2958,6 @@ kafka.server.KafkaConfigTest:
 - testControllerQuorumVoterStringsToNodes
 - testCustomMetadataLogDir
 - testDefaultCompressionType
-- testDefaultInterBrokerProtocolVersionKRaft
 - testDefaultMetadataLogDir
 - testDistinctControllerAndAdvertisedListenersAllowedForKRaftBroker
 - testDuplicateListeners
@@ -2967,7 +2972,6 @@ kafka.server.KafkaConfigTest:
 - testFromPropsInvalid
 - testGroupCoordinatorRebalanceProtocols
 - testIPv4AndIPv6SamePortListeners
-- testIgnoreUserInterBrokerProtocolVersionKRaft
 - testInterBrokerListenerNameAndSecurityProtocolSet
 - testInterBrokerListenerNameMissingFromListenerSecurityProtocolMap
 - testInvalidAdvertisedListenersProtocol
@@ -3006,9 +3010,8 @@ kafka.server.KafkaConfigTest:
 - testPopulateSynonymsOnMapWithoutBrokerId
 - testPopulateSynonymsOnMapWithoutNodeId
 - testPortInQuorumVotersNotRequiredToMatchFirstControllerListenerPortForThisKRaftController
+- testRejectsNegativeBrokerId
 - testRejectsNegativeNodeId
-- testRejectsNegativeNodeIdForRaftBasedBrokerCaseWithAutoGenEnabled
-- testRejectsNegativeNodeIdForRaftBasedControllerCaseWithAutoGenEnabled
 - testSaslJwksEndpointRetryDefaults
 - testSeparateControllerListenerDefinedForKRaftBrokerController
 - testShareGroupHeartbeatIntervalValidation
@@ -3023,14 +3026,13 @@ kafka.server.KafkaConfigTest:
 - testValidCompressionType
 - testValidQuorumVotersParsingWithIpAddress
 - testValidQuorumVotersParsingWithMultipleHost
-- testVersionConfiguration
 kafka.server.KafkaMetricReporterExceptionHandlingTest:
 - testBothReportersAreInvoked
 kafka.server.KafkaMetricsReporterTest:
 - testMetricsContextNamespacePresent
 kafka.server.KafkaRaftServerTest:
-- testKRaftUpdateWithIBP
-- testKRaftUpdateWithoutIBP
+- testKRaftUpdate
+- testKRaftUpdateAt3_3_IV1
 - testLoadMetaPropertiesWithInconsistentNodeId
 - testLoadPropertiesWithInconsistentClusterIds
 - testStartupDoesNotFailIfDataDirIsOffline
@@ -3349,12 +3351,10 @@ kafka.server.ReplicationQuotaManagerTest:
 - shouldSupportWildcardThrottledReplicas
 - shouldThrottleOnlyDefinedReplicas
 kafka.server.ReplicationQuotasTest:
-- initializationError
 - shouldBootstrapTwoBrokersWithFollowerThrottle
 - shouldBootstrapTwoBrokersWithLeaderThrottle
 - shouldThrottleOldSegments
 kafka.server.RequestQuotaTest:
-- initializationError
 - testExemptRequestTime
 - testResponseThrottleTime
 - testResponseThrottleTimeWhenBothFetchAndRequestQuotasViolated
@@ -3754,6 +3754,8 @@ kafka.server.share.SharePartitionTest:
 - testWriteShareGroupStateWithNullResponse
 - testWriteShareGroupStateWithNullTopicsData
 - testWriteShareGroupStateWithWriteException
+kafka.test.api.CustomQuotaCallbackTest:
+- testCustomQuotaCallbackWithControllerServer
 kafka.test.api.ShareConsumerTest:
 - testAcknowledgementCommitCallbackCallsShareConsumerDisallowed
 - testAcknowledgementCommitCallbackCallsShareConsumerWakeup
@@ -3845,7 +3847,6 @@ kafka.tools.StorageToolTest:
 - testFormatWithReleaseVersion
 - testFormatWithReleaseVersionAndKRaftVersion
 - testFormatWithReleaseVersionAsFeature
-- testFormatWithReleaseVersionDefault
 - testFormatWithReleaseVersionDefaultAndReleaseVersion
 - testFormatWithStandaloneFlag
 - testFormatWithStandaloneFlagAndInitialControllersFlagFails
