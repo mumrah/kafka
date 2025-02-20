@@ -15,8 +15,6 @@
 
 name: Pull Request Reviewed
 
-run-name: Pull Request
-
 on:
   pull_request_review:
     types: [submitted, edited, dismissed]
@@ -37,7 +35,7 @@ jobs:
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
       - name: Save PR Number
-        run: echo ${{ github.event.number }} > PR_NUMBER.txt
+        run: echo ${{ github.event.pull_request.number }} > PR_NUMBER.txt
       - uses: actions/upload-artifact@v4
         with:
           name: PR_NUMBER.txt

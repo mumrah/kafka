@@ -72,9 +72,6 @@ def parse_trailers(title, body) -> Dict:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Verify the structure of a Pull Request.")
-    parser.add_argument("--require-approval",
-                        action="store_true",
-                        help="If set, cause this command to fail if the PR does not have an approval.")
 
     if not get_env("GITHUB_ACTIONS"):
         print("This script is intended to by run by GitHub Actions.")
@@ -109,9 +106,7 @@ if __name__ == "__main__":
 
     # Check for Reviewers
     approved = has_approval(reviews)
-    if not approved and args.require_approval:
-        errors.append("Pull Request is not approved and --require-approvals was given")
-    elif approved:
+    if len(reviews) > 0:
         trailers = parse_trailers(title, body)
         reviewers_in_body = trailers.get("Reviewers", [])
         if len(reviewers_in_body) > 0:

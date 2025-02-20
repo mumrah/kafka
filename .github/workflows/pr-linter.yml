@@ -13,9 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: Pull Request Lint
-
-run-name: Pull Request
+name: Pull Request Linter
 
 on:
   workflow_run:
@@ -25,10 +23,7 @@ on:
 
 jobs:
   lint-pr:
-    name: Linter
-    if: >
-      github.event.workflow_run.event == 'pull_request' &&
-      github.event.workflow_run.conclusion == 'success'
+    if: github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     steps:
       - name: Env

@@ -31,26 +31,6 @@ on:
         type: boolean
 
 jobs:
-  check-pr-format:
-    runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'pull_request' }}
-    name: Check PR Format
-    permissions:
-      issues: write
-      pull-requests: write
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          persist-credentials: false
-      - name: Setup Python
-        uses: ./.github/actions/setup-python
-      - name: Check Format
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          python .github/scripts/pr-format.py ${{ github.event.pull_request.number }}
-
   load-catalog:
     runs-on: ubuntu-latest
     name: Load Test Catalog
