@@ -37,23 +37,6 @@ kafka.admin.AdminFenceProducersTest:
 - testFenceAfterProducerCommit
 - testFenceBeforeProducerCommit
 - testFenceProducerTimeoutMs
-kafka.admin.AdminRackAwareTest:
-- testAssignReplicasToBrokersWithInvalidParameters
-- testAssignmentWith2ReplicasRackAware
-- testAssignmentWith2ReplicasRackAwareWith6Partitions
-- testAssignmentWith2ReplicasRackAwareWith6PartitionsAnd3Brokers
-- testAssignmentWithRackAware
-- testAssignmentWithRackAwareWithRandomStartIndex
-- testAssignmentWithRackAwareWithUnevenRacks
-- testAssignmentWithRackAwareWithUnevenReplicas
-- testGetRackAlternatedBrokerListAndAssignReplicasToBrokers
-- testLargeNumberPartitionsAssignment
-- testLessReplicasThanRacks
-- testMoreReplicasThanRacks
-- testRackAwareExpansion
-- testReplicaAssignment
-- testSingleRack
-- testSkipBrokerWithReplicaAlreadyAssigned
 kafka.admin.ClientTelemetryTest:
 - testClientInstanceId
 - testIntervalMsParser
@@ -400,6 +383,7 @@ kafka.api.PlaintextAdminIntegrationTest:
 - testClose
 - testConsumeAfterDeleteRecords
 - testConsumerGroupWithMemberMigration
+- testConsumerGroupWithMemberRemoval
 - testConsumerGroups
 - testConsumerGroupsDeprecatedConsumerGroupState
 - testCreateDeleteTopics
@@ -1860,6 +1844,7 @@ kafka.log.remote.RemoteIndexCacheTest:
 - testConcurrentRemoveReadForCache
 - testCorrectnessForCacheAndIndexFilesWhenResizeCache
 - testCorruptCacheIndexFileExistsButNotInCache
+- testDeleteInvalidIndexFilesOnInit
 - testFetchIndexForMissingTransactionIndex
 - testFetchIndexFromRemoteStorage
 - testGetIndexAfterCacheClose
@@ -2715,7 +2700,6 @@ kafka.server.KRaftClusterTest:
 - testCreateClusterAndRestartBrokerNode
 - testCreateClusterAndRestartControllerNode
 - testCreateClusterAndWaitForBrokerInRunningState
-- testCreateClusterInvalidMetadataVersion
 - testCreateClusterWithAdvertisedHostAndPortDifferentFromSocketServer
 - testCreateClusterWithAdvertisedPortZero
 - testCreatePartitions
@@ -2770,6 +2754,8 @@ kafka.server.KafkaApisTest:
 - testDescribeConfigsWithAuthorizer
 - testDescribeProducers
 - testDescribeQuorumForwardedForKRaftClusters
+- testDescribeShareGroupOffsetsRequestEmptyGroupsSuccess
+- testDescribeShareGroupOffsetsRequestEmptyTopicsSuccess
 - testDescribeShareGroupOffsetsRequestSuccess
 - testDescribeShareGroupOffsetsRequestsAuthorizationFailed
 - testDescribeShareGroupOffsetsReturnsUnsupportedVersion
@@ -3032,7 +3018,7 @@ kafka.server.KafkaMetricsReporterTest:
 - testMetricsContextNamespacePresent
 kafka.server.KafkaRaftServerTest:
 - testKRaftUpdate
-- testKRaftUpdateAt3_3_IV1
+- testKRaftUpdateAt3_3_IV3
 - testLoadMetaPropertiesWithInconsistentNodeId
 - testLoadPropertiesWithInconsistentClusterIds
 - testStartupDoesNotFailIfDataDirIsOffline
@@ -3337,6 +3323,7 @@ kafka.server.ReplicaManagerTest:
 - testReplicaSelector
 - testReplicasAreStoppedWhileInControlledShutdown
 - testSuccessfulBuildRemoteLogAuxStateMetrics
+- testTransactionAddPartitionRetry
 - testTransactionVerificationBlocksOutOfOrderSequence
 - testTransactionVerificationDynamicDisablement
 - testTransactionVerificationFlow
@@ -3544,6 +3531,7 @@ kafka.server.share.SharePartitionManagerTest:
 - testAcknowledgeEmptyPartitionCacheMap
 - testAcknowledgeIncorrectGroupId
 - testAcknowledgeIncorrectMemberId
+- testAcknowledgeIndividualOffsets
 - testAcknowledgeMultiplePartition
 - testAcknowledgeSinglePartition
 - testCachedTopicPartitionsForValidShareSessions
@@ -3559,6 +3547,7 @@ kafka.server.share.SharePartitionManagerTest:
 - testNewContextReturnsFinalContextError
 - testNewContextReturnsFinalContextWithRequestData
 - testNewContextReturnsFinalContextWithoutRequestData
+- testPartitionLoadTimeMetricWithMultiplePartitions
 - testPendingInitializationShouldCompleteFetchRequest
 - testReleaseSessionCompletesDelayedShareFetchRequest
 - testReleaseSessionDoesNotCompleteDelayedShareFetchRequest
@@ -3708,7 +3697,7 @@ kafka.server.share.SharePartitionTest:
 - testMaybeInitializeWithInvalidPartitionResponse
 - testMaybeInitializeWithInvalidStartOffsetStateBatches
 - testMaybeInitializeWithInvalidTopicIdResponse
-- testMaybeInitializeWithNoOpShareStatePersister
+- testMaybeInitializeWithNoOpStatePersister
 - testMaybeInitializeWithNullResponse
 - testMaybeInitializeWithNullTopicsData
 - testMaybeInitializeWithReadException
@@ -3750,7 +3739,7 @@ kafka.server.share.SharePartitionTest:
 - testWriteShareGroupState
 - testWriteShareGroupStateFailure
 - testWriteShareGroupStateWithInvalidTopicsData
-- testWriteShareGroupStateWithNoOpShareStatePersister
+- testWriteShareGroupStateWithNoOpStatePersister
 - testWriteShareGroupStateWithNullResponse
 - testWriteShareGroupStateWithNullTopicsData
 - testWriteShareGroupStateWithWriteException
@@ -3782,6 +3771,7 @@ kafka.test.api.ShareConsumerTest:
 - testImplicitAcknowledgeCommitSync
 - testImplicitAcknowledgeFailsExplicit
 - testImplicitAcknowledgementCommitAsync
+- testImplicitModeNotTriggeredByPollWhenNoAcksToSend
 - testLsoMovementByRecordsDeletion
 - testMaxPollRecords
 - testMultipleConsumersInGroupConcurrentConsumption

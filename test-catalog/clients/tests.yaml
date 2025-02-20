@@ -201,6 +201,8 @@ org.apache.kafka.clients.admin.KafkaAdminClientTest:
 - testAlterReplicaLogDirsPartialResponse
 - testAlterReplicaLogDirsSuccess
 - testAlterReplicaLogDirsUnrequested
+- testAlterShareGroupOffsets
+- testAlterShareGroupOffsetsWithErrorInOnePartition
 - testAlterUserScramCredentials
 - testAlterUserScramCredentialsUnknownMechanism
 - testBatchedListConsumerGroupOffsets
@@ -354,6 +356,8 @@ org.apache.kafka.clients.admin.KafkaAdminClientTest:
 - testListOffsetsWithMultiplePartitionsLeaderChange
 - testListPartitionReassignments
 - testListShareGroupOffsets
+- testListShareGroupOffsetsEmpty
+- testListShareGroupOffsetsMultipleGroups
 - testListShareGroupOffsetsOptionsWithBatchedApi
 - testListShareGroupOffsetsWithErrorInOnePartition
 - testListShareGroups
@@ -892,6 +896,8 @@ org.apache.kafka.clients.consumer.RoundRobinAssignorTest:
 - testTwoConsumersOneTopicTwoPartitions
 - testTwoDynamicConsumersTwoTopicsSixPartitions
 - testTwoStaticConsumersTwoTopicsSixPartitions
+org.apache.kafka.clients.consumer.ShareConsumerConfigTest:
+- testUnsupportedShareConsumerConfigs
 org.apache.kafka.clients.consumer.StickyAssignorTest:
 - testAddRemoveConsumerOneTopic
 - testAddRemoveTopicTwoConsumers
@@ -1733,6 +1739,14 @@ org.apache.kafka.clients.consumer.internals.FetchRequestManagerTest:
 - testFetchOnPausedPartition
 - testFetchPositionAfterException
 - testFetchRequestInternalError
+- testFetchRequestWithBufferedPartitionMissingLeader
+- testFetchRequestWithBufferedPartitionMissingPosition
+- testFetchRequestWithBufferedPartitionNotAssigned
+- testFetchRequestWithBufferedPartitionPaused
+- testFetchRequestWithBufferedPartitionPendingAssignment
+- testFetchRequestWithBufferedPartitionPendingRevocation
+- testFetchRequestWithBufferedPartitionResetOffset
+- testFetchRequestWithBufferedPartitions
 - testFetchResponseMetrics
 - testFetchResponseMetricsWithOnePartitionAtTheWrongOffset
 - testFetchResponseMetricsWithOnePartitionError
@@ -2049,6 +2063,7 @@ org.apache.kafka.clients.consumer.internals.ShareConsumeRequestManagerTest:
 - testParseInvalidRecordBatch
 - testPendingCommitAsyncBeforeCommitSync
 - testPiggybackAcknowledgementsInFlight
+- testPiggybackAcknowledgementsOnInitialShareSessionError
 - testResultHandlerCompleteIfEmpty
 - testResultHandlerOnCommitAsync
 - testResultHandlerOnCommitSync
@@ -2192,6 +2207,12 @@ org.apache.kafka.clients.consumer.internals.ShareSessionHandlerTest:
 - testPartitionRemoval
 - testShareSession
 - testTopicIdReplaced
+org.apache.kafka.clients.consumer.internals.StreamsGroupHeartbeatRequestManagerTest:
+- testConstructWithNullCoordinatorRequestManager
+- testConstructWithNullMembershipManager
+- testConstructWithNullMetrics
+- testConstructWithNullStreamsRebalanceData
+- testSendingFullHeartbeatRequest
 org.apache.kafka.clients.consumer.internals.StreamsMembershipManagerTest:
 - testActiveTasksAreNullInHeartbeatResponse
 - testConsumerPollWhenNotJoining
@@ -2276,8 +2297,13 @@ org.apache.kafka.clients.consumer.internals.StreamsRebalanceDataTest:
 - shouldCopyAssignment
 - shouldCopyEmptyAssignment
 - streamsRebalanceDataShouldBeConstructedWithEmptyAssignment
-- streamsRebalanceDataShouldNotAcceptNulls
-- streamsRebalanceDataShouldNotHaveModifiableSubtopologies
+- streamsRebalanceDataShouldBeConstructedWithEmptyPartitionsByHost
+- streamsRebalanceDataShouldBeConstructedWithShutDownRequestedSetFalse
+- streamsRebalanceDataShouldNotAcceptNullClientTags
+- streamsRebalanceDataShouldNotAcceptNullHostInfo
+- streamsRebalanceDataShouldNotAcceptNullProcessId
+- streamsRebalanceDataShouldNotAcceptNullSubtopologies
+- streamsRebalanceDataShouldNotHaveModifiableSubtopologiesAndClientTags
 - subtopologyShouldNotAcceptNulls
 - subtopologyShouldNotBeModifiable
 - taskIdShouldNotAcceptNulls

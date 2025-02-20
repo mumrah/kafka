@@ -123,8 +123,9 @@ org.apache.kafka.tools.FeatureCommandTest:
 - testHandleFeatureDependenciesForInvalidVersionFormat
 - testHandleFeatureDependenciesForMultipleFeatures
 - testHandleFeatureDependenciesForUnknownFeature
-- testHandleUpgrade
-- testHandleUpgradeDryRun
+- testHandleUpgradeToLowerVersion
+- testHandleUpgradeToLowerVersionDryRun
+- testHandleUpgradeToUnsupportedMetadataVersion
 - testHandleVersionMappingWithInvalidReleaseVersion
 - testHandleVersionMappingWithNoReleaseVersion
 - testHandleVersionMappingWithValidReleaseVersion
@@ -630,8 +631,7 @@ org.apache.kafka.tools.consumer.group.ShareGroupCommandTest:
 - testDescribeNonexistentGroup
 - testDescribeOffsetsOfAllExistingGroups
 - testDescribeOffsetsOfExistingGroup
-- testDescribeShareGroupsInvalidVerboseOption
-- testDescribeShareGroupsOffsetsInvalidVerboseOption
+- testDescribeOffsetsOfExistingGroupWithNulls
 - testDescribeStateOfExistingGroup
 - testDescribeStatesOfAllExistingGroups
 - testGroupStatesFromString
@@ -685,7 +685,6 @@ org.apache.kafka.tools.reassign.ReassignPartitionsCommandTest:
 - testLogDirReassignment
 - testProduceAndConsumeWithReassignmentInProgress
 - testReassignment
-- testReassignmentWithAlterPartitionDisabled
 - testThrottledReassignment
 org.apache.kafka.tools.reassign.ReassignPartitionsUnitTest:
 - testAlterReplicaLogDirs
