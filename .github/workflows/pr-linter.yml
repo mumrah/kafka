@@ -32,6 +32,10 @@ jobs:
         run: printenv
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - name: Load PR Number
         id: load-pr-number
         uses: actions/download-artifact@v4
@@ -40,5 +44,7 @@ jobs:
           run-id: ${{ github.event.workflow_run.id }}
           name: PR_NUMBER.txt
       - run: |
-          find .
+          echo "Restored PR_NUMBER.txt:"
           cat PR_NUMBER.txt
+          PR_NUMBER=$(cat PR_NUMBER.txt)
+          PR_NUMBER=$PR_NUMBER python pr-format.py

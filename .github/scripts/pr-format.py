@@ -72,18 +72,17 @@ def parse_trailers(title, body) -> Dict:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Verify the structure of a Pull Request.")
-    parser.add_argument("pull_request", type=int, help="The Pull Request number to verify.")
     parser.add_argument("--require-approval",
                         action="store_true",
                         help="If set, cause this command to fail if the PR does not have an approval.")
 
-    if not os.getenv("GITHUB_ACTIONS"):
+    if not get_env("GITHUB_ACTIONS"):
         print("This script is intended to by run by GitHub Actions.")
         exit(1)
 
     args = parser.parse_args()
 
-    pr_number = args.pull_request
+    pr_number = get_env("PR_NUMBER")
     cmd = f"gh pr view {pr_number} --json 'title,body,reviews'"
     p = subprocess.run(shlex.split(cmd), capture_output=True)
     if p.returncode != 0:
