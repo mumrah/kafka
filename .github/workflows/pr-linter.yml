@@ -50,7 +50,7 @@ jobs:
           gh-token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.repository }}
           commit_sha: ${{ github.event.workflow_run.head_sha }}
-          url: '${{ github.event.workflow_run.html_url }}'
+          url: 'https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}'
           description: 'Could not load PR number'
           context: 'PR Linter'
           state: 'error'
@@ -70,7 +70,7 @@ jobs:
           gh-token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.repository }}
           commit_sha: ${{ github.event.workflow_run.head_sha }}
-          url: '${{ github.event.workflow_run.html_url }}'
+          url: 'https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}'
           description: 'PR has invalid format'
           context: 'PR Linter'
           state: 'failure'
@@ -81,7 +81,7 @@ jobs:
           gh-token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.repository }}
           commit_sha: ${{ github.event.workflow_run.head_sha }}
-          url: '${{ github.event.workflow_run.html_url }}'
+          url: 'https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}'
           description: 'PR format is good!'
           context: 'PR Linter'
           state: 'success'
