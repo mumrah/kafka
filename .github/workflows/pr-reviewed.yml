@@ -15,6 +15,8 @@
 
 name: Pull Request Reviewed
 
+run-name: Pull Request
+
 on:
   pull_request_review:
     types: [submitted, edited, dismissed]
@@ -27,6 +29,7 @@ on:
 
 jobs:
   save-pr-number:
+    name: Save PR Number
     runs-on: ubuntu-latest
     steps:
       - name: Env
