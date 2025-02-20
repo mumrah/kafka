@@ -43,8 +43,11 @@ jobs:
           github-token: ${{ github.token }}
           run-id: ${{ github.event.workflow_run.id }}
           name: PR_NUMBER.txt
-      - run: |
+      - name: Lint PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
           echo "Restored PR_NUMBER.txt:"
           cat PR_NUMBER.txt
           PR_NUMBER=$(cat PR_NUMBER.txt)
-          PR_NUMBER=$PR_NUMBER python pr-format.py
+          PR_NUMBER=$PR_NUMBER python .github/scripts/pr-format.py
