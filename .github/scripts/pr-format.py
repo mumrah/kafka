@@ -115,20 +115,16 @@ if __name__ == "__main__":
         trailers = parse_trailers(title, body)
         reviewers_in_body = trailers.get("Reviewers", [])
         if len(reviewers_in_body) > 0:
-            print(f"Found 'Reviewers' in commit body")
+            logger.debug(f"Found 'Reviewers' in commit body")
             for reviewer_in_body in reviewers_in_body:
-                print(reviewer_in_body)
+                logger.debug(reviewer_in_body)
         else:
             errors.append("Pull Request is approved, but no 'Reviewers' found in commit body")
 
     for warning in warnings:
-        print(warning)
+        logger.debug(warning)
 
     if len(errors) > 0:
         for error in errors:
-            print(error)
-        cmd = f"gh pr comment {pr_number} --body 'PR format is bad'"
-        p = subprocess.run(shlex.split(cmd), capture_output=True)
-        print(p.stdout)
-        print(p.stderr)
+            logger.debug(error)
         exit(1)
