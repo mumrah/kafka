@@ -106,7 +106,7 @@ if __name__ == "__main__":
 
     # Check for Reviewers
     approved = has_approval(reviews)
-    if approved:
+    if len(reviews) > 0:
         trailers = parse_trailers(title, body)
         reviewers_in_body = trailers.get("Reviewers", [])
         if len(reviewers_in_body) > 0:
