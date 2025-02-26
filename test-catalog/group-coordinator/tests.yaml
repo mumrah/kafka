@@ -74,6 +74,11 @@ org.apache.kafka.coordinator.group.GroupCoordinatorServiceTest:
 - testDeleteOffsetsInvalidGroupId
 - testDeleteOffsetsWhenNotStarted
 - testDeleteOffsetsWithException
+- testDeleteShareGroupCoordinatorGeneralWriteError
+- testDeleteShareGroupCoordinatorShareSpecificWriteError
+- testDeleteShareGroupNotEmptyError
+- testDeleteShareGroupPersisterError
+- testDeleteWithShareGroups
 - testDescribeGroupCoordinatorLoadInProgress
 - testDescribeGroups
 - testDescribeGroupsInvalidGroupId
@@ -121,6 +126,13 @@ org.apache.kafka.coordinator.group.GroupCoordinatorServiceTest:
 - testShareGroupHeartbeatWhenNotStarted
 - testShareGroupHeartbeatWithException
 - testStartupShutdown
+- testStreamsGroupDescribe
+- testStreamsGroupDescribeCoordinatorLoadInProgress
+- testStreamsGroupDescribeCoordinatorNotActive
+- testStreamsGroupDescribeInvalidGroupId
+- testStreamsGroupHeartbeat
+- testStreamsGroupHeartbeatWhenNotStarted
+- testStreamsGroupHeartbeatWithException
 - testSyncGroup
 - testSyncGroupInvalidGroupId
 - testSyncGroupWhenNotStarted
@@ -177,6 +189,9 @@ org.apache.kafka.coordinator.group.GroupCoordinatorShardTest:
 - testScheduleCleanupGroupMetadata
 - testScheduleGroupSizeCounter
 - testShareGroupHeartbeat
+- testSharePartitionDeleteRequests
+- testSharePartitionDeleteRequestsNonEmptyShareGroup
+- testStreamsGroupHeartbeat
 org.apache.kafka.coordinator.group.GroupMetadataManagerTest:
 - testClassicGroupCompletedRebalanceSensor
 - testClassicGroupDelete
@@ -230,6 +245,7 @@ org.apache.kafka.coordinator.group.GroupMetadataManagerTest:
 - testConsumerGroupMemberJoinRefreshesExpiredRegexes
 - testConsumerGroupMemberJoinsWithNewRegex
 - testConsumerGroupMemberJoinsWithRegexAndUpdatesItBeforeResolutionCompleted
+- testConsumerGroupMemberJoinsWithRegexWithTopicAuthorizationFailure
 - testConsumerGroupMemberJoinsWithUpdatedRegex
 - testConsumerGroupMemberPicksUpExistingResolvedRegularExpression
 - testConsumerGroupMemberUsingClassicProtocolBatchLeaveGroup
@@ -404,6 +420,7 @@ org.apache.kafka.coordinator.group.GroupMetadataManagerTest:
 - testShareGroupStates
 - testShareGroupUnknownGroupId
 - testShareGroupUnknownMemberIdJoins
+- testSharePartitionDeleteRequest
 - testShouldThrowFencedInstanceIdExceptionWhenStaticMemberWithDifferentMemberIdJoins
 - testShouldThrowFencedInstanceIdExceptionWhenStaticMemberWithDifferentMemberIdLeaves
 - testShouldThrowUnknownMemberIdExceptionWhenUnknownStaticMemberLeaves
@@ -443,6 +460,9 @@ org.apache.kafka.coordinator.group.GroupMetadataManagerTest:
 - testStaticMembersLeaveUnknownGroup
 - testStaticMembersUnknownInstanceBatchLeaveGroup
 - testStaticMembersValidBatchLeaveGroup
+- testStreamsGroupDescribeBeforeAndAfterCommittingOffset
+- testStreamsGroupDescribeNoErrors
+- testStreamsGroupDescribeWithErrors
 - testSubscriptionMetadataRefreshedAfterGroupIsLoaded
 - testSubscriptionMetadataRefreshedAgainAfterWriteFailure
 - testSyncGroupAsLeaderAppendFailureTransformsError
@@ -582,13 +602,17 @@ org.apache.kafka.coordinator.group.assignor.RangeSetTest:
 - testToString
 - testUnsupportedOperations
 org.apache.kafka.coordinator.group.assignor.SimpleAssignorTest:
+- testAssignWithCurrentAssignmentHeterogeneous
+- testAssignWithCurrentAssignmentHomogeneous
 - testAssignWithEmptyMembers
 - testAssignWithNoSubscribedTopic
 - testAssignWithOneMemberNoAssignedTopicHeterogeneous
 - testAssignWithSubscribedToNonExistentTopic
 - testAssignWithThreeMembersThreeTopicsHeterogeneous
 - testAssignWithTwoMembersAndTwoTopicsHomogeneous
+- testMemberHashAssignment
 - testName
+- testRoundRobinAssignment
 org.apache.kafka.coordinator.group.assignor.UniformHeterogeneousAssignmentBuilderTest:
 - testFirstAssignmentNumMembersGreaterThanTotalNumPartitions
 - testFirstAssignmentTwoMembersTwoTopics
