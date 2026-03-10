@@ -13,3 +13,8 @@ labelPRBasedOnFilePath:
     - metadata/**
     - raft/**
 
+  docs:
+    - 'docs/**'
+    - '**/*.md'
+    - 'examples/**'
+
